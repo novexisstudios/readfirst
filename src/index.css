@@ -598,14 +598,14 @@ blockquote {
 .rf-story-track {
   position: relative;
   width: 100%;
-  height: 260vh;
-  /* Natural scroll distance: intuitive page turns with minimal friction */
+  height: 210vh;
+  /* Natural compact scroll distance: intuitive, effortless page turns */
 }
 
-/* Phones read page by page and give the final spread its own reading time */
+/* Phones: streamlined scroll pacing */
 @media (max-aspect-ratio: 4/5) {
   .rf-story-track {
-    height: 560vh;
+    height: 300vh;
   }
 }
 

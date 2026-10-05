@@ -9,15 +9,15 @@ export default function ResearchSection({ onOpenConversation }) {
     {
       id: '01',
       title: 'Study 01 // Independent Learners',
-      headline: 'Students shift from waiting for answers to independent inquiry.',
-      takeaway: 'Deliberate question-generation frameworks build sustained textbook self-study habits.',
+      headline: 'Students shift from passive study to self-motivated inquiry.',
+      takeaway: 'Structured questioning frameworks build sustained textbook self-study habits and independent thinkers.',
       tag: 'Independent Learners',
     },
     {
       id: '02',
       title: 'Study 02 // Research Culture',
-      headline: 'Teachers move from unilateral lecturing to guided learning coaching.',
-      takeaway: 'Placing the educator back as an active researcher transforms everyday classroom dialogue.',
+      headline: 'Teachers move from lecturing to guided learning coaches.',
+      takeaway: 'Research-based teaching cultivates strength of mind and transforms everyday classroom dialogue.',
       tag: 'Research Culture',
     },
   ];

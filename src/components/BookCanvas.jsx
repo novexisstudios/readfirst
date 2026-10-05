@@ -1087,7 +1087,7 @@ function CinematicNarrativeBook({
       ctx.fillStyle = '#00142E';
       ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
       ctx.fillText('“Developing self-motivated,', 240, 1120);
-      ctx.fillText('insightful learners.”', 240, 1200);
+      ctx.fillText('independent learners.”', 240, 1200);
     });
 
     // -------------------------------------------------------------

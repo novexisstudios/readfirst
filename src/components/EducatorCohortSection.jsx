@@ -25,7 +25,7 @@ export default function EducatorCohortSection({ onOpenConversation }) {
             </p>
 
             <p className="rf-educator-cohort-desc" style={{ fontSize: '1.1rem', marginBottom: '2.5rem' }}>
-              Adopt SMILE 2.0 to transition from unilateral lecturing to guided learning coaching.
+              Master research-based teaching and the SMILE 2.0 methodology to guide authentic student inquiry.
             </p>
 
             <div className="rf-educator-cohort-actions">

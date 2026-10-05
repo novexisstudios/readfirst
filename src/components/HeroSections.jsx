@@ -106,42 +106,42 @@ export default function HeroSections({ onExploreClick, onOpenConversation }) {
       </section>
 
       {/* ===================================================================
-          SECTION 03: THE QUESTION & THE SYSTEM WE KNOW
+          SECTION 03: WHAT READFIRST ADDS TO LEARNING
           =================================================================== */}
       <section
         id="section-03"
         className="rf-hero-section rf-section-system"
-        aria-label="Section 03: What If We Taught People How To Learn?"
+        aria-label="Section 03: What ReadFirst Adds to Learning"
       >
         <div className="rf-container">
           <div style={{ maxWidth: '820px' }}>
             <span className="rf-editorial-eyebrow" style={{ marginBottom: '1.8rem' }}>
-              03 // The Inquiry
+              03 // The ReadFirst Value
             </span>
 
             <h2
               className="rf-hero-title"
               style={{ fontSize: 'clamp(2.4rem, 5.2vw, 4.4rem)', lineHeight: 1.05 }}
             >
-              WHAT IF WE TAUGHT <br />
-              PEOPLE <em>HOW TO LEARN?</em>
+              RESEARCH-BASED <br />
+              <em>TEACHING & LEARNING.</em>
             </h2>
 
             <p className="rf-hero-sub" style={{ maxWidth: '640px' }}>
-              Conventional schooling organizes learning into a linear sequence of coverage and evaluation:
+              Building strength of mind, inquiry habits, and independent learners and thinkers.
             </p>
 
-            {/* The Linear Sequence: SYLLABUS → TEACHING → ASSIGNMENT → EXAMINATION → MARKS */}
+            {/* Value Sequence: OBSERVATION → AUTHENTIC QUESTIONING → DEEP READING → INDEPENDENT REASONING */}
             <div className="rf-linear-sequence">
-              <span className="rf-sequence-node">Syllabus</span>
+              <span className="rf-sequence-node">Observe</span>
               <span className="rf-sequence-arrow">→</span>
-              <span className="rf-sequence-node">Teaching</span>
+              <span className="rf-sequence-node">Question</span>
               <span className="rf-sequence-arrow">→</span>
-              <span className="rf-sequence-node">Assignment</span>
+              <span className="rf-sequence-node">Read Deeply</span>
               <span className="rf-sequence-arrow">→</span>
-              <span className="rf-sequence-node">Examination</span>
+              <span className="rf-sequence-node">Reflect</span>
               <span className="rf-sequence-arrow">→</span>
-              <span className="rf-sequence-node is-marks">MARKS</span>
+              <span className="rf-sequence-node is-marks">THINK ALONE</span>
             </div>
 
             <div
@@ -152,10 +152,10 @@ export default function HeroSections({ onExploreClick, onOpenConversation }) {
               }}
             >
               <h3 className="rf-questions-title">
-                Make space for questions.
+                Cultivating a living research culture.
               </h3>
               <p style={{ color: 'var(--rf-ink-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-                When learning is not restricted to memorization, inquiry begins to flourish:
+                Every classroom becomes a space of intellectual discovery:
               </p>
 
               {/* Questions appearing */}
@@ -168,14 +168,14 @@ export default function HeroSections({ onExploreClick, onOpenConversation }) {
 
               <div style={{ marginTop: '2.8rem' }}>
                 <a
-                  href="#idea"
+                  href="#purpose"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById('idea')?.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('purpose')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="rf-btn-primary rf-btn-orange"
                 >
-                  <span>Explore The ReadFirst Idea</span>
+                  <span>Explore What We Bring to Learning</span>
                   <ArrowRight size={15} />
                 </a>
               </div>

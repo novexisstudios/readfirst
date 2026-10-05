@@ -5,27 +5,27 @@ export default function IdeaSection() {
   const pillars = [
     {
       icon: BookOpen,
-      title: 'Self-Motivated Learners',
-      subtitle: 'Mindful Self-Study',
-      description: 'Shifting study from a burden into a privilege through focused textbook habits.',
+      title: 'Independent Learners',
+      subtitle: '01 // Self-Study Habit',
+      description: 'Shifting study from a burden into a privilege through mindful textbook inquiry.',
     },
     {
       icon: Sparkles,
-      title: 'Teacher to Learning Coach',
-      subtitle: 'SMILE 2.0 Approach',
+      title: 'Learning Coaches',
+      subtitle: '02 // Research-Based Teaching',
       description: 'Guiding student investigation, authentic questioning, and thoughtful dialogue.',
     },
     {
       icon: Brain,
       title: 'Strength of Mind',
-      subtitle: 'Independent Thinkers',
-      description: 'Cultivating the focus, patience, and stamina to reason independently.',
+      subtitle: '03 // Intellectual Stamina',
+      description: 'Cultivating the focus, patience, and stamina to reason and think independently.',
     },
     {
       icon: Building2,
-      title: 'Knowledge Centres',
-      subtitle: 'A Research Culture',
-      description: 'Building an enduring whole-school environment of inquiry and innovation.',
+      title: 'A Research Culture',
+      subtitle: '04 // Knowledge Centres',
+      description: 'Transforming schools into vibrant environments of inquiry and innovation.',
     },
   ];
 
