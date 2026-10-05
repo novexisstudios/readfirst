@@ -8,49 +8,49 @@ export default function StudentsPage({ onOpenConversation }) {
   const pillars = [
     {
       number: '01',
-      title: 'Deep Reading',
-      tagline: 'Beyond Surface Scanning',
-      description: 'Moving beyond passive comprehension into active interrogation of texts. Students learn to annotate, decode underlying assumptions, identify conceptual contradictions, and construct structured mental models.',
-      focus: ['Marginalia & Critical Annotation', 'Syntopical Textual Comparison', 'Identifying Author Intent & Blindspots']
+      title: 'Textbook & Deep Reading',
+      tagline: 'Focused, Attentive Study',
+      description: 'Engaging directly with textbooks and core materials without passive screen distraction. Students learn active marginalia, focused attention, and the discipline to converse thoughtfully with complex ideas.',
+      focus: ['Active Marginalia & Annotations', 'Deep Reading Stamina', 'Textbook-Based Concept Mastery']
     },
     {
       number: '02',
-      title: 'Self-Learning',
-      tagline: 'Internal Scaffolding',
-      description: 'Developing the metacognitive discipline to navigate complex unfamiliar domains independently. Students transition from dependent instruction receivers into self-directed investigators who know how to architect their own inquiries.',
-      focus: ['Autonomous Knowledge Synthesis', 'Metacognitive Self-Assessment', 'Independent Resource Discovery']
+      title: 'Self-Study & Mindfulness',
+      tagline: 'Understanding How the Brain Learns',
+      description: 'Uncovering how the brain processes and retains information. By understanding cognitive learning habits, students shift their experience of study from a burden into a rewarding, lifelong privilege.',
+      focus: ['Mindful Self-Study Habits', 'Concept Retention & Recall', 'Autonomous Daily Learning Routines']
     },
     {
       number: '03',
-      title: 'Questioning',
-      tagline: 'The Catalyst of Thought',
-      description: 'Formulating high-order inquiry questions that generate insight rather than superficial answers. Learning to ask "Why?", "What if?", "How do we know?", and "Under what conditions is this false?".',
-      focus: ['High-Order Question Taxonomy', 'Challenging Axiomatic Premises', 'Inquiry-Driven Problem Formulation']
+      title: 'Authentic Questioning',
+      tagline: 'Strength of Mind & Inquiry',
+      description: 'Formulating high-order inquiry questions that lead to genuine insight. Students learn to ask "Why?", "What if?", and "How do we know?", developing into confident independent thinkers.',
+      focus: ['Independent Question Formulation', 'Evidence Evaluation', 'Independent Problem-Solving']
     }
   ];
 
   const inquirySteps = [
-    { stage: '01', label: 'QUESTION', question: 'What is genuinely happening here?', desc: 'Frame an authentic intellectual provocation that does not have an obvious, pre-packaged textbook answer.' },
-    { stage: '02', label: 'OBSERVE', question: 'What patterns emerge under sustained attention?', desc: 'Pay close attention to nuances, anomalies, unstated assumptions, and primary evidence before jumping to conclusions.' },
-    { stage: '03', label: 'INVESTIGATE', question: 'What evidence substantiates or refutes our hypothesis?', desc: 'Formulate systematic methods to gather primary sources, conduct experiments, and test conceptual boundaries.' },
-    { stage: '04', label: 'DISCUSS', question: 'How do peer perspectives refine the interpretation?', desc: 'Subject findings to rigorous seminar dialogue, constructive critique, and collaborative synthesis.' },
-    { stage: '05', label: 'CREATE', question: 'What new understanding or artifact emerges?', desc: 'Synthesize insights into an original monograph, analytical paper, model, or structured creative proposal.' }
+    { stage: '01', label: 'QUESTION', question: 'What is genuinely happening here?', desc: 'Frame an authentic question that sparks curiosity and deep exploration.' },
+    { stage: '02', label: 'READ', question: 'What insights does the text provide?', desc: 'Engage deeply with the textbook and primary material through attentive, close reading.' },
+    { stage: '03', label: 'EXPLORE', question: 'What evidence substantiates or tests our thinking?', desc: 'Gather facts, test assumptions, and examine patterns with researcher-like patience.' },
+    { stage: '04', label: 'REFLECT', question: 'How has our understanding evolved?', desc: 'Pause to synthesize meaning, identify ambiguities, and anchor conceptual clarity.' },
+    { stage: '05', label: 'CREATE', question: 'What original insight emerges?', desc: 'Synthesize learning into a reasoned monograph, discussion, model, or creative project.' }
   ];
 
   const researchSteps = [
-    { stage: '01', label: 'QUESTION', prompt: 'Define the empirical or theoretical boundary to interrogate.' },
-    { stage: '02', label: 'METHOD', prompt: 'Architect the qualitative or quantitative framework of inquiry.' },
-    { stage: '03', label: 'FINDING', prompt: 'Isolate substantive patterns from the gathered evidence without bias.' },
-    { stage: '04', label: 'IMPLICATION', prompt: 'Determine how this finding changes understanding or practice.' }
+    { stage: '01', label: 'QUESTION', prompt: 'Define the core question or problem to explore.' },
+    { stage: '02', label: 'READ & GATHER', prompt: 'Examine primary sources and textbooks with focused attention.' },
+    { stage: '03', label: 'EXPLORE & TEST', prompt: 'Isolate substantive patterns and test assumptions against evidence.' },
+    { stage: '04', label: 'SYNTHESIZE', prompt: 'Articulate original conclusions and independent insights.' }
   ];
 
   const habits = [
-    { title: 'Read Deeply', summary: 'Treat reading as an active intellectual dialogue rather than information ingestion.' },
-    { title: 'Ask Meaningful Questions', summary: 'Seek questions that reveal underlying structures rather than surface facts.' },
-    { title: 'Observe Carefully', summary: 'Notice the overlooked detail, the anomaly that standard models fail to explain.' },
-    { title: 'Reflect Daily', summary: 'Step back to examine one’s own reasoning, cognitive biases, and evolving assumptions.' },
-    { title: 'Investigate Rigorously', summary: 'Pursue evidence across multiple disciplines with academic integrity.' },
-    { title: 'Think Independently', summary: 'Form well-reasoned convictions rather than defaulting to consensus.' }
+    { title: 'Read Deeply', summary: 'Treat reading as an active intellectual dialogue rather than passive skimming.' },
+    { title: 'Ask Meaningful Questions', summary: 'Seek questions that reveal core principles and encourage deeper exploration.' },
+    { title: 'Observe Carefully', summary: 'Notice subtle details, patterns, and assumptions that standard glance overlooks.' },
+    { title: 'Reflect With Mindfulness', summary: 'Step back to examine one’s own understanding and cognitive habits.' },
+    { title: 'Explore Rigorously', summary: 'Pursue evidence, verify claims, and connect ideas across subjects.' },
+    { title: 'Think Independently', summary: 'Form well-reasoned convictions through evidence and strength of mind.' }
   ];
 
   return (
@@ -62,30 +62,29 @@ export default function StudentsPage({ onOpenConversation }) {
         <div className="rf-container">
           <div className="rf-page-hero-inner">
             <span className="rf-editorial-eyebrow">
-              // AUDIENCE / LEARNERS
+              // AUDIENCE / STUDENTS
             </span>
             <h1 className="rf-page-hero-title">
-              DON’T JUST STUDY.<br />
-              LEARN <em>HOW TO LEARN.</em>
+              BECOME A SELF-MOTIVATED<br />
+              <em>INSIGHTFUL LEARNER.</em>
             </h1>
             <p className="rf-page-hero-lead">
-              Conventional schooling teaches students what to remember for the next exam. 
-              ReadFirst equips learners with the enduring intellectual habits of deep reading, 
-              rigorous questioning, independent inquiry, and autonomous thought.
+              ReadFirst helps students develop the habits to read, question, explore, and learn on their own. 
+              By understanding how the brain processes information, studying shifts from a burden into a lifelong privilege.
             </p>
             <div className="rf-page-hero-actions">
               <button
                 onClick={() => onOpenConversation('Students')}
                 className="rf-btn-primary"
               >
-                <span>Explore Student Learning</span>
+                <span>Start Student Pathway</span>
                 <ArrowUpRight size={16} />
               </button>
               <button
                 onClick={() => onOpenConversation('Institutions')}
                 className="rf-btn-secondary"
               >
-                <span>Talk To Your School</span>
+                <span>Introduce ReadFirst to Your School</span>
               </button>
             </div>
           </div>

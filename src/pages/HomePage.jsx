@@ -4,27 +4,31 @@ import IdeaSection from '../components/IdeaSection';
 import LearningCycleSection from '../components/LearningCycleSection';
 import AudiencesSection from '../components/AudiencesSection';
 import ResearchSection from '../components/ResearchSection';
+import EducatorCohortSection from '../components/EducatorCohortSection';
 import FinalCtaSection from '../components/FinalCtaSection';
 
 export default function HomePage({ onOpenConversation }) {
   return (
     <>
-      {/* Chapters 01 to 04: Pinned 3D Book Storytelling Stage */}
+      {/* Chapters 01 to 03: Pinned 3D Book Storytelling Stage (To Learn Is An Art) */}
       <StoryStage onOpenConversation={onOpenConversation} />
 
-      {/* Section 04 Continues: The 5 Foundational Shifts */}
+      {/* Chapter 03: What ReadFirst Adds to Education (Research-Based Teaching & Learning) */}
       <IdeaSection />
 
-      {/* Section 05: The ReadFirst Learning Cycle */}
+      {/* Chapter 04: The 5-Step Learning Cycle (Question -> Read -> Explore -> Reflect -> Create) */}
       <LearningCycleSection onOpenConversation={onOpenConversation} />
 
-      {/* Section 06: Three Levels of Change (Students, Educators, Institutions) */}
+      {/* Chapter 05: Three Pathways (Students, Educators, Institutions) */}
       <AudiencesSection onOpenConversation={onOpenConversation} />
 
-      {/* Section 07: Research Begins With A Question */}
+      {/* Chapter 06: Building A Research Culture (Evidence in Practice) */}
       <ResearchSection onOpenConversation={onOpenConversation} />
 
-      {/* Section 08: Final Conversation & Global Footer */}
+      {/* Chapter 07: The Educator Transformation Program (Selective Cohort Immersion) */}
+      <EducatorCohortSection onOpenConversation={onOpenConversation} />
+
+      {/* Chapter 08: Start A Conversation (Final CTA & Global Footer) */}
       <FinalCtaSection onOpenConversation={onOpenConversation} />
     </>
   );

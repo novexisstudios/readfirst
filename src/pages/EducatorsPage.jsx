@@ -63,11 +63,11 @@ export default function EducatorsPage({ onOpenConversation }) {
   ];
 
   const synthesisStages = [
-    { role: 'TEACHER', desc: 'Starts with subject matter mastery and instructional delivery.' },
-    { role: 'LEARNER', desc: 'Re-enters the vulnerability of intellectual struggle and unfamiliarity.' },
-    { role: 'RESEARCHER', desc: 'Treats pedagogical anomalies as rigorous empirical questions.' },
-    { role: 'LEARNING COACH', desc: 'Guides student self-regulation and metacognitive scaffolding.' },
-    { role: 'CULTURE BUILDER', desc: 'Architects an enduring school culture of deep learning and inquiry.' }
+    { role: 'TEACHER', desc: 'Starts with subject matter mastery and classroom instruction.' },
+    { role: 'LEARNER', desc: 'Re-enters the curiosity, patience, and vulnerability of authentic inquiry.' },
+    { role: 'RESEARCHER', desc: 'Treats student questions and classroom observations as empirical inquiries.' },
+    { role: 'LEARNING COACH', desc: 'Adopts the SMILE 2.0 approach to guide students from passive absorption to autonomous inquiry.' },
+    { role: 'CULTURE BUILDER', desc: 'Builds a lasting research culture across the department and the wider school.' }
   ];
 
   const discoveryArtifacts = [
@@ -85,28 +85,26 @@ export default function EducatorsPage({ onOpenConversation }) {
       <section className="rf-page-hero">
         <div className="rf-container">
           <div className="rf-page-hero-inner">
-            <span className="rf-editorial-eyebrow">
-              // AUDIENCE / EDUCATORS
+            <span className="rf-editorial-eyebrow" style={{ color: 'var(--rf-orange)' }}>
+              A SELECTIVE COHORT EXPERIENCE · BY APPLICATION ONLY
             </span>
             <h1 className="rf-page-hero-title">
-              EXPERIENCE LEARNING<br />
-              <em>DIFFERENTLY.</em>
+              A RARE OPPORTUNITY TO RETHINK<br />
+              <em>HOW LEARNING HAPPENS.</em>
             </h1>
             <p className="rf-page-hero-lead">
-              Don’t just learn how to teach differently. Experience learning differently. 
-              Our approach begins by placing the educator back in the position of a learner—rekindling 
-              intellectual vitality, observational rigor, and scholarly inquiry.
+              The ReadFirst Educator Transformation Program is not another teacher-training workshop or mass-enrollment course. It is an intensive, selective cohort experience for educators who are serious about rethinking how learning happens. We place the educator back in the position of an active learner — cultivating research-based teaching, strength of mind, and the mastery to build an enduring research culture in the classroom.
             </p>
             <div className="rf-page-hero-actions">
               <button
-                onClick={() => onOpenConversation('Educators')}
+                onClick={() => onOpenConversation('Selective Educator Cohort')}
                 className="rf-btn-primary"
               >
-                <span>Explore The Immersion</span>
+                <span>Apply To Join Next Cohort</span>
                 <ArrowUpRight size={16} />
               </button>
               <button
-                onClick={() => onOpenConversation('Institutions')}
+                onClick={() => onOpenConversation('Institutional Partnership')}
                 className="rf-btn-secondary"
               >
                 <span>Bring ReadFirst to Your Faculty</span>
@@ -268,20 +266,21 @@ export default function EducatorsPage({ onOpenConversation }) {
       <section className="rf-closing-invitation">
         <div className="rf-container">
           <div className="rf-closing-box">
-            <span className="rf-eyebrow">// FACULTY PARTNERSHIP</span>
+            <span className="rf-eyebrow" style={{ color: 'var(--rf-orange)' }}>
+              SELECTIVE COHORT IMMERSION · APPLICATION BASIS
+            </span>
             <h2 className="rf-closing-title">
-              Ready to transform your faculty's relationship with learning?
+              “I would like to be part of this cohort.”
             </h2>
             <p className="rf-closing-lead">
-              We work with progressive schools, visionary department heads, and passionate educators 
-              committed to building an enduring culture of inquiry.
+              The Educator Transformation Program is an intentional cohort experience designed for educators who are serious about rethinking how learning happens. If you would like to participate in our next cohort, we welcome your application.
             </p>
             <div className="rf-closing-actions">
               <button
-                onClick={() => onOpenConversation('Educators')}
+                onClick={() => onOpenConversation('Educator Transformation Program')}
                 className="rf-btn-primary"
               >
-                <span>Enquire About The Immersion</span>
+                <span>Apply For The Next Cohort</span>
                 <ArrowUpRight size={16} />
               </button>
             </div>

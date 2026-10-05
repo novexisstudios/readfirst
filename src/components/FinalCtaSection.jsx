@@ -11,44 +11,39 @@ export default function FinalCtaSection({ onOpenConversation }) {
           <div>
             <span
               className="rf-editorial-eyebrow"
-              style={{ color: 'var(--rf-peach)', marginBottom: '1.8rem' }}
+              style={{ color: 'var(--rf-peach)', marginBottom: '1.5rem' }}
             >
-              08 // The Dialogue
+              A Selective Community of Inquiry
             </span>
 
-            <h2 className="rf-final-headline">
-              READY TO BUILD <br />
-              A DIFFERENT <br />
+            <h2 className="rf-final-headline" style={{ color: '#FFFFFF' }}>
+              READY TO BUILD A <br />
               <span style={{ fontStyle: 'italic', color: 'var(--rf-orange)' }}>
-                LEARNING CULTURE?
+                RESEARCH CULTURE?
               </span>
             </h2>
 
             <p className="rf-final-sub">
-              The conversation can begin with a question. Whether you are an institutional leader, an educator, or an inquiring learner, we welcome the dialogue.
+              Nurturing strength of mind, inquiry habits, and independent thinkers.
             </p>
 
             <div className="rf-final-buttons">
               <button
-                onClick={() => onOpenConversation('Institutional Partnership')}
+                onClick={() => onOpenConversation('Selective Educator Cohort')}
                 className="rf-btn-primary rf-btn-orange"
                 id="final-cta-primary"
               >
-                <span>Start A Conversation</span>
+                <span>Apply For Educator Cohort</span>
                 <ArrowUpRight size={16} />
               </button>
 
-              <a
-                href="#approach"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('approach')?.scrollIntoView({ behavior: 'smooth' });
-                }}
+              <button
+                onClick={() => onOpenConversation('Institutional Partnership')}
                 className="rf-btn-secondary dark-mode"
               >
-                <span>Explore Our Approach</span>
+                <span>Initiate Institutional Dialogue</span>
                 <ArrowRight size={15} />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -77,28 +72,11 @@ export default function FinalCtaSection({ onOpenConversation }) {
               />
             </div>
 
-            <div
-              style={{
-                fontFamily: 'var(--rf-font-mono)',
-                fontSize: '0.72rem',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: 'var(--rf-peach)',
-                marginBottom: '0.6rem',
-              }}
-            >
-              Core Inquiry Objective
+            <div className="rf-footer-col-title" style={{ marginBottom: '0.6rem' }}>
+              The ReadFirst Conviction
             </div>
-            <p
-              style={{
-                fontFamily: 'var(--rf-font-serif)',
-                fontStyle: 'italic',
-                fontSize: '1.18rem',
-                color: 'var(--rf-white)',
-                lineHeight: 1.4,
-              }}
-            >
-              "What would learning look like if we designed the environment around the learner?"
+            <p className="rf-footer-quote">
+              "When schools cultivate a living research culture, students develop genuine strength of mind and the power to think for themselves."
             </p>
           </div>
         </div>
@@ -137,16 +115,7 @@ export default function FinalCtaSection({ onOpenConversation }) {
 
             {/* Architecture Index */}
             <div>
-              <div
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--rf-peach)',
-                  marginBottom: '1rem',
-                }}
-              >
+              <div className="rf-footer-col-title">
                 Learning Philosophy
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -175,16 +144,7 @@ export default function FinalCtaSection({ onOpenConversation }) {
 
             {/* Audiences */}
             <div>
-              <div
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--rf-peach)',
-                  marginBottom: '1rem',
-                }}
-              >
+              <div className="rf-footer-col-title">
                 Audiences & Frameworks
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -216,16 +176,7 @@ export default function FinalCtaSection({ onOpenConversation }) {
 
             {/* Governance & Contact */}
             <div>
-              <div
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--rf-peach)',
-                  marginBottom: '1rem',
-                }}
-              >
+              <div className="rf-footer-col-title">
                 Engagement
               </div>
               <p style={{ fontSize: '0.85rem', color: 'var(--rf-white-70)', lineHeight: 1.6, marginBottom: '1.2rem' }}>

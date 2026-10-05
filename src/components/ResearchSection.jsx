@@ -1,91 +1,67 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FileText, CheckCircle2, BookmarkCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function ResearchSection({ onOpenConversation }) {
   const [activeTab, setActiveTab] = useState(0);
 
-  const monographs = [
+  const studies = [
     {
-      title: 'Monograph 01 // The Architecture of Attention',
-      question:
-        'What happens when learners are equipped with deliberate question-generation frameworks before reading complex expository texts?',
-      method:
-        '30-day cohort immersion, comparative analysis of 420 learner journals, and pre/post metacognitive audits.',
-      finding:
-        '4.2× increase in autonomous follow-up inquiries; 68% deeper conceptual retention over rote memorization cohorts.',
-      implication:
-        'Independent learning is not an innate talent. It is an engineered habit of sustained attention and question framing.',
-      tag: 'Cognitive Inquiry',
+      id: '01',
+      title: 'Study 01 // Independent Learners',
+      headline: 'Students shift from waiting for answers to independent inquiry.',
+      takeaway: 'Deliberate question-generation frameworks build sustained textbook self-study habits.',
+      tag: 'Independent Learners',
     },
     {
-      title: 'Monograph 02 // The SMILE Environment Field Study',
-      question:
-        'Can environmental noise reduction and autonomous inquiry spaces shift educator attitudes from instructional delivery to learning coaching?',
-      method:
-        'Fieldwork across 12 pilot schools implementing the 5-day educator immersion and Discovery Box protocol.',
-      finding:
-        'Teachers spent 54% less time on direct lecturing and 72% more time guiding student-led investigative dialogue.',
-      implication:
-        'Changing teacher behavior requires first placing the educator back in the position of an active learner.',
-      tag: 'Institutional Culture',
+      id: '02',
+      title: 'Study 02 // Research Culture',
+      headline: 'Teachers move from unilateral lecturing to guided learning coaching.',
+      takeaway: 'Placing the educator back as an active researcher transforms everyday classroom dialogue.',
+      tag: 'Research Culture',
     },
   ];
 
-  const current = monographs[activeTab];
+  const current = studies[activeTab];
 
   return (
     <section className="rf-section-research" id="research" aria-label="Section 07: Research">
       <div className="rf-container">
         {/* Header */}
-        <div style={{ maxWidth: '820px' }}>
-          <span className="rf-editorial-eyebrow" style={{ marginBottom: '1.4rem' }}>
-            07 // Evidence & Inquiry
+        <div style={{ maxWidth: '820px', marginBottom: '2.5rem' }}>
+          <span className="rf-editorial-eyebrow" style={{ color: 'var(--rf-orange)', marginBottom: '1.2rem' }}>
+            Evidence in Practice
           </span>
           <h2
             className="rf-serif-display"
             style={{
-              fontSize: 'clamp(2.5rem, 5.2vw, 4.4rem)',
+              fontSize: 'clamp(2.4rem, 4.8vw, 3.8rem)',
               color: 'var(--rf-navy)',
-              lineHeight: 1.05,
-              marginBottom: '1.2rem',
+              lineHeight: 1.1,
+              marginBottom: '0.8rem',
             }}
           >
-            RESEARCH BEGINS <br />
-            WITH A <em>QUESTION.</em>
+            EVIDENCE IN <br />
+            <span style={{ fontStyle: 'italic', color: 'var(--rf-orange)' }}>REAL CLASSROOMS.</span>
           </h2>
           <p
             style={{
               fontSize: '1.15rem',
               color: 'var(--rf-ink-soft)',
               lineHeight: 1.5,
-              maxWidth: '650px',
             }}
           >
-            ReadFirst connects learning with inquiry through questions, evidence and investigation.
+            What happens when schools cultivate strength of mind and a genuine research culture.
           </p>
         </div>
 
-        {/* Tab switch for monographs */}
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem', flexWrap: 'wrap' }}>
-          {monographs.map((item, idx) => (
+        {/* Tab switch */}
+        <div className="rf-research-tabs-wrap">
+          {studies.map((item, idx) => (
             <button
               key={item.title}
               onClick={() => setActiveTab(idx)}
-              style={{
-                fontFamily: 'var(--rf-font-mono)',
-                fontSize: '0.78rem',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                padding: '0.65rem 1.2rem',
-                borderRadius: '6px',
-                border: '1px solid',
-                borderColor: activeTab === idx ? 'var(--rf-navy)' : 'var(--rf-grey-border)',
-                backgroundColor: activeTab === idx ? 'var(--rf-navy)' : 'transparent',
-                color: activeTab === idx ? 'var(--rf-white)' : 'var(--rf-ink-muted)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
+              className={`rf-research-tab-btn ${activeTab === idx ? 'is-active' : ''}`}
             >
               {item.title}
             </button>
@@ -94,85 +70,27 @@ export default function ResearchSection({ onOpenConversation }) {
 
         {/* Editorial Research Card */}
         <div className="rf-research-card">
-          <div className="rf-research-content">
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '1.8rem',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--rf-orange)',
-                }}
-              >
-                FIELD RESEARCH DOSSIER
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.68rem',
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                  background: 'rgba(0, 50, 106, 0.08)',
-                  color: 'var(--rf-navy)',
-                }}
-              >
-                {current.tag}
-              </span>
+          <div className="rf-research-content" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="rf-research-card-top" style={{ marginBottom: '1.5rem' }}>
+              <span className="rf-research-card-eyebrow">FIELD OBSERVATION</span>
+              <span className="rf-research-tag-badge">{current.tag}</span>
             </div>
 
-            <div className="rf-monograph-steps">
-              {/* Question */}
-              <div className="rf-monograph-step">
-                <span className="rf-step-label">Question:</span>
-                <span
-                  className="rf-step-val"
-                  style={{
-                    fontFamily: 'var(--rf-font-serif)',
-                    fontStyle: 'italic',
-                    fontSize: '1.15rem',
-                    color: 'var(--rf-navy)',
-                  }}
-                >
-                  "{current.question}"
-                </span>
-              </div>
+            <h3 className="rf-research-card-title">
+              "{current.headline}"
+            </h3>
 
-              {/* Method */}
-              <div className="rf-monograph-step">
-                <span className="rf-step-label">Method:</span>
-                <span className="rf-step-val">{current.method}</span>
-              </div>
+            <p style={{ fontSize: '1.08rem', lineHeight: 1.65, color: 'var(--rf-ink-soft)', marginBottom: '2rem' }}>
+              {current.takeaway}
+            </p>
 
-              {/* Finding */}
-              <div className="rf-monograph-step">
-                <span className="rf-step-label">Finding:</span>
-                <span className="rf-step-val" style={{ fontWeight: '600', color: 'var(--rf-navy)' }}>
-                  {current.finding}
-                </span>
-              </div>
-
-              {/* Implication */}
-              <div className="rf-monograph-step">
-                <span className="rf-step-label">Implication:</span>
-                <span className="rf-step-val">{current.implication}</span>
-              </div>
-            </div>
-
-            <div style={{ marginTop: '2.5rem' }}>
+            <div>
               <Link
                 to="/research"
-                className="rf-btn-primary"
-                style={{ textDecoration: 'none' }}
+                className="rf-btn-secondary"
+                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}
               >
-                <span>Explore Research Repository</span>
+                <span>Explore Full Evidence Repository</span>
                 <ArrowRight size={15} />
               </Link>
             </div>
@@ -186,30 +104,8 @@ export default function ResearchSection({ onOpenConversation }) {
               className="rf-research-photo"
               loading="lazy"
             />
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '18px',
-                left: '18px',
-                right: '18px',
-                backgroundColor: 'rgba(255, 255, 255, 0.92)',
-                backdropFilter: 'blur(8px)',
-                padding: '0.8rem 1.2rem',
-                borderRadius: '6px',
-                border: '1px solid rgba(0, 50, 106, 0.08)',
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--rf-font-mono)',
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.08em',
-                  color: 'var(--rf-navy)',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Evidence in Practice // Metacognitive Journaling
-              </p>
+            <div className="rf-research-photo-caption">
+              <p>Research Culture in Action // Developing Independent Thinkers</p>
             </div>
           </div>
         </div>

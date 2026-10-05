@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, GraduationCap, BookOpenCheck, Building2 } from 'lucide-react';
+import { ArrowUpRight, GraduationCap, BookOpenCheck, Building2, CheckCircle2 } from 'lucide-react';
 
 export default function AudiencesSection({ onOpenConversation }) {
   const [activeAudience, setActiveAudience] = useState(null);
@@ -8,48 +8,36 @@ export default function AudiencesSection({ onOpenConversation }) {
   const audiences = [
     {
       id: 'students',
-      tier: 'Level 01 // Learners',
+      tier: 'For Students',
       headline: 'STUDENTS',
-      tagline: 'Learn how to learn.',
-      description:
-        'Cultivating deep analytical reading, self-directed questioning, reflective notation, and the investigative resilience that outlasts any syllabus.',
-      highlights: [
-        'Higher-Level Reading & Marginalia',
-        'Self-Directed Inquiry Frameworks',
-        'Metacognitive Independence',
-      ],
-      linkText: 'Explore Student Learning',
+      tagline: 'Become an independent learner.',
+      description: 'Build the habits to read, question, and learn on your own through focused textbook self-study.',
+      linkTo: '/students',
+      linkText: 'Explore Student Pathway',
       icon: GraduationCap,
+      badge: null,
     },
     {
       id: 'educators',
-      tier: 'Level 02 // Practitioners',
+      tier: 'For Educators',
       headline: 'EDUCATORS',
-      tagline: 'Experience learning differently.',
-      description:
-        'The approach begins by placing the educator in the position of a learner. Through our 5-day immersion and Discovery Box, teachers become researchers of practice.',
-      highlights: [
-        '5-Day Inquiry Immersion',
-        'The Discovery Box Methodology',
-        'From Instruction to Learning Coaching',
-      ],
-      linkText: 'Explore Educator Development',
+      tagline: 'A rare opportunity to rethink how learning happens.',
+      description: 'Adopt SMILE 2.0: an intentional transition from unilateral lecturing to guided learning coach.',
+      linkTo: '/educators',
+      linkText: 'Explore Educator Cohort',
       icon: BookOpenCheck,
+      badge: 'SELECTIVE COHORT',
     },
     {
       id: 'institutions',
-      tier: 'Level 03 // Ecosystems',
+      tier: 'For Institutions',
       headline: 'INSTITUTIONS',
-      tagline: 'Build a culture of independent learning.',
-      description:
-        'Sustainable change occurs when independent learning is structural. We partner with leadership to harmonize leadership, educators, students, and evidence.',
-      highlights: [
-        'Four Foundational Conditions',
-        'The SMILE Framework Architecture',
-        'Institutional Transformation Roadmap',
-      ],
-      linkText: 'Build a Learning Culture',
+      tagline: 'Build a research-based education culture.',
+      description: 'Transform your school into a vibrant Knowledge Centre of inquiry and innovation.',
+      linkTo: '/institutions',
+      linkText: 'Partner With ReadFirst',
       icon: Building2,
+      badge: null,
     },
   ];
 
@@ -60,42 +48,42 @@ export default function AudiencesSection({ onOpenConversation }) {
       aria-label="Section 06: Three Levels of Change"
       style={{
         backgroundColor:
-          activeAudience === 'institutions'
-            ? '#EEF2F5'
-            : activeAudience === 'educators'
-            ? '#F7F2EE'
+          activeAudience === 'educators'
+            ? '#FDF8F5'
+            : activeAudience === 'institutions'
+            ? '#F4F7F9'
             : 'var(--rf-grey-bg)',
-        transition: 'background-color 0.6s ease',
+        transition: 'background-color 0.4s ease',
       }}
     >
       <div className="rf-container">
         {/* Section Header */}
-        <div style={{ maxWidth: '780px' }}>
-          <span className="rf-editorial-eyebrow" style={{ marginBottom: '1.4rem' }}>
-            06 // Three Levels of Change
+        <div style={{ maxWidth: '820px', marginBottom: '3rem' }}>
+          <span className="rf-editorial-eyebrow" style={{ color: 'var(--rf-orange)', marginBottom: '1.2rem' }}>
+            Three Pathways
           </span>
           <h2
             className="rf-serif-display"
             style={{
-              fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
+              fontSize: 'clamp(2.4rem, 4.8vw, 3.8rem)',
               color: 'var(--rf-navy)',
-              lineHeight: 1.08,
-              marginBottom: '1.2rem',
+              lineHeight: 1.1,
+              marginBottom: '0.8rem',
             }}
           >
-            ONE PHILOSOPHY. <br />
+            ONE INQUIRY PHILOSOPHY. <br />
             <span style={{ fontStyle: 'italic', color: 'var(--rf-orange)' }}>
-              THREE LEVELS OF CHANGE.
+              THREE DISTINCT PATHWAYS.
             </span>
           </h2>
           <p
             style={{
-              fontSize: '1.12rem',
+              fontSize: '1.15rem',
               color: 'var(--rf-ink-soft)',
               lineHeight: 1.5,
             }}
           >
-            ReadFirst does not treat education as a transaction. We work across the ecosystem to build sustainable cultures of inquiry.
+            Cultivating independent learners, empowering educators, and transforming schools.
           </p>
         </div>
 
@@ -103,51 +91,50 @@ export default function AudiencesSection({ onOpenConversation }) {
         <div className="rf-audiences-grid">
           {audiences.map((aud) => {
             const Icon = aud.icon;
+            const isEducator = aud.id === 'educators';
+
             return (
               <div
                 key={aud.id}
-                className="rf-audience-column"
+                className={`rf-audience-column ${isEducator ? 'is-educator-featured' : ''}`}
                 onMouseEnter={() => setActiveAudience(aud.id)}
                 onMouseLeave={() => setActiveAudience(null)}
               >
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.2rem' }}>
                     <span className="rf-audience-tier">{aud.tier}</span>
-                    <Icon size={20} color="var(--rf-ink-muted)" strokeWidth={1.5} />
+                    <Icon size={20} color={isEducator ? 'var(--rf-orange)' : 'var(--rf-navy)'} strokeWidth={1.75} />
                   </div>
+
+                  {aud.badge && (
+                    <div className="rf-cohort-selective-badge" style={{ marginBottom: '1rem' }}>
+                      <span>{aud.badge}</span>
+                    </div>
+                  )}
 
                   <h3 className="rf-audience-title">{aud.headline}</h3>
 
-                  <p
-                    style={{
-                      fontFamily: 'var(--rf-font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: '1.18rem',
-                      color: 'var(--rf-navy)',
-                      marginBottom: '1.2rem',
-                      fontWeight: '400',
-                    }}
-                  >
+                  <p className="rf-audience-tagline">
                     "{aud.tagline}"
                   </p>
 
-                  <p className="rf-audience-body">{aud.description}</p>
-
-                  <ul className="rf-audience-list">
-                    {aud.highlights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
+                  <p className="rf-audience-body">
+                    {aud.description}
+                  </p>
                 </div>
 
-                <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--rf-grey-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   <Link
-                    to={`/${aud.id}`}
-                    className="rf-audience-action"
-                    style={{ textDecoration: 'none' }}
+                    to={aud.linkTo}
+                    className="rf-btn-secondary"
+                    style={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      borderColor: isEducator ? 'var(--rf-orange)' : 'var(--rf-navy)',
+                      color: isEducator ? 'var(--rf-orange)' : 'var(--rf-navy)',
+                    }}
                   >
-                    <span>{aud.linkText}</span>
-                    <ArrowUpRight size={16} />
+                    <span>{aud.linkText} →</span>
                   </Link>
                 </div>
               </div>

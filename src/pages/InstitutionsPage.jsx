@@ -88,30 +88,29 @@ export default function InstitutionsPage({ onOpenConversation }) {
         <div className="rf-container">
           <div className="rf-page-hero-inner">
             <span className="rf-editorial-eyebrow">
-              // AUDIENCE / INSTITUTIONAL LEADERS & EDUCATIONISTS
+              // FOR INSTITUTIONS & SCHOOL LEADERS
             </span>
             <h1 className="rf-page-hero-title">
-              BUILD A CULTURE OF<br />
-              <em>INDEPENDENT LEARNING.</em>
+              BUILD A RESEARCH-BASED<br />
+              <em>EDUCATION CULTURE.</em>
             </h1>
             <div className="rf-institutional-question-box">
-              <span className="rf-question-lead">The Institutional Question:</span>
+              <span className="rf-question-lead">The Institutional Goal:</span>
               <p className="rf-question-text">
-                "What would change if independent learning were part of culture, 
-                not an occasional activity?"
+                "Transforming the school into a vibrant Knowledge Centre of research, inquiry, and independent learning."
               </p>
             </div>
             <p className="rf-page-hero-lead">
-              Sustainable educational transformation does not come from another software app 
-              or compliance rubric. It happens when curiosity, deep reading, and scholarly inquiry 
-              are built into the physical, cultural, and pedagogical infrastructure of the school.
+              ReadFirst collaborates with school leaders to cultivate an enduring culture of research and innovation. 
+              We equip educators with the SMILE 2.0 research-based teaching approach, support students in mastering textbook self-study, 
+              and build long-term institutional strength without disrupting the school curriculum.
             </p>
             <div className="rf-page-hero-actions">
               <button
                 onClick={() => onOpenConversation('Institutions')}
                 className="rf-btn-primary"
               >
-                <span>Start A Conversation</span>
+                <span>Initiate Institutional Dialogue</span>
                 <ArrowUpRight size={16} />
               </button>
             </div>

@@ -770,12 +770,40 @@ const SPREAD_FIT_WIDTH = 2.55;     // open V-cradle spread + breathing room (wor
 const CLOSED_BOOK_HEIGHT = 1.78;   // closed, reclined book incl. shadow margin
 const CLOSED_BOOK_WIDTH = 1.3;
 const CLOSED_BOOK_CENTER_X = 0.6;  // cover hinges at x=0, so its centre sits right of origin
+const PAGE_FIT_WIDTH = 1.24;       // one page (scaled, V-tilted) + slim side margin
+const PAGE_FIT_HEIGHT = 1.78;
+const PAGE_CENTER_X = 0.57;        // left / right page centres sit either side of the gutter
+
+// Scroll windows where a spread lies open and still (between leaf turns).
+// Phones read these one page at a time: left page first, then right.
+const READING_WINDOWS = [
+  [0.20, 0.36], // Spread 01
+  [0.46, 0.58], // Spread 02
+  [0.66, 0.76], // Spread 03A
+  [0.84, 0.92], // Spread 03B
+  [0.96, 0.982], // Spread 04 (final) — phones stretch this window, see storyScroll.js
+];
+
+function getPageFocus(p) {
+  for (const [start, end] of READING_WINDOWS) {
+    if (p > start && p < end) {
+      const t = (p - start) / (end - start);
+      const { smoothstep } = THREE.MathUtils;
+      return {
+        // ease in after the turn settles, ease out before the next turn
+        amount: smoothstep(t, 0, 0.14) * (1 - smoothstep(t, 0.86, 1)),
+        side: -1 + 2 * smoothstep(t, 0.42, 0.58),
+      };
+    }
+  }
+  return { amount: 0, side: 0 };
+}
 
 function zoomForVisibleHeight(visibleHeight, tanHalfFov) {
   return Math.max(1, (visibleHeight / (2 * tanHalfFov) + 0.12) / 3.38);
 }
 
-function computeResponsiveFraming(size, fov, frame, openT) {
+function computeResponsiveFraming(size, fov, frame, openT, p) {
   const { width, height } = size;
   if (!width || !height) return { zoom: 1, shiftX: 0, shiftY: 0 };
 
@@ -814,11 +842,30 @@ function computeResponsiveFraming(size, fov, frame, openT) {
     closedShiftX = -0.3 * THREE.MathUtils.clamp((1.6 - aspect) / 0.6, 0, 1);
   }
 
-  return {
-    zoom: THREE.MathUtils.lerp(closedZoom, openZoom, openT),
-    shiftX: THREE.MathUtils.lerp(closedShiftX, 0, openT),
-    shiftY: THREE.MathUtils.lerp(closedShiftY, 0, openT),
-  };
+  let zoom = THREE.MathUtils.lerp(closedZoom, openZoom, openT);
+  let shiftX = THREE.MathUtils.lerp(closedShiftX, 0, openT);
+  let shiftY = THREE.MathUtils.lerp(closedShiftY, 0, openT);
+
+  // Phones: a full spread is too small to read, so frame one page at a time
+  if (aspect < 0.8) {
+    const { amount, side } = getPageFocus(p);
+    if (amount > 0) {
+      const usable = (height - headerPx - 24) / height;
+      const pageZoom = Math.max(
+        zoomForVisibleHeight(PAGE_FIT_WIDTH / aspect, tanHalf),
+        zoomForVisibleHeight(PAGE_FIT_HEIGHT / usable, tanHalf)
+      );
+      const visibleHeight = 2 * tanHalf * (3.38 * pageZoom - 0.12);
+      // centre the page in the area below the header
+      const pageShiftY = ((headerPx / 2) / height) * visibleHeight;
+
+      zoom = THREE.MathUtils.lerp(zoom, Math.min(pageZoom, zoom), amount);
+      shiftX = THREE.MathUtils.lerp(shiftX, side * PAGE_CENTER_X, amount);
+      shiftY = THREE.MathUtils.lerp(shiftY, pageShiftY, amount);
+    }
+  }
+
+  return { zoom, shiftX, shiftY };
 }
 
 function CinematicNarrativeBook({
@@ -887,13 +934,13 @@ function CinematicNarrativeBook({
 
     // READFIRST Brand Title
     cctx.fillStyle = '#FFFFFF';
-    cctx.font = '800 100px "Plus Jakarta Sans", sans-serif';
+    cctx.font = '700 96px "Newsreader", Georgia, serif';
     cctx.textAlign = 'center';
     cctx.fillText('READFIRST', 700, 780);
 
     // Subtitle
     cctx.fillStyle = '#FBCFBA';
-    cctx.font = '700 32px "JetBrains Mono", monospace';
+    cctx.font = '600 34px "JetBrains Mono", monospace';
     cctx.fillText('RESEARCH-BASED INQUIRY', 700, 875);
 
     // Inquiry Glyph
@@ -902,8 +949,8 @@ function CinematicNarrativeBook({
     cctx.fillText('?', 700, 1080);
 
     // Monograph Note
-    cctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
-    cctx.font = '600 24px "JetBrains Mono", monospace';
+    cctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+    cctx.font = '600 28px "JetBrains Mono", monospace';
     cctx.fillText('AN INQUIRY MONOGRAPH // EDITION 01', 700, 1720);
 
     const coverTex = new THREE.CanvasTexture(coverCanvas);
@@ -913,353 +960,329 @@ function CinematicNarrativeBook({
     coverTex.anisotropy = 16;
 
     // -------------------------------------------------------------
-    // SPREAD 01 — THE ART OF LEARNING
+    // SPREAD 01 — TO LEARN IS AN ART
     // -------------------------------------------------------------
     const s1LeftTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('PAGE 01', 240, 160);
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('PAGE 01', 200, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('READFIRST // MONOGRAPH', 1200, 160);
+      ctx.fillText('READFIRST // MONOGRAPH', 1120, 180);
       ctx.textAlign = 'left';
 
       // Big Number
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 600 180px "Newsreader", serif';
-      ctx.fillText('01', 240, 410);
+      ctx.font = 'italic 700 210px "Newsreader", serif';
+      ctx.fillText('01', 200, 540);
 
       // Chapter Title
       ctx.fillStyle = '#00142E';
-      ctx.font = '800 64px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('THE ART OF LEARNING', 240, 505);
+      ctx.font = '700 78px "Newsreader", Georgia, serif';
+      ctx.fillText('THE ART OF', 200, 690);
+      ctx.fillText('LEARNING.', 200, 790);
 
       ctx.strokeStyle = '#F2642A';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.moveTo(240, 555);
-      ctx.lineTo(650, 555);
+      ctx.moveTo(200, 870);
+      ctx.lineTo(480, 870);
       ctx.stroke();
 
-      // Main Editorial Thought (Bolder & Bigger)
+      // Whisper text (Positioned with elegant editorial breathing room)
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 52px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Learning is more than receiving information.', 240, 680);
-      ctx.fillText('It is the disciplined ability to perceive,', 240, 755);
-      ctx.fillText('question, explore, and make meaning.', 240, 830);
-
-      // Archival Box Note
-      ctx.strokeStyle = 'rgba(0, 20, 46, 0.28)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(240, 1040, 860, 360);
-      ctx.fillStyle = '#00142E';
-      ctx.font = 'italic 600 46px "Newsreader", serif';
-      ctx.fillText('"The learner is not a vessel to be filled,', 280, 1140);
-      ctx.fillText('but an investigator encountering reality."', 280, 1205);
-      ctx.fillStyle = '#F2642A';
-      ctx.font = '700 24px "JetBrains Mono", monospace';
-      ctx.fillText('// ARCHIVAL NOTE — ESSAY ON ATTENTION', 280, 1320);
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“Learning is more than', 200, 1140);
+      ctx.fillText('receiving information.”', 200, 1220);
     });
 
     const l1FrontTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('CHAPTER 01', 210, 160);
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('CHAPTER 01', 240, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('PAGE 02', 1230, 160);
+      ctx.fillText('PAGE 02', 1200, 180);
       ctx.textAlign = 'left';
 
-      // Giant Statement (Bolder & Bigger)
+      // Massive Headline
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 144px "Newsreader", serif';
-      ctx.fillText('TO LEARN', 210, 470);
-      ctx.fillText('IS AN ', 210, 610);
+      ctx.font = '700 156px "Newsreader", serif';
+      ctx.fillText('TO LEARN', 240, 560);
+      ctx.fillText('IS AN ', 240, 715);
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 700 144px "Newsreader", serif';
-      ctx.fillText('ART.', 670, 610);
+      ctx.font = 'italic 800 156px "Newsreader", serif';
+      ctx.fillText('ART.', 720, 715);
 
-      // Supporting Text (Bolder & Bigger)
-      ctx.fillStyle = '#00142E';
-      ctx.font = '600 52px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Learning is more than receiving information.', 210, 790);
+      // Decorative Accent Line
+      ctx.strokeStyle = '#F2642A';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(240, 870);
+      ctx.lineTo(480, 870);
+      ctx.stroke();
 
-      // Editorial Line
+      // Short Editorial Line
       ctx.fillStyle = '#F2642A';
-      ctx.font = '800 30px "JetBrains Mono", monospace';
-      ctx.fillText('OBSERVE · QUESTION · EXPLORE · REFLECT', 210, 930);
-
-      ctx.fillStyle = '#1D3550';
-      ctx.font = 'italic 600 38px "Newsreader", serif';
-      ctx.fillText('Attention precedes inquiry.', 210, 1140);
-      ctx.fillText('Inquiry precedes understanding.', 210, 1200);
+      ctx.font = '800 40px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('OBSERVE  ·  QUESTION  ·  EXPLORE  ·  REFLECT', 240, 1040);
     });
 
     // -------------------------------------------------------------
-    // SPREAD 02 — THE PRINCIPLE OF ATTENTION
+    // SPREAD 02 — LEARN TO LEARN / BUILD THE STRENGTH
     // -------------------------------------------------------------
     const l1BackTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('PAGE 03', 240, 160);
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('PAGE 03', 200, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('READFIRST // MONOGRAPH', 1200, 160);
+      ctx.fillText('READFIRST // MONOGRAPH', 1120, 180);
       ctx.textAlign = 'left';
 
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 600 180px "Newsreader", serif';
-      ctx.fillText('02', 240, 410);
+      ctx.font = 'italic 700 210px "Newsreader", serif';
+      ctx.fillText('02', 200, 540);
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '800 62px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('THE PRINCIPLE OF ATTENTION', 240, 505);
+      ctx.font = '700 78px "Newsreader", Georgia, serif';
+      ctx.fillText('LEARN TO', 200, 690);
+      ctx.fillText('LEARN.', 200, 790);
 
       ctx.strokeStyle = '#F2642A';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.moveTo(240, 555);
-      ctx.lineTo(670, 555);
+      ctx.moveTo(200, 870);
+      ctx.lineTo(480, 870);
       ctx.stroke();
 
+      // Whisper text (Positioned with elegant editorial breathing room)
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 50px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Before an answer is constructed,', 240, 680);
-      ctx.fillText('attention must be paid to what is present,', 240, 755);
-      ctx.fillText('what is unstated, and what remains overlooked.', 240, 830);
-
-      // Marginalia Note Box
-      ctx.strokeStyle = '#F2642A';
-      ctx.lineWidth = 2.5;
-      ctx.strokeRect(240, 1040, 860, 380);
-      ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 600 46px "Newsreader", serif';
-      ctx.fillText('"Attention is an act of', 280, 1160);
-      ctx.fillText('intellectual devotion."', 280, 1225);
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 24px "JetBrains Mono", monospace';
-      ctx.fillText('MARGINALIA NOTE // READFIRST FIELD JOURNAL', 280, 1310);
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“From study as a burden', 200, 1140);
+      ctx.fillText('to study as a privilege.”', 200, 1220);
     });
 
     const l2FrontTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('CHAPTER 02', 210, 160);
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('CHAPTER 02', 240, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('PAGE 04', 1230, 160);
+      ctx.fillText('PAGE 04', 1200, 180);
       ctx.textAlign = 'left';
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 136px "Newsreader", serif';
-      ctx.fillText('LEARN IT', 210, 460);
-      ctx.fillText('FROM AN', 210, 595);
+      ctx.font = '700 120px "Newsreader", serif';
+      ctx.fillText('BUILD THE', 240, 520);
+      ctx.fillText('STRENGTH TO', 240, 655);
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 700 136px "Newsreader", serif';
-      ctx.fillText('ARTIST.', 210, 730);
-
-      ctx.fillStyle = '#00142E';
-      ctx.font = '600 52px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('The deepest learning begins with attention.', 210, 890);
-
-      ctx.fillStyle = '#1D3550';
-      ctx.font = '600 42px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('The artist looks twice where others glance once.', 210, 990);
-      ctx.fillText('Independent inquiry is built upon that exact rigor.', 210, 1055);
-    });
-
-    // -------------------------------------------------------------
-    // SPREAD 03A — THE QUESTION & THE LINEAR SYSTEM
-    // -------------------------------------------------------------
-    const l2BackTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('PAGE 05', 240, 160);
-      ctx.textAlign = 'right';
-      ctx.fillText('READFIRST // MONOGRAPH', 1200, 160);
-      ctx.textAlign = 'left';
-
-      ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 600 180px "Newsreader", serif';
-      ctx.fillText('03', 240, 410);
-
-      ctx.fillStyle = '#00142E';
-      ctx.font = '800 64px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('THE QUESTION', 240, 505);
+      ctx.font = 'italic 800 120px "Newsreader", serif';
+      ctx.fillText('LEARN ALONE.', 240, 790);
 
       ctx.strokeStyle = '#F2642A';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.moveTo(240, 555);
-      ctx.lineTo(620, 555);
+      ctx.moveTo(240, 890);
+      ctx.lineTo(480, 890);
+      ctx.stroke();
+
+      // Whisper text (Positioned with elegant editorial breathing room)
+      ctx.fillStyle = '#00142E';
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“Developing self-motivated,', 240, 1120);
+      ctx.fillText('insightful learners.”', 240, 1200);
+    });
+
+    // -------------------------------------------------------------
+    // SPREAD 03A — RESEARCH-BASED TEACHING & LEARNING
+    // -------------------------------------------------------------
+    const l2BackTex = createPageTexture((ctx) => {
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('PAGE 05', 200, 180);
+      ctx.textAlign = 'right';
+      ctx.fillText('READFIRST // MONOGRAPH', 1120, 180);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#F2642A';
+      ctx.font = 'italic 700 210px "Newsreader", serif';
+      ctx.fillText('03', 200, 540);
+
+      ctx.fillStyle = '#00142E';
+      ctx.font = '700 68px "Newsreader", Georgia, serif';
+      ctx.fillText('RESEARCH-BASED', 200, 690);
+      ctx.fillText('TEACHING & LEARNING', 200, 780);
+
+      ctx.strokeStyle = '#F2642A';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(200, 860);
+      ctx.lineTo(640, 860);
       ctx.stroke();
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 52px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Education can teach students what to learn.', 240, 680);
-      ctx.fillText('But does it teach them how to learn?', 240, 755);
-
-      ctx.fillStyle = '#1D3550';
-      ctx.font = '600 44px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('When learning is reduced to coverage and testing,', 240, 920);
-      ctx.fillText('there is less space for curiosity, reflection,', 240, 985);
-      ctx.fillText('and independent inquiry.', 240, 1050);
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“Bringing inquiry into', 200, 1140);
+      ctx.fillText('daily education.”', 200, 1220);
     });
 
     const l3FrontTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('CHAPTER 03 // THE PROBLEM', 210, 160);
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('CHAPTER 03', 240, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('PAGE 06', 1230, 160);
+      ctx.fillText('PAGE 06', 1200, 180);
       ctx.textAlign = 'left';
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 80px "Newsreader", serif';
-      ctx.fillText('WHAT IF WE TAUGHT', 210, 340);
+      ctx.font = '700 84px "Newsreader", serif';
+      ctx.fillText('WHAT WE', 240, 440);
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 700 80px "Newsreader", serif';
-      ctx.fillText('PEOPLE HOW TO LEARN?', 210, 435);
+      ctx.font = 'italic 800 84px "Newsreader", serif';
+      ctx.fillText('BRING TO LEARNING.', 240, 545);
 
-      ctx.fillStyle = '#00142E';
-      ctx.font = '600 40px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Conventional schooling organizes learning linearly:', 210, 535);
+      const pillars = [
+        '01 · AUTHENTIC QUESTIONING',
+        '02 · TEXTBOOK DEEP READING',
+        '03 · EVIDENCE & EXPLORATION',
+        '04 · INDEPENDENT THINKERS',
+      ];
 
-      // Linear steps printed into the page (Bolder & Larger)
-      const steps = ['SYLLABUS', 'TEACHING', 'ASSIGNMENT', 'EXAMINATION', 'MARKS'];
-      steps.forEach((step, idx) => {
-        const topY = 610 + idx * 175;
-        const isMarks = step === 'MARKS';
-
-        ctx.fillStyle = isMarks ? '#00142E' : '#FFFFFF';
-        ctx.strokeStyle = isMarks ? '#00142E' : 'rgba(0, 20, 46, 0.35)';
-        ctx.lineWidth = 3;
-        ctx.fillRect(210, topY, 740, 92);
-        ctx.strokeRect(210, topY, 740, 92);
-
-        ctx.fillStyle = isMarks ? '#FFFFFF' : '#00142E';
-        ctx.font = isMarks ? '800 34px "JetBrains Mono", monospace' : '700 32px "JetBrains Mono", monospace';
-        ctx.fillText(step, 250, topY + 60);
-
-        if (idx < steps.length - 1) {
-          ctx.fillStyle = '#F2642A';
-          ctx.font = 'bold 32px sans-serif';
-          ctx.fillText('↓', 580, topY + 140);
-        }
-      });
-    });
-
-    // -------------------------------------------------------------
-    // SPREAD 03B — MAKE SPACE FOR QUESTIONS (Catalytic Transition)
-    // -------------------------------------------------------------
-    const l3BackTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('PAGE 07', 240, 160);
-      ctx.textAlign = 'right';
-      ctx.fillText('READFIRST // INQUIRY', 1200, 160);
-      ctx.textAlign = 'left';
-
-      ctx.fillStyle = '#00142E';
-      ctx.font = '600 116px "Newsreader", serif';
-      ctx.fillText('MAKE SPACE', 240, 530);
-      ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 700 116px "Newsreader", serif';
-      ctx.fillText('FOR QUESTIONS.', 240, 655);
-
-      ctx.fillStyle = '#00142E';
-      ctx.font = '600 50px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('What happens when learning has', 240, 800);
-      ctx.fillText('space for questions?', 240, 870);
-      ctx.fillText('A different kind of learner begins to emerge.', 240, 960);
-    });
-
-    const l4FrontTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('THE FOUR INQUIRIES', 210, 160);
-      ctx.textAlign = 'right';
-      ctx.fillText('PAGE 08', 1230, 160);
-      ctx.textAlign = 'left';
-
-      const questions = ['Why?', 'How?', 'What if?', 'How do we know?'];
-      questions.forEach((q, i) => {
-        const y = 470 + i * 240;
-        ctx.fillStyle = '#00142E';
-        ctx.font = 'italic 600 126px "Newsreader", serif';
-        ctx.fillText(q, 260, y);
+      pillars.forEach((p, idx) => {
+        const topY = 700 + idx * 155;
 
         ctx.fillStyle = '#F2642A';
         ctx.beginPath();
-        ctx.arc(200, y - 40, 9, 0, Math.PI * 2);
+        ctx.arc(260, topY - 14, 10, 0, Math.PI * 2);
         ctx.fill();
-      });
 
-      ctx.fillStyle = '#F2642A';
-      ctx.font = '700 26px "JetBrains Mono", monospace';
-      ctx.fillText('// THE CATALYSTS OF INDEPENDENT THINKING', 210, 1490);
+        ctx.fillStyle = '#00142E';
+        ctx.font = '800 46px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(p, 300, topY);
+      });
     });
 
     // -------------------------------------------------------------
-    // SPREAD 04 — THE READFIRST IDEA
+    // SPREAD 03B — A RESEARCH CULTURE & FIVE HABITS
     // -------------------------------------------------------------
-    const l4BackTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('PAGE 09', 240, 160);
+    const l3BackTex = createPageTexture((ctx) => {
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('PAGE 07', 200, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('READFIRST // MONOGRAPH', 1200, 160);
+      ctx.fillText('READFIRST // INSTITUTIONS', 1120, 180);
       ctx.textAlign = 'left';
 
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 600 180px "Newsreader", serif';
-      ctx.fillText('04', 240, 410);
+      ctx.font = 'italic 700 210px "Newsreader", serif';
+      ctx.fillText('04', 200, 540);
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '800 64px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('THE READFIRST IDEA', 240, 505);
+      ctx.font = '700 74px "Newsreader", Georgia, serif';
+      ctx.fillText('BUILD A', 200, 690);
+      ctx.fillText('RESEARCH CULTURE.', 200, 790);
 
       ctx.strokeStyle = '#F2642A';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.moveTo(240, 555);
-      ctx.lineTo(670, 555);
+      ctx.moveTo(200, 870);
+      ctx.lineTo(580, 870);
       ctx.stroke();
 
+      // Whisper text (Positioned with elegant editorial breathing room)
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 50px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('We believe learning should change the learner.', 240, 680);
-      ctx.fillText('Not simply what they know, but how they read,', 240, 755);
-      ctx.fillText('question, think, and continue learning.', 240, 830);
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“Transforming schools into', 200, 1140);
+      ctx.fillText('Knowledge Centres.”', 200, 1220);
     });
 
-    const s4RightTex = createPageTexture((ctx) => {
-      ctx.fillStyle = '#4A6278';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('CHAPTER 04 // THE IDEA', 210, 160);
+    const l4FrontTex = createPageTexture((ctx) => {
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('CHAPTER 04', 240, 180);
       ctx.textAlign = 'right';
-      ctx.fillText('PAGE 10', 1230, 160);
+      ctx.fillText('PAGE 08', 1200, 180);
       ctx.textAlign = 'left';
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 88px "Newsreader", serif';
-      ctx.fillText('LEARNING SHOULD', 210, 430);
+      ctx.font = '700 72px "Newsreader", serif';
+      ctx.fillText('THE FIVE PRACTICES', 240, 400);
 
-      ctx.fillText('CREATE ', 210, 540);
-      const createW = ctx.measureText('CREATE ').width;
+      const practices = ['QUESTION', 'READ', 'EXPLORE', 'REFLECT', 'CREATE'];
+      practices.forEach((step, i) => {
+        const y = 540 + i * 150;
+        ctx.fillStyle = '#F2642A';
+        ctx.font = 'italic 700 56px "Newsreader", serif';
+        ctx.fillText(`0${i + 1}`, 240, y);
+
+        ctx.fillStyle = '#00142E';
+        ctx.font = '700 72px "Newsreader", Georgia, serif';
+        ctx.fillText(step, 330, y);
+      });
+    });
+
+    // -------------------------------------------------------------
+    // SPREAD 04 — THE READFIRST CONVICTION
+    // -------------------------------------------------------------
+    const l4BackTex = createPageTexture((ctx) => {
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('PAGE 09', 200, 180);
+      ctx.textAlign = 'right';
+      ctx.fillText('READFIRST // MONOGRAPH', 1120, 180);
+      ctx.textAlign = 'left';
 
       ctx.fillStyle = '#F2642A';
-      ctx.font = 'italic 700 88px "Newsreader", serif';
-      ctx.fillText('QUESTIONS,', 210 + createW + 18, 540);
+      ctx.font = 'italic 700 210px "Newsreader", serif';
+      ctx.fillText('05', 200, 540);
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 88px "Newsreader", serif';
-      ctx.fillText('NOT JUST ANSWERS.', 210, 650);
+      ctx.font = '700 78px "Newsreader", Georgia, serif';
+      ctx.fillText('THE READFIRST', 200, 690);
+      ctx.fillText('CONVICTION.', 200, 790);
+
+      ctx.strokeStyle = '#F2642A';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(200, 870);
+      ctx.lineTo(480, 870);
+      ctx.stroke();
 
       ctx.fillStyle = '#00142E';
-      ctx.font = '600 50px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('A learner who can ask a meaningful question', 210, 840);
-      ctx.fillText('can continue learning beyond the classroom.', 210, 910);
+      ctx.font = 'italic 700 50px "Newsreader", Georgia, serif';
+      ctx.fillText('“Learning should change', 200, 1140);
+      ctx.fillText('the learner.”', 200, 1220);
+    });
+
+    const s4RightTex = createPageTexture((ctx) => {
+      ctx.fillStyle = '#0B2138';
+      ctx.font = '700 40px "JetBrains Mono", monospace';
+      ctx.fillText('CHAPTER 05', 240, 180);
+      ctx.textAlign = 'right';
+      ctx.fillText('PAGE 10', 1200, 180);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#00142E';
+      ctx.font = '700 100px "Newsreader", serif';
+      ctx.fillText('CREATE', 240, 500);
+      ctx.fillStyle = '#F2642A';
+      ctx.font = 'italic 800 100px "Newsreader", serif';
+      ctx.fillText('QUESTIONS,', 240, 620);
+      ctx.fillStyle = '#00142E';
+      ctx.font = '700 100px "Newsreader", serif';
+      ctx.fillText('NOT JUST ANSWERS.', 240, 740);
+
+      ctx.strokeStyle = '#F2642A';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(240, 840);
+      ctx.lineTo(480, 840);
+      ctx.stroke();
+
+      ctx.fillStyle = '#00142E';
+      ctx.font = 'italic 700 48px "Newsreader", Georgia, serif';
+      ctx.fillText('A questioning mind learns for life.', 240, 1020);
 
       ctx.fillStyle = '#F2642A';
-      ctx.font = '700 28px "JetBrains Mono", monospace';
-      ctx.fillText('CONTINUE TO THE READFIRST SYSTEM ↓', 210, 1120);
+      ctx.font = '800 36px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('EXPLORE OUR INQUIRY APPROACH ↓', 240, 1140);
     });
 
     const gutterShadowTex = createGutterShadowTexture();
@@ -1384,7 +1407,8 @@ function CinematicNarrativeBook({
       state.size,
       state.camera.fov,
       heroFrame?.current,
-      leafProgress.cover
+      leafProgress.cover,
+      p
     );
 
     const camTarget = cameraTarget.current;

@@ -151,16 +151,9 @@ export default function HeroSections({ onExploreClick, onOpenConversation }) {
                 borderTop: '1px solid var(--rf-grey-border)',
               }}
             >
-              <p
-                style={{
-                  fontFamily: 'var(--rf-font-serif)',
-                  fontSize: '1.65rem',
-                  color: 'var(--rf-navy)',
-                  marginBottom: '1rem',
-                }}
-              >
+              <h3 className="rf-questions-title">
                 Make space for questions.
-              </p>
+              </h3>
               <p style={{ color: 'var(--rf-ink-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
                 When learning is not restricted to memorization, inquiry begins to flourish:
               </p>

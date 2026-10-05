@@ -87,7 +87,7 @@ export default function StoryStage({ onOpenConversation }) {
           <div className="rf-container">
             <div className="rf-hero-opening-copy" ref={heroCopyRef}>
               <span className="rf-editorial-eyebrow rf-hero-opening-eyebrow">
-                01 // READFIRST PHILOSOPHY
+                RESEARCH-BASED TEACHING & LEARNING
               </span>
 
               <h1 className="rf-hero-title">
@@ -96,11 +96,11 @@ export default function StoryStage({ onOpenConversation }) {
               </h1>
 
               <p className="rf-hero-sub">
-                Learning is more than receiving information.
+                Cultivating strength of mind and independent thinkers.
               </p>
 
               <p className="rf-hero-tagline">
-                OBSERVE. QUESTION. EXPLORE. REFLECT.
+                QUESTION · READ · EXPLORE · REFLECT · CREATE
               </p>
 
               <div className="rf-hero-opening-actions">
@@ -110,15 +110,15 @@ export default function StoryStage({ onOpenConversation }) {
                   id="hero-explore-btn"
                 >
                   <BookOpen size={16} />
-                  <span>Open The Book</span>
+                  <span>Open The Monograph</span>
                   <ArrowDown size={14} />
                 </button>
 
                 <button
-                  onClick={() => onOpenConversation('General Inquiry')}
+                  onClick={() => onOpenConversation('Selective Educator Cohort')}
                   className="rf-btn-secondary rf-hero-ghost-btn"
                 >
-                  <span>Start A Conversation</span>
+                  <span>Selective Educator Cohort →</span>
                 </button>
               </div>
             </div>
