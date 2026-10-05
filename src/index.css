@@ -575,6 +575,25 @@ body {
   z-index: 10;
 }
 
+.rf-story-sticky-stage.is-dark-stage {
+  background: radial-gradient(ellipse at 52% 44%, #001C38 0%, #001022 55%, #000713 100%);
+}
+
+/* Exit wash into Section 04 navy (opacity fade, cheap to composite) */
+.rf-story-sticky-stage.is-dark-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #00254D;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.rf-story-sticky-stage.is-dark-stage.is-exiting::before {
+  opacity: 1;
+}
+
 /* Fullscreen 3D Viewport inside the sticky stage */
 .rf-story-3d-viewport {
   position: absolute;

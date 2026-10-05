@@ -1,7 +1,32 @@
 import React, { Component, useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows } from '@react-three/drei';
+import { ContactShadows, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
+import { getStoryProgress, subscribeStoryProgress } from '../lib/storyScroll';
+
+/**
+ * Book animation state derived from story scroll progress.
+ * Read inside frame loops (never via props) so scrolling causes no React
+ * re-renders; cached so it is computed once per scroll position.
+ */
+const bookProgress = { p: -1, cover: 0, l1: 0, l2: 0, l3: 0, l4: 0 };
+
+function leafT(p, start, length) {
+  return THREE.MathUtils.smoothstep(p >= start ? Math.min(1, (p - start) / length) : 0, 0, 1);
+}
+
+function getBookProgress() {
+  const p = getStoryProgress();
+  if (p !== bookProgress.p) {
+    bookProgress.p = p;
+    bookProgress.cover = leafT(p, 0.08, 0.12); // Cover: 0.08 to 0.20
+    bookProgress.l1 = leafT(p, 0.36, 0.10);    // Leaf 1: 0.36 to 0.46
+    bookProgress.l2 = leafT(p, 0.58, 0.08);    // Leaf 2: 0.58 to 0.66
+    bookProgress.l3 = leafT(p, 0.76, 0.08);    // Leaf 3: 0.76 to 0.84 (Catalytic Turn)
+    bookProgress.l4 = leafT(p, 0.92, 0.04);    // Leaf 4: 0.92 to 0.96
+  }
+  return bookProgress;
+}
 
 /**
  * Error boundary to ensure 3D canvas never breaks the webpage.
@@ -196,17 +221,36 @@ function getRestCurveLeft(u) {
  * Used for Spread 04 Right base page.
  * Guarantees every surface in the book has organic concave paper curvature.
  */
-function CurvedRestingPage({ texture, side = 'right', pageW, pageH, zOffset, thetaR, thetaL, openCoverProgress = 1 }) {
-  const geo = useMemo(() => {
-    const segmentsX = 24;
-    const g = new THREE.PlaneGeometry(pageW, pageH, segmentsX, 1);
-    const pos = g.attributes.position;
-    const uv = g.attributes.uv;
-    const count = pos.count;
+function CurvedRestingPage({ texture, side = 'right', pageW, pageH, zOffset, thetaR, thetaL }) {
+  const lastCover = useRef(NaN);
 
-    for (let i = 0; i < count; i++) {
-      const origX = Math.max(0, pos.getX(i) + pageW / 2); // 0 to pageW
-      const u = Math.min(1, origX / pageW);               // 0 to 1
+  // Built once; vertices are re-shaped in place only when the cover moves
+  const geo = useMemo(() => {
+    const g = new THREE.PlaneGeometry(pageW, pageH, 24, 1);
+    g.userData.baseX = Float32Array.from({ length: g.attributes.position.count }, (_, i) =>
+      Math.max(0, g.attributes.position.getX(i) + pageW / 2)
+    );
+    if (side !== 'right') {
+      // Invert U coordinate for left page
+      const uv = g.attributes.uv;
+      for (let i = 0; i < uv.count; i++) uv.setX(i, 1.0 - uv.getX(i));
+      uv.needsUpdate = true;
+    }
+    return g;
+  }, [side, pageW, pageH]);
+
+  useEffect(() => () => geo.dispose(), [geo]);
+
+  useFrame(() => {
+    const openCoverProgress = side === 'right' ? getBookProgress().cover : 1;
+    if (openCoverProgress === lastCover.current) return;
+    lastCover.current = openCoverProgress;
+
+    const pos = geo.attributes.position;
+    const baseX = geo.userData.baseX;
+    for (let i = 0; i < pos.count; i++) {
+      const origX = baseX[i];                 // 0 to pageW
+      const u = Math.min(1, origX / pageW);   // 0 to 1
 
       if (side === 'right') {
         const effThetaR = thetaR * openCoverProgress;
@@ -217,15 +261,12 @@ function CurvedRestingPage({ texture, side = 'right', pageW, pageH, zOffset, the
         const x = -origX * Math.cos(thetaL);
         const z = origX * Math.sin(thetaL) + getRestCurveLeft(u) + zOffset;
         pos.setXYZ(i, x, pos.getY(i), z);
-        // Invert U coordinate for left page
-        uv.setX(i, 1.0 - uv.getX(i));
       }
     }
-    uv.needsUpdate = true;
     pos.needsUpdate = true;
-    g.computeVertexNormals();
-    return g;
-  }, [side, pageW, pageH, zOffset, thetaR, thetaL, openCoverProgress]);
+    geo.computeVertexNormals();
+    geo.computeBoundingSphere();
+  });
 
   return (
     <mesh geometry={geo}>
@@ -244,8 +285,9 @@ function CurvedRestingPage({ texture, side = 'right', pageW, pageH, zOffset, the
  * Dynamically curves into the gutter when the front cover opens,
  * maintaining seamless organic concave curvature across both page halves.
  */
-function InnerFlyleafCurved({ texture, pageW, pageH, openCoverProgress = 1 }) {
+function InnerFlyleafCurved({ texture, pageW, pageH }) {
   const geoRef = useRef();
+  const lastCover = useRef(NaN);
 
   const geo = useMemo(() => {
     const segmentsX = 24;
@@ -262,9 +304,11 @@ function InnerFlyleafCurved({ texture, pageW, pageH, openCoverProgress = 1 }) {
 
   useFrame(() => {
     if (!geoRef.current) return;
+    const t = getBookProgress().cover;
+    if (t === lastCover.current) return;
+    lastCover.current = t;
     const pos = geoRef.current.attributes.position;
     const count = pos.count;
-    const t = openCoverProgress;
 
     for (let i = 0; i < count; i++) {
       const origX = (i % 25) * (pageW / 24);
@@ -306,17 +350,17 @@ function InnerFlyleafCurved({ texture, pageW, pageH, openCoverProgress = 1 }) {
 function FlexibleCurvedLeaf({
   frontTexture,
   backTexture,
-  progress, // 0 = resting on right, 1 = resting on left
+  leaf, // key into bookProgress: 0 = resting on right, 1 = resting on left
   pageW,
   pageH,
   zRight,
   zLeft,
   thetaR,
   thetaL,
-  openCoverProgress = 1,
 }) {
   const frontMeshRef = useRef();
   const backMeshRef = useRef();
+  const lastState = useRef({ t: NaN, cover: NaN });
 
   const frontGeo = useMemo(() => {
     const geo = new THREE.PlaneGeometry(pageW, pageH, 24, 1);
@@ -337,7 +381,13 @@ function FlexibleCurvedLeaf({
 
   useFrame(() => {
     if (!frontMeshRef.current || !backMeshRef.current) return;
-    const t = THREE.MathUtils.clamp(progress, 0, 1);
+    const book = getBookProgress();
+    const t = THREE.MathUtils.clamp(book[leaf], 0, 1);
+    const openCoverProgress = book.cover;
+    // Resting leaves don't change shape, so skip the vertex + normal work
+    if (t === lastState.current.t && openCoverProgress === lastState.current.cover) return;
+    lastState.current.t = t;
+    lastState.current.cover = openCoverProgress;
 
     const pos = frontGeo.attributes.position;
     const count = pos.count;
@@ -378,9 +428,7 @@ function FlexibleCurvedLeaf({
     }
     pos.needsUpdate = true;
     frontGeo.computeVertexNormals();
-    if (!frontGeo.boundingSphere) {
-      frontGeo.computeBoundingSphere();
-    }
+    frontGeo.computeBoundingSphere();
 
     // Back geometry follows front with microscopic 0.0015 offset
     const backPos = backGeo.attributes.position;
@@ -389,9 +437,7 @@ function FlexibleCurvedLeaf({
     }
     backPos.needsUpdate = true;
     backGeo.computeVertexNormals();
-    if (!backGeo.boundingSphere) {
-      backGeo.computeBoundingSphere();
-    }
+    backGeo.computeBoundingSphere();
   });
 
   return (
@@ -428,7 +474,8 @@ function FlexibleCurvedLeaf({
  * - Continuous navy cloth texture with 5 raised ribs and debossed gold foil typography
  * - Archival orange satin bookmark ribbon resting inside the gutter
  */
-function LuxurySpine({ openCoverProgress = 0, pageH = 2.06, materials }) {
+function LuxurySpine({ pageH = 2.06, materials }) {
+  const lastCover = useRef(NaN);
   const spineGeoRef = useRef();
   const ribbonGeoRef = useRef();
   const spineTopCapRef = useRef();
@@ -479,7 +526,9 @@ function LuxurySpine({ openCoverProgress = 0, pageH = 2.06, materials }) {
   // Frame loop for dynamic flexing spine arch, endcaps & gutter ribbon
   useFrame(() => {
     if (!spineGeoRef.current) return;
-    const t = openCoverProgress; // 0 (closed) to 1 (open)
+    const t = getBookProgress().cover; // 0 (closed) to 1 (open)
+    if (t === lastCover.current) return;
+    lastCover.current = t;
     const pos = spineGeoRef.current.attributes.position;
 
     // Mathematical parameters for closed book spine:
@@ -615,7 +664,7 @@ function LuxurySpine({ openCoverProgress = 0, pageH = 2.06, materials }) {
  * Renders the visible depth of sewn paper signatures dipping into the spine,
  * layered physical page thickness in the gutter trough, and soft natural ambient shadow.
  */
-function GutterSignatureStack({ pageH, openCoverProgress = 1, materials }) {
+function GutterSignatureStack({ pageH, materials }) {
   const shadowMeshRef = useRef();
 
   // Create signature stack texture showing multiple physical paper layers in gutter
@@ -685,7 +734,7 @@ function GutterSignatureStack({ pageH, openCoverProgress = 1, materials }) {
 
   useFrame(() => {
     if (shadowMeshRef.current && shadowMeshRef.current.material) {
-      shadowMeshRef.current.material.opacity = 0.52 * openCoverProgress;
+      shadowMeshRef.current.material.opacity = 0.52 * getBookProgress().cover;
     }
   });
 
@@ -773,7 +822,6 @@ function computeResponsiveFraming(size, fov, frame, openT) {
 }
 
 function CinematicNarrativeBook({
-  scrollProgress,
   fontsReady,
   cameraMode = 'B',
   cursorTarget,
@@ -795,34 +843,6 @@ function CinematicNarrativeBook({
   // Natural V-Cradle Opening Angles (total spread ~154° instead of flat 180°)
   const thetaR = 0.205; // ~11.75° upward tilt on right
   const thetaL = 0.245; // ~14.00° upward tilt on left (natural slight asymmetry)
-
-  // Compute leaf progress values from scrollProgress
-  const leafProgress = useMemo(() => {
-    const p = scrollProgress;
-
-    // Cover: 0.08 to 0.20
-    const coverP = p >= 0.08 ? Math.min(1, (p - 0.08) / 0.12) : 0;
-
-    // Leaf 1: 0.36 to 0.46
-    const l1P = p >= 0.36 ? Math.min(1, (p - 0.36) / 0.10) : 0;
-
-    // Leaf 2: 0.58 to 0.66
-    const l2P = p >= 0.58 ? Math.min(1, (p - 0.58) / 0.08) : 0;
-
-    // Leaf 3: 0.76 to 0.84 (Catalytic Turn)
-    const l3P = p >= 0.76 ? Math.min(1, (p - 0.76) / 0.08) : 0;
-
-    // Leaf 4: 0.92 to 0.96
-    const l4P = p >= 0.92 ? Math.min(1, (p - 0.92) / 0.04) : 0;
-
-    return {
-      cover: THREE.MathUtils.smoothstep(coverP, 0, 1),
-      l1: THREE.MathUtils.smoothstep(l1P, 0, 1),
-      l2: THREE.MathUtils.smoothstep(l2P, 0, 1),
-      l3: THREE.MathUtils.smoothstep(l3P, 0, 1),
-      l4: THREE.MathUtils.smoothstep(l4P, 0, 1),
-    };
-  }, [scrollProgress]);
 
   // Create High-Fidelity Textures
   const textures = useMemo(() => {
@@ -1305,7 +1325,8 @@ function CinematicNarrativeBook({
   // Frame Loop: Smooth camera drift, spatial reading tilt, and subtle alive breathing
   useFrame((state, delta) => {
     if (!rootGroupRef.current) return;
-    const p = scrollProgress; // 0.00 to 1.00
+    const leafProgress = getBookProgress();
+    const p = leafProgress.p; // 0.00 to 1.00
     const time = state.clock.getElapsedTime();
 
     // Subtle microscopic breathing drift so the book feels alive in physical space
@@ -1457,7 +1478,6 @@ function CinematicNarrativeBook({
           PHYSICAL LUXURY SPINE & CASING (Archival fine-binding structure)
           ----------------------------------------------------------- */}
       <LuxurySpine
-        openCoverProgress={leafProgress.cover}
         pageH={pageH}
         materials={materials}
       />
@@ -1467,7 +1487,6 @@ function CinematicNarrativeBook({
           ----------------------------------------------------------- */}
       <GutterSignatureStack
         pageH={pageH}
-        openCoverProgress={leafProgress.cover}
         materials={materials}
       />
 
@@ -1482,7 +1501,6 @@ function CinematicNarrativeBook({
         zOffset={0.004}
         thetaR={thetaR}
         thetaL={thetaL}
-        openCoverProgress={leafProgress.cover}
       />
 
       {/* -----------------------------------------------------------
@@ -1492,56 +1510,52 @@ function CinematicNarrativeBook({
       <FlexibleCurvedLeaf
         frontTexture={textures.l4FrontTex}
         backTexture={textures.l4BackTex}
-        progress={leafProgress.l4}
+        leaf="l4"
         pageW={pageW}
         pageH={pageH}
         zRight={0.010}
         zLeft={0.034}
         thetaR={thetaR}
         thetaL={thetaL}
-        openCoverProgress={leafProgress.cover}
       />
 
       {/* Leaf 3: Spread 03A Right (The System) -> Spread 03B Left (Make Space) */}
       <FlexibleCurvedLeaf
         frontTexture={textures.l3FrontTex}
         backTexture={textures.l3BackTex}
-        progress={leafProgress.l3}
+        leaf="l3"
         pageW={pageW}
         pageH={pageH}
         zRight={0.016}
         zLeft={0.028}
         thetaR={thetaR}
         thetaL={thetaL}
-        openCoverProgress={leafProgress.cover}
       />
 
       {/* Leaf 2: Spread 02 Right (Artist) -> Spread 03A Left (The Question) */}
       <FlexibleCurvedLeaf
         frontTexture={textures.l2FrontTex}
         backTexture={textures.l2BackTex}
-        progress={leafProgress.l2}
+        leaf="l2"
         pageW={pageW}
         pageH={pageH}
         zRight={0.022}
         zLeft={0.022}
         thetaR={thetaR}
         thetaL={thetaL}
-        openCoverProgress={leafProgress.cover}
       />
 
       {/* Leaf 1: Spread 01 Right (Art of Learning) -> Spread 02 Left (Attention) */}
       <FlexibleCurvedLeaf
         frontTexture={textures.l1FrontTex}
         backTexture={textures.l1BackTex}
-        progress={leafProgress.l1}
+        leaf="l1"
         pageW={pageW}
         pageH={pageH}
         zRight={0.028}
         zLeft={0.016}
         thetaR={thetaR}
         thetaL={thetaL}
-        openCoverProgress={leafProgress.cover}
       />
 
       {/* -----------------------------------------------------------
@@ -1566,7 +1580,6 @@ function CinematicNarrativeBook({
           texture={textures.s1LeftTex}
           pageW={pageW}
           pageH={pageH}
-          openCoverProgress={leafProgress.cover}
         />
       </group>
     </group>
@@ -1601,9 +1614,17 @@ function CursorReactiveLight({ cursorSmooth }) {
 /**
  * Main 3D Canvas Container
  */
-export default function BookCanvas({ scrollProgress, isVisible = true, cameraMode = 'B', heroFrame }) {
-  // Touch devices get a lighter pixel ratio to keep the WebGL stage smooth
-  const maxDpr = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2;
+export default function BookCanvas({ cameraMode = 'B', heroFrame }) {
+  // Touch devices start at a lighter pixel ratio; PerformanceMonitor steps it
+  // down further if the frame rate drops.
+  const [dpr, setDpr] = useState(() =>
+    Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2)
+  );
+
+  // Only the visible/hidden flip re-renders; once the book has exited the
+  // render loop is paused entirely so the rest of the page scrolls freely.
+  const [isVisible, setIsVisible] = useState(() => getStoryProgress() < 0.985);
+  useEffect(() => subscribeStoryProgress((p) => setIsVisible(p < 0.985)), []);
 
   const [fontsReady, setFontsReady] = useState(false);
   const cursorTarget = useRef({ x: 0, y: 0, active: false });
@@ -1670,9 +1691,14 @@ export default function BookCanvas({ scrollProgress, isVisible = true, cameraMod
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.08,
           }}
-          dpr={[1, maxDpr]}
-          shadows
+          dpr={dpr}
+          frameloop={isVisible ? 'always' : 'never'}
         >
+          <PerformanceMonitor
+            onDecline={() => setDpr((current) => Math.max(1, current - 0.5))}
+            flipflops={3}
+          />
+
           {/* Spatial Studio Gallery Lighting */}
           <ambientLight intensity={0.85} color="#DCE6F5" />
 
@@ -1681,16 +1707,6 @@ export default function BookCanvas({ scrollProgress, isVisible = true, cameraMod
             position={[-3.8, 6.2, 5.0]}
             intensity={3.6}
             color="#FFFDF7"
-            castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
-            shadow-camera-near={1}
-            shadow-camera-far={18}
-            shadow-camera-left={-3.2}
-            shadow-camera-right={3.2}
-            shadow-camera-top={3.2}
-            shadow-camera-bottom={-3.2}
-            shadow-bias={-0.0001}
           />
 
           {/* Cool Rim/Backlight to carve book edges and headbands against dark spatial atmosphere */}
@@ -1715,7 +1731,6 @@ export default function BookCanvas({ scrollProgress, isVisible = true, cameraMod
 
           {/* The Physical Narrative Publication */}
           <CinematicNarrativeBook
-            scrollProgress={scrollProgress}
             fontsReady={fontsReady}
             cameraMode={cameraMode}
             cursorTarget={cursorTarget}
@@ -1728,6 +1743,7 @@ export default function BookCanvas({ scrollProgress, isVisible = true, cameraMod
             position={[0, -0.96, 0.15]}
             opacity={0.65}
             scale={5.8}
+            resolution={256}
             blur={1.4}
             far={2.8}
             color="#000612"
@@ -1738,6 +1754,7 @@ export default function BookCanvas({ scrollProgress, isVisible = true, cameraMod
             position={[0, -0.96, 0.15]}
             opacity={0.32}
             scale={9.4}
+            resolution={256}
             blur={3.0}
             far={4.8}
             color="#000A1C"

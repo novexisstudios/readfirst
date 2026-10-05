@@ -6,14 +6,11 @@ import AudiencesSection from '../components/AudiencesSection';
 import ResearchSection from '../components/ResearchSection';
 import FinalCtaSection from '../components/FinalCtaSection';
 
-export default function HomePage({ scrollProgress, onOpenConversation }) {
+export default function HomePage({ onOpenConversation }) {
   return (
     <>
       {/* Chapters 01 to 04: Pinned 3D Book Storytelling Stage */}
-      <StoryStage
-        scrollProgress={scrollProgress}
-        onOpenConversation={onOpenConversation}
-      />
+      <StoryStage onOpenConversation={onOpenConversation} />
 
       {/* Section 04 Continues: The 5 Foundational Shifts */}
       <IdeaSection />

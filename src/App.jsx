@@ -14,7 +14,6 @@ import FinalCtaSection from './components/FinalCtaSection';
 import ConversationModal from './components/ConversationModal';
 
 export default function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [conversationModalOpen, setConversationModalOpen] = useState(false);
   const [initialAudience, setInitialAudience] = useState('Institutions');
 
@@ -28,38 +27,18 @@ export default function App() {
     });
     window.__lenis = lenis;
 
+    let rafId = 0;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    const rafId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       window.__lenis = null;
     };
-  }, []);
-
-  // Track scrollProgress along the 3D Story Stage
-  useEffect(() => {
-    const handleScroll = () => {
-      const track = document.getElementById('story-track');
-      if (!track) return;
-
-      const trackTop = track.offsetTop;
-      const scrollableDistance = track.offsetHeight - window.innerHeight;
-
-      if (scrollableDistance <= 0) return;
-
-      const currentScroll = window.scrollY - trackTop;
-      const progress = Math.max(0, Math.min(1, currentScroll / scrollableDistance));
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial compute
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleOpenConversation = (audience = 'Institutions') => {
@@ -83,10 +62,7 @@ export default function App() {
             <Route
               path="/"
               element={
-                <HomePage
-                  scrollProgress={scrollProgress}
-                  onOpenConversation={handleOpenConversation}
-                />
+                <HomePage onOpenConversation={handleOpenConversation} />
               }
             />
             <Route
