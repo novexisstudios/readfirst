@@ -12,7 +12,7 @@ export default function ScrollToTop() {
   useEffect(() => {
     // If navigating to a specific in-page section hash (e.g. #anchor)
     if (hash) {
-      const el = document.querySelector(hash);
+      const el = document.getElementById(decodeURIComponent(hash.slice(1)));
       if (el) {
         if (window.__lenis) {
           window.__lenis.scrollTo(el, { offset: -90 });

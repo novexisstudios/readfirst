@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, GraduationCap, BookOpenCheck, Building2 } from 'lucide-react';
 
 export default function Navbar({ onOpenConversation }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkSection, setIsDarkSection] = useState(false);
+  const [isOverHero, setIsOverHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -14,11 +15,13 @@ export default function Navbar({ onOpenConversation }) {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 40);
+      const hero = isHome ? document.getElementById('hero') : null;
+      setIsOverHero(Boolean(hero && hero.getBoundingClientRect().bottom > 70));
 
       if (isHome) {
         // Detect if scroll is over the dark 3D story track, Section 04 (Navy), or Section 08 (Navy)
-        const storyTrack = document.getElementById('story-track');
-        const secIdea = document.getElementById('idea');
+        const storyTrack = document.getElementById('hero');
+        const secIdea = document.getElementById('the-question');
         const secFinal = document.getElementById('conversation');
 
         let dark = false;
@@ -47,6 +50,7 @@ export default function Navbar({ onOpenConversation }) {
   }, [isHome, location.pathname]);
 
   const navItems = [
+    { label: 'Why ReadFirst', path: '/#how-we-are-different' },
     { label: 'Our Approach', path: '/approach' },
     { label: 'Students', path: '/students' },
     { label: 'Educators', path: '/educators' },
@@ -60,7 +64,7 @@ export default function Navbar({ onOpenConversation }) {
       <header
         className={`rf-header ${isScrolled ? 'is-scrolled' : ''} ${
           isDarkSection ? 'dark-theme' : ''
-        } ${!isHome ? 'is-subpage-header' : ''}`}
+        } ${isOverHero ? 'is-over-art-hero' : ''} ${!isHome ? 'is-subpage-header' : ''}`}
       >
         <div className="rf-container rf-header-inner">
           {/* Brand Logo Image */}
@@ -100,7 +104,7 @@ export default function Navbar({ onOpenConversation }) {
               className="rf-btn-primary"
               id="header-cta-btn"
             >
-              <span>Start A Conversation</span>
+              <span>Start With A Question</span>
               <ArrowUpRight size={15} />
             </button>
 
@@ -140,27 +144,32 @@ export default function Navbar({ onOpenConversation }) {
           </button>
         </div>
 
+        <div className="rf-mobile-priority-pathways">
+          <div className="rf-mobile-pathway-label">THREE PATHWAYS</div>
+          <div className="rf-mobile-pathway-links">
+            {[
+              { path: '/students', title: 'Students', desc: 'Learn How to Learn', Icon: GraduationCap },
+              { path: '/educators', title: 'Educators', desc: 'Selective Cohort Immersion', Icon: BookOpenCheck },
+              { path: '/institutions', title: 'Institutions', desc: 'The Learning Marathon (TLM)', Icon: Building2 },
+            ].map(({ path, title, desc, Icon }) => (
+              <Link key={path} to={path} className="rf-mobile-pathway-card" onClick={() => setMobileMenuOpen(false)}>
+                <Icon size={18} color="var(--rf-orange)" /><div><strong>{title}</strong><span>{desc}</span></div>
+              </Link>
+            ))}
+          </div>
+        </div>
         <nav className="rf-mobile-links">
-          <Link
-            to="/"
-            className={`rf-mobile-link ${location.pathname === '/' ? 'is-current' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Home // Monograph
-          </Link>
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.path}
-              className={`rf-mobile-link ${location.pathname === item.path ? 'is-current' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
+          {[
+            { path: '/', label: 'Home // The Philosophy' },
+            { path: '/approach', label: 'Our Approach & SMILE' },
+            { path: '/research', label: 'Research & Insights' },
+            { path: '/about', label: 'About & People' },
+          ].map(item => (
+            <Link key={item.path} to={item.path} className={`rf-mobile-link ${location.pathname === item.path ? 'is-current' : ''}`} onClick={() => setMobileMenuOpen(false)}>{item.label}</Link>
           ))}
         </nav>
 
-        <div>
+        <div style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
@@ -169,7 +178,7 @@ export default function Navbar({ onOpenConversation }) {
             className="rf-btn-primary rf-btn-orange"
             style={{ width: '100%', padding: '1.1rem' }}
           >
-            <span>Start A Conversation</span>
+            <span>Start With A Question</span>
             <ArrowUpRight size={18} />
           </button>
           <p

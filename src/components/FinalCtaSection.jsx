@@ -13,18 +13,18 @@ export default function FinalCtaSection({ onOpenConversation }) {
               className="rf-editorial-eyebrow"
               style={{ color: 'var(--rf-peach)', marginBottom: '1.5rem' }}
             >
-              A Selective Community of Inquiry
+              10 // Start A Dialogue
             </span>
 
             <h2 className="rf-final-headline" style={{ color: '#FFFFFF' }}>
-              READY TO BUILD A <br />
+              READY TO TRANSFORM <br />
               <span style={{ fontStyle: 'italic', color: 'var(--rf-orange)' }}>
-                RESEARCH CULTURE?
+                HOW LEARNING HAPPENS?
               </span>
             </h2>
 
             <p className="rf-final-sub">
-              Nurturing strength of mind, inquiry habits, and independent thinkers.
+              Building a culture of deep learning, inquiry, and independent thinking across students, educators, and institutions.
             </p>
 
             <div className="rf-final-buttons">
@@ -33,7 +33,7 @@ export default function FinalCtaSection({ onOpenConversation }) {
                 className="rf-btn-primary rf-btn-orange"
                 id="final-cta-primary"
               >
-                <span>Apply For Educator Cohort</span>
+                <span>Apply to Educator Programme</span>
                 <ArrowUpRight size={16} />
               </button>
 
@@ -41,7 +41,7 @@ export default function FinalCtaSection({ onOpenConversation }) {
                 onClick={() => onOpenConversation('Institutional Partnership')}
                 className="rf-btn-secondary dark-mode"
               >
-                <span>Initiate Institutional Dialogue</span>
+                <span>Explore Institutional Partnership (TLM)</span>
                 <ArrowRight size={15} />
               </button>
             </div>
