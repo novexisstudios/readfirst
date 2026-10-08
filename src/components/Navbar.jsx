@@ -124,6 +124,7 @@ export default function Navbar({ onOpenConversation }) {
       <div
         className={`rf-mobile-drawer ${mobileMenuOpen ? 'is-open' : ''}`}
         aria-hidden={!mobileMenuOpen}
+        data-lenis-prevent="true"
       >
         <div className="rf-mobile-drawer-header">
           <Link to="/" onClick={() => setMobileMenuOpen(false)} className="rf-logo-wrap">

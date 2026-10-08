@@ -100,16 +100,52 @@ body:has(dialog[open]) { overflow:hidden; }
 }
 @media (max-width:360px) { .rf-art-hero h1 { font-size:2.65rem; } .rf-art-hero-foot { max-width:280px; line-height:1.8; } }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; } }
-.rf-enquiry-dialog { margin:auto; width:calc(100% - 32px); max-width:560px; max-height:90svh; padding:45px 30px 30px; border:0; color:#1e2d3d; overflow-y:auto; }
-.rf-enquiry-dialog::backdrop { background:#00152dcc; }
-.rf-enquiry-dialog h2 { font-size:2.2rem; margin-bottom:15px; }
-.rf-enquiry-dialog > p { font-size:.9rem; }
-.rf-enquiry-dialog label { display:block; font-size:.8rem; font-weight:600; margin:18px 0 6px; }
-.rf-enquiry-dialog input, .rf-enquiry-dialog select, .rf-enquiry-dialog textarea { display:block; width:100%; border:1px solid #b7c3cd; border-radius:0; padding:10px; background:white; color:#1e2d3d; font-size:1rem; }
-.rf-enquiry-dialog .rf-drawer-close { background:none; border:0; cursor:pointer; }
-.rf-enquiry-dialog .rf-btn-primary { margin-top:20px; }
-.rf-enquiry-dialog button:disabled { opacity:.55; cursor:not-allowed; }
-.rf-form-notice { background:#fff4ee; padding:14px; font-size:.8rem; margin-top:20px; }
+.rf-enquiry-dialog {
+  margin: auto;
+  width: calc(100% - 32px);
+  max-width: 560px;
+  max-height: 86vh;
+  max-height: 86dvh;
+  max-height: 86svh;
+  padding: 44px 30px 30px;
+  border: 0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e2d3d;
+  box-shadow: 0 24px 64px rgba(0, 21, 45, 0.35);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 31, 66, 0.3) transparent;
+}
+.rf-enquiry-dialog::-webkit-scrollbar { width: 6px; }
+.rf-enquiry-dialog::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.03); border-radius: 3px; }
+.rf-enquiry-dialog::-webkit-scrollbar-thumb { background: rgba(0, 31, 66, 0.25); border-radius: 3px; }
+.rf-enquiry-dialog::-webkit-scrollbar-thumb:hover { background: rgba(0, 31, 66, 0.45); }
+.rf-enquiry-dialog::backdrop { background: rgba(0, 21, 45, 0.8); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.rf-enquiry-dialog h2 { font-size: 2.2rem; margin-bottom: 12px; color: #001f42; }
+.rf-enquiry-dialog > p { font-size: .95rem; color: #435b71; line-height: 1.5; margin-bottom: 15px; }
+.rf-enquiry-dialog label { display: block; font-size: .8rem; font-weight: 600; margin: 16px 0 6px; color: #1e2d3d; }
+.rf-enquiry-dialog input, .rf-enquiry-dialog select, .rf-enquiry-dialog textarea { display: block; width: 100%; border: 1px solid #b7c3cd; border-radius: 4px; padding: 10px 12px; background: white; color: #1e2d3d; font-size: 1rem; box-sizing: border-box; }
+.rf-enquiry-dialog input:focus, .rf-enquiry-dialog select:focus, .rf-enquiry-dialog textarea:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15); }
+.rf-enquiry-dialog .rf-drawer-close { position: absolute; right: 14px; top: 14px; background: none; border: 0; padding: 8px; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background-color 0.2s, color 0.2s; }
+.rf-enquiry-dialog .rf-drawer-close:hover { color: #001f42; background: rgba(0, 31, 66, 0.08); }
+.rf-enquiry-dialog .rf-btn-primary { margin-top: 20px; width: 100%; justify-content: center; }
+.rf-enquiry-dialog button:disabled { opacity: .55; cursor: not-allowed; }
+.rf-form-notice { background: #fff4ee; padding: 14px; font-size: .8rem; margin-top: 20px; border-radius: 4px; border-left: 3px solid #ff6b35; }
+@media (max-width: 640px) {
+  .rf-enquiry-dialog { width: calc(100% - 24px); max-height: 90vh; max-height: 90dvh; max-height: 90svh; padding: 36px 18px 24px; }
+  .rf-enquiry-dialog h2 { font-size: 1.75rem; }
+}
+@media (max-height: 700px) {
+  .rf-enquiry-dialog { max-height: 92vh; max-height: 92dvh; max-height: 92svh; padding: 28px 20px 20px; }
+  .rf-enquiry-dialog label { margin: 10px 0 4px; }
+  .rf-enquiry-dialog .rf-btn-primary { margin-top: 14px; }
+}
 /* Blend the restored navigation into the reading hero. */
 .rf-header.dark-theme.is-over-art-hero {
   background: linear-gradient(180deg, rgba(4, 19, 30, .72), rgba(4, 19, 30, .24));
