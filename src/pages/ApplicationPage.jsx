@@ -891,7 +891,7 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginTop: '16px' }}>
                 <p className="rf-preview-note">
-                  This is the applicant-facing form for the Educator Transformation Program. View our{' '}
+                  For details on how your application details are handled, please review our{' '}
                   <Link to="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--rf-navy)', textDecoration: 'underline' }}>
                     Privacy Notice & Consent
                   </Link>.

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ShieldCheck, FileText, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import './PrivacyPage.css';
 
 export default function PrivacyPage() {
@@ -40,10 +40,10 @@ export default function PrivacyPage() {
             <section className="rf-privacy-section">
               <h2>1. Who we are</h2>
               <p>
-                ReadFirst [ReadFirst Learning Innovations Pvt. Ltd.] (“ReadFirst”, “we”, “us” or “our”) works with students, educators and educational institutions to support deeper learning, independent thinking and research-based learning.
+                ReadFirst Learning Innovations Pvt. Ltd. (“ReadFirst”, “we”, “us” or “our”) works with students, educators and educational institutions to support deeper learning, independent thinking and research-based learning.
               </p>
               <p>
-                For privacy questions, contact <strong>privacy@readfirst.in</strong>. Address (if applicable): New Delhi, India.
+                For privacy questions, contact <strong>privacy@readfirst.in</strong>. Address: New Delhi, India.
               </p>
             </section>
 
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
             <section className="rf-privacy-section">
               <h2>6. Your choices and privacy requests</h2>
               <p>
-                Depending on applicable law, you may be able to ask how your data is used, request correction or erasure, withdraw consent where consent is the basis for processing, or raise a privacy concern. Contact <strong>privacy@readfirst.in</strong> or use our privacy request form. We may need to verify your identity.
+                Depending on applicable law, you may be able to ask how your data is used, request correction or erasure, withdraw consent where consent is the basis for processing, or raise a privacy concern. Contact <strong>privacy@readfirst.in</strong>. We may need to verify your identity.
               </p>
             </section>
 
@@ -122,40 +122,27 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            {/* Consent for this form */}
-            <div className="rf-privacy-consent-box">
-              <h2>Consent for this form</h2>
+            {/* Section 11 */}
+            <section className="rf-privacy-section">
+              <h2>11. Communication and consent choices</h2>
               <p>
-                Please read the Privacy Notice before submitting the form. Use separate choices for enquiry-related processing and optional marketing, where applicable.
+                When submitting an enquiry or application through our website, we ensure clear choices for communication and consent:
               </p>
 
-              <div className="rf-consent-sample-list">
-                <div className="rf-consent-sample-item">
-                  <strong>Required checkbox — enquiry or requested service:</strong>
-                  “I have read the Privacy Notice and understand that ReadFirst will use the information I provide to respond to my enquiry and manage the request or service I have asked about, in accordance with the Notice and applicable law.”
-                </div>
+              <div className="rf-privacy-consent-box">
+                <div className="rf-consent-sample-list">
+                  <div className="rf-consent-sample-item">
+                    <strong>Service & enquiry communications</strong>
+                    “I have read the Privacy Notice and understand that ReadFirst will use the information I provide to respond to my enquiry and manage the request or service I have asked about, in accordance with the Notice and applicable law.”
+                  </div>
 
-                <div className="rf-consent-sample-item">
-                  <strong>Optional checkbox — marketing:</strong>
-                  “I would like to receive occasional updates about ReadFirst programmes, events and related learning opportunities by email, phone, SMS or WhatsApp. I understand this choice is optional and I can opt out at any time.”
+                  <div className="rf-consent-sample-item">
+                    <strong>Optional programme updates & insights</strong>
+                    “I would like to receive occasional updates about ReadFirst programmes, events and related learning opportunities by email, phone, SMS or WhatsApp. I understand this choice is optional and I can opt out at any time.”
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Before publishing note */}
-            <div className="rf-privacy-notes-box">
-              <h3>Before publishing</h3>
-              <ul>
-                <li>Link “Privacy Notice” directly to the published notice; do not require users to download a file to read it.</li>
-                <li>Keep marketing consent separate, optional and unchecked by default. Do not make it a condition of submitting an enquiry.</li>
-                <li>Replace every bracketed placeholder and ensure the purposes, tools, sharing and retention statements match ReadFirst’s actual practices.</li>
-                <li>If a form collects information about children, create a parent/guardian consent flow where required.</li>
-              </ul>
-
-              <div className="rf-privacy-disclaimer">
-                <strong>Important:</strong> This is a plain-language working draft based on the supplied document, not legal advice or a guarantee of compliance. Confirm the legal entity, contact details, form fields, website technologies, retention practices and applicable requirements with an India-qualified privacy/legal professional before publishing.
-              </div>
-            </div>
+            </section>
           </div>
         </div>
       </div>
