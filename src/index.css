@@ -201,7 +201,7 @@ blockquote {
 
 .rf-header.is-scrolled {
   height: 74px;
-  background-color: rgba(255, 255, 255, 0.88);
+  background-color: #ffffff;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(0, 50, 106, 0.08);
@@ -312,7 +312,7 @@ blockquote {
   justify-content: center;
   height: 62px;
   padding: 4px 16px;
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   border-radius: 10px;
   border: 1px solid rgba(0, 50, 106, 0.12);
   box-shadow: 0 4px 16px rgba(0, 20, 46, 0.08);
@@ -321,7 +321,7 @@ blockquote {
 
 .rf-header.is-scrolled .rf-logo-img-wrap,
 .rf-header.is-subpage-header .rf-logo-img-wrap {
-  background: #FFFFFF;
+  background: #ffffff;
   border-color: rgba(0, 50, 106, 0.09);
 }
 
@@ -331,14 +331,14 @@ blockquote {
 }
 
 .rf-header.dark-theme .rf-logo-img-wrap {
-  background: #FFFFFF;
+  background: #ffffff;
   border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.32);
 }
 
 .rf-logo-img-wrap.is-drawer {
   height: 64px;
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 6px 16px;
   border-radius: 10px;
 }

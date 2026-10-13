@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { X, ArrowUpRight } from 'lucide-react';
+import { sendEnquiryEmail } from '../lib/emailjs';
 
 export default function ConversationModal({ isOpen, onClose, initialAudience }) {
   const dialog = useRef(null);
@@ -64,17 +65,21 @@ export default function ConversationModal({ isOpen, onClose, initialAudience }) 
 
   async function submit(event) {
     event.preventDefault();
-    if (!endpoint || sending) return;
+    if (sending) return;
     const payload = Object.fromEntries(new FormData(event.currentTarget));
     setSending(true);
     setStatus('');
     try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error('Request failed');
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error('Request failed');
+      } else {
+        await sendEnquiryEmail(payload);
+      }
       setStatus('Your enquiry has been sent. Thank you for starting a conversation.');
       event.target.reset();
     } catch {

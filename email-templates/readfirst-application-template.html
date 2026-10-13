@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadFirst — Educator Transformation Program Application</title>
+  <style>
+    /* Mobile-first responsive email resets */
+    @media only screen and (max-width: 620px) {
+      .rf-outer-table { width: 100% !important; padding: 12px 6px !important; }
+      .rf-header-pad { padding: 24px 20px !important; }
+      .rf-content-pad { padding: 20px 16px !important; }
+      .rf-stack-col { display: block !important; width: 100% !important; text-align: left !important; padding: 0 0 12px 0 !important; }
+      .rf-action-btn { display: block !important; width: 100% !important; margin: 0 0 8px 0 !important; text-align: center !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #0C1724; -webkit-font-smoothing: antialiased; word-break: break-word;">
+
+  <!-- Outer wrapper table -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="rf-outer-table" style="background-color: #FAF8F5; padding: 36px 12px;">
+    <tr>
+      <td align="center">
+        <!-- Main Card Container (660px max width) -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 660px; background-color: #FFFFFF; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 36px rgba(0, 31, 66, 0.08); border: 1px solid #E5E0D8;">
+          
+          <!-- 1. Brand Top Banner -->
+          <tr>
+            <td class="rf-header-pad" style="background: linear-gradient(135deg, #001F42 0%, #00326A 100%); padding: 38px 36px 32px 36px; color: #FFFFFF;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <!-- Kicker Badge -->
+                    <div style="display: inline-block; background-color: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #FBCFBA; margin-bottom: 14px;">
+                      ✦ READFIRST · EDUCATOR TRANSFORMATION PROGRAM
+                    </div>
+                    <h1 style="margin: 0 0 8px 0; font-family: 'Newsreader', Georgia, serif, -apple-system; font-size: 28px; font-weight: 600; color: #FFFFFF; letter-spacing: -0.02em; line-height: 1.25;">
+                      New Cohort Application
+                    </h1>
+                    <p style="margin: 0; font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.55;">
+                      A reflective educator inquiry submission received via <strong style="color: #FBCFBA;">ReadFirst</strong>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- 2. Applicant Snapshot Highlight Bar -->
+          <tr>
+            <td class="rf-content-pad" style="padding: 26px 36px; background-color: #FFF4EE; border-bottom: 1px solid #F7BA9E;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="rf-stack-col" style="vertical-align: top; width: 55%; padding-right: 14px;">
+                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #F2642A; margin-bottom: 6px;">
+                      Applicant Profile
+                    </div>
+                    <div style="font-size: 22px; font-weight: 700; color: #001F42; margin-bottom: 4px; line-height: 1.25;">
+                      {{fullName}}
+                    </div>
+                    <div style="font-size: 14px; color: #576778; font-weight: 500; margin-bottom: 6px;">
+                      {{designation}} · {{organisation}}
+                    </div>
+                    <div style="display: inline-block; background-color: rgba(0, 50, 106, 0.08); padding: 3px 10px; border-radius: 12px; font-size: 12px; color: #00326A; font-weight: 600;">
+                      Experience: {{experience}}
+                    </div>
+                  </td>
+                  <td class="rf-stack-col" style="vertical-align: top; width: 45%; text-align: right; padding-left: 10px;">
+                    <div style="font-size: 13px; color: #576778; margin-bottom: 6px;">
+                      <strong style="color: #001F42;">Email:</strong> 
+                      <a href="mailto:{{email}}" style="color: #00326A; text-decoration: underline; font-weight: 600;">{{email}}</a>
+                    </div>
+                    <div style="font-size: 13px; color: #576778; margin-bottom: 6px;">
+                      <strong style="color: #001F42;">Phone:</strong> 
+                      <a href="tel:{{phone}}" style="color: #00326A; text-decoration: underline; font-weight: 600;">{{phone}}</a>
+                    </div>
+                    <div style="font-size: 12px; color: #8898A7; margin-top: 8px;">
+                      Received: {{submitted_at}}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- 3. Direct Contact Actions -->
+          <tr>
+            <td style="padding: 14px 36px; background-color: #FFFFFF; border-bottom: 1px solid #E5E0D8;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <a href="mailto:{{email}}?subject=ReadFirst%20Educator%20Transformation%20Program%20Application%20—%20Next%20Steps" class="rf-action-btn" style="display: inline-block; background-color: #00326A; color: #FFFFFF; font-size: 13px; font-weight: 600; text-decoration: none; padding: 9px 18px; border-radius: 6px; margin-right: 10px;">
+                      ✉ Reply directly to {{fullName}}
+                    </a>
+                    <a href="tel:{{phone}}" class="rf-action-btn" style="display: inline-block; background-color: #F2642A; color: #FFFFFF; font-size: 13px; font-weight: 600; text-decoration: none; padding: 9px 18px; border-radius: 6px;">
+                      📞 Call ({{phone}})
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- 4. Questions & Responses Body -->
+          <tr>
+            <td class="rf-content-pad" style="padding: 32px 36px; background-color: #FAF8F5;">
+              
+              <!-- SECTION 2: LEARNING JOURNEY & REFLECTIONS -->
+              <div style="margin-bottom: 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+                  <tr>
+                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
+                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Section 2: Learning Journey &amp; Reflections
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Q5 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 5</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    Tell us about a time when a learner did not learn as expected, or a lesson did not go the way you planned. What do you think happened, and what did it make you reflect on?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q5}}
+                  </div>
+                </div>
+
+                <!-- Q6 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 6</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    What questions about learning or teaching do you find yourself thinking about most often? What would you like to explore more deeply?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q6}}
+                  </div>
+                </div>
+
+                <!-- Q7 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 7</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    What has drawn you to ReadFirst? What are you hoping to take away from this experience?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q7}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 3: INTELLECTUAL CURIOSITY & OPENNESS -->
+              <div style="margin-bottom: 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+                  <tr>
+                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
+                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Section 3: Intellectual Curiosity &amp; Openness
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Q8 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 8</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    Tell us about a time when you changed your thinking or approach because you learned something new.
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q8}}
+                  </div>
+                </div>
+
+                <!-- Q9 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 9</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    If you read something in the research papers that challenges an approach you have used for a long time, how would you respond?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q9}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 4: APPLICATION & COMMITMENT -->
+              <div style="margin-bottom: 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+                  <tr>
+                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
+                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Section 4: Application &amp; Commitment
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Q10 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 10</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    Where in your current work could you apply insights from ReadFirst within the next 30–60 days, and how might you know whether it made a difference?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q10}}
+                  </div>
+                </div>
+
+                <!-- Q11 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 11 (Commitment)</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    Are you prepared to set aside time for online sessions, reading, activities and a 30-day collaborative research paper?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q11}}
+                  </div>
+                </div>
+
+                <!-- Q12 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 12 (Investment: ₹50,000)</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    The program fee is ₹50,000. Please share your thoughts on this investment and whether you are prepared to proceed if selected.
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #FFF4EE; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #F2642A;">
+{{q12}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 5: COHORT CONTRIBUTION & ADDITIONAL -->
+              <div style="margin-bottom: 24px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+                  <tr>
+                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
+                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Section 5: Cohort Contribution &amp; Additional Info
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Q13 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 13</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    What is one experience, perspective or question you would like to bring to the cohort discussions?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
+{{q13}}
+                  </div>
+                </div>
+
+                <!-- Q14 -->
+                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8898A7; margin-bottom: 5px;">Question 14 (Optional Notes)</div>
+                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
+                    Is there anything else you would like us to know about your background, work or interest in ReadFirst?
+                  </div>
+                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #D2DADB;">
+{{q14}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Declaration Status Pill -->
+              <div style="padding: 14px 18px; background-color: #EBF7EE; border: 1px solid #B8E4C3; border-radius: 8px; font-size: 13px; color: #15803D; font-weight: 600;">
+                ✓ Declaration Confirmed: {{confirmed}}
+              </div>
+
+            </td>
+          </tr>
+
+          <!-- 5. Editorial Footer -->
+          <tr>
+            <td class="rf-content-pad" style="padding: 28px 36px; background-color: #00152D; color: #8898A7; font-size: 12px; line-height: 1.65; border-top: 1px solid #1E2D3D;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <div style="font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 4px; letter-spacing: -0.01em;">
+                      ReadFirst · Educator Transformation Program
+                    </div>
+                    <div>
+                      Admissions &amp; Review Desk: <a href="mailto:{{to_email}}" style="color: #FBCFBA; text-decoration: none; font-weight: 600;">{{to_email}}</a>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 11px; color: #576778;">
+                      Confidentiality Note: This notification was sent automatically when an applicant submitted their form on ReadFirst. Please preserve applicant privacy in accordance with data governance policies.
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

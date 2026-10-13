@@ -50,7 +50,6 @@ export default function Navbar({ onOpenConversation }) {
   }, [isHome, location.pathname]);
 
   const navItems = [
-    { label: 'Why ReadFirst', path: '/#how-we-are-different' },
     { label: 'Our Approach', path: '/approach' },
     { label: 'Students', path: '/students' },
     { label: 'Educators', path: '/educators' },
@@ -99,14 +98,14 @@ export default function Navbar({ onOpenConversation }) {
 
           {/* Action Area: CTA Button & Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <button
-              onClick={() => onOpenConversation('General Inquiry')}
+            <Link
+              to="/apply"
               className="rf-btn-primary"
               id="header-cta-btn"
             >
               <span>Start With A Question</span>
               <ArrowUpRight size={15} />
-            </button>
+            </Link>
 
             {/* Mobile / Tablet Hamburger Button */}
             <button
@@ -171,17 +170,15 @@ export default function Navbar({ onOpenConversation }) {
         </nav>
 
         <div style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenConversation('General Inquiry');
-            }}
+          <Link
+            to="/apply"
+            onClick={() => setMobileMenuOpen(false)}
             className="rf-btn-primary rf-btn-orange"
-            style={{ width: '100%', padding: '1.1rem' }}
+            style={{ width: '100%', padding: '1.1rem', display: 'flex', justifyContent: 'center', textDecoration: 'none' }}
           >
             <span>Start With A Question</span>
             <ArrowUpRight size={18} />
-          </button>
+          </Link>
           <p
             style={{
               fontFamily: 'var(--rf-font-mono)',

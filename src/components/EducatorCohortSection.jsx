@@ -50,14 +50,15 @@ export default function EducatorCohortSection({ onOpenConversation }) {
             </div>
 
             <div className="rf-educator-cohort-actions">
-              <button
-                onClick={() => onOpenConversation('Educator Transformation Program')}
+              <Link
+                to="/apply"
                 className="rf-btn-primary rf-btn-orange"
                 id="apply-educator-cohort-btn"
+                style={{ textDecoration: 'none' }}
               >
                 <span>Apply to the Programme</span>
                 <ArrowRight size={15} />
-              </button>
+              </Link>
 
               <Link to="/educators" className="rf-btn-secondary dark-mode">
                 <span>Explore Programme Details →</span>

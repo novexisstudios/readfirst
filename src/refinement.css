@@ -8,7 +8,7 @@
 .rf-simple-header button, .rf-simple-drawer button { background:none; border:0; cursor:pointer; }
 .rf-simple-header.is-over-hero { background:linear-gradient(#071b29b0,transparent); border-color:#ffffff26; }
 .is-over-hero nav a, .is-over-hero button { color:white; }
-.is-over-hero img { background:#fff; border-radius:2px; padding:7px; }
+.is-over-hero img { background:#ffffff; border-radius:2px; padding:7px; }
 .rf-simple-menu { display:none; padding:12px; }
 .rf-simple-drawer { margin:auto; width:calc(100% - 32px); max-width:460px; padding:64px 28px 40px; border:0; background:#f8f6f2; color:var(--rf-navy); }
 .rf-simple-drawer::backdrop { background:#00152dcc; }

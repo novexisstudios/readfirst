@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
@@ -10,14 +10,15 @@ import InstitutionsPage from './pages/InstitutionsPage';
 import ResearchPage from './pages/ResearchPage';
 import ApproachPage from './pages/ApproachPage';
 import AboutPage from './pages/AboutPage';
+import ApplicationPage from './pages/ApplicationPage';
+import EmailPreviewPage from './pages/EmailPreviewPage';
+import PrivacyPage from './pages/PrivacyPage';
 import FinalDialogueSection from './components/FinalDialogueSection';
-import ConversationModal from './components/ConversationModal';
 import ContentPage from './pages/ContentPage';
 import './refinement.css';
 
-export default function App() {
-  const [conversationModalOpen, setConversationModalOpen] = useState(false);
-  const [initialAudience, setInitialAudience] = useState('Institutions');
+function AppContent() {
+  const navigate = useNavigate();
 
   // Initialize Lenis Smooth Inertial Scrolling
   useEffect(() => {
@@ -44,75 +45,103 @@ export default function App() {
     };
   }, []);
 
-  const handleOpenConversation = (audience = 'Institutions') => {
-    setInitialAudience(audience);
-    setConversationModalOpen(true);
+  const handleOpenConversation = (audience = 'Educators') => {
+    navigate('/apply', { state: { audience } });
   };
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="rf-app-wrapper">
-        {/* Physical tactile texture overlay */}
-        <div className="rf-texture-overlay" aria-hidden="true" />
+    <div className="rf-app-wrapper">
+      {/* Physical tactile texture overlay */}
+      <div className="rf-texture-overlay" aria-hidden="true" />
 
-        {/* Global Navigation */}
-        <Navbar onOpenConversation={handleOpenConversation} />
+      {/* Global Navigation */}
+      <Navbar onOpenConversation={handleOpenConversation} />
 
-        {/* Main Routed Content */}
-        <main id="main-content">
-          <Routes>
-            {['learning', 'reading', 'mindfulness', 'accelerate-your-learning', 'schools', 'the-learning-marathon', 'smile', 'faqs', 'contact'].map(page => <Route key={page} path={`/${page}`} element={<ContentPage page={page} onOpenConversation={handleOpenConversation} />} />)}
-            <Route path="*" element={<div className="rf-content-page rf-container"><h1>Page not found.</h1><a href="/">Return to ReadFirst</a></div>} />
-            <Route
-              path="/"
-              element={
-                <HomePage onOpenConversation={handleOpenConversation} />
-              }
-            />
-            <Route
-              path="/students"
-              element={<StudentsPage onOpenConversation={handleOpenConversation} />}
-            />
-            <Route
-              path="/educators"
-              element={<EducatorsPage onOpenConversation={handleOpenConversation} />}
-            />
-            <Route
-              path="/institutions"
-              element={<InstitutionsPage onOpenConversation={handleOpenConversation} />}
-            />
-            <Route
-              path="/research"
-              element={<ResearchPage onOpenConversation={handleOpenConversation} />}
-            />
-            <Route
-              path="/approach"
-              element={<ApproachPage onOpenConversation={handleOpenConversation} />}
-            />
-            <Route
-              path="/about"
-              element={<AboutPage onOpenConversation={handleOpenConversation} />}
-            />
-          </Routes>
-        </main>
-
-        {/* Global Footer for Interior Pages */}
+      {/* Main Routed Content */}
+      <main id="main-content">
         <Routes>
-          <Route path="/" element={null} />
+          {/* Privacy Notice & Consent Page */}
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPage />} />
+          <Route path="/privacy-notice" element={<PrivacyPage />} />
+
+          {/* Email Template Preview (Accessible in local development only, excluded in production) */}
+          {import.meta.env.DEV && (
+            <>
+              <Route path="/email-preview" element={<EmailPreviewPage />} />
+              <Route path="/template-preview" element={<EmailPreviewPage />} />
+            </>
+          )}
+
+          {/* New Separate Application Form Page */}
+          <Route path="/apply" element={<ApplicationPage />} />
+          <Route path="/application" element={<ApplicationPage />} />
+          <Route path="/educator-application" element={<ApplicationPage />} />
+
+          {['learning', 'reading', 'mindfulness', 'accelerate-your-learning', 'schools', 'the-learning-marathon', 'smile', 'faqs', 'contact'].map((page) => (
+            <Route
+              key={page}
+              path={`/${page}`}
+              element={<ContentPage page={page} onOpenConversation={handleOpenConversation} />}
+            />
+          ))}
+          <Route
+            path="/"
+            element={<HomePage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/students"
+            element={<StudentsPage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/educators"
+            element={<EducatorsPage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/institutions"
+            element={<InstitutionsPage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/research"
+            element={<ResearchPage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/approach"
+            element={<ApproachPage onOpenConversation={handleOpenConversation} />}
+          />
+          <Route
+            path="/about"
+            element={<AboutPage onOpenConversation={handleOpenConversation} />}
+          />
           <Route
             path="*"
-            element={<FinalDialogueSection onOpenConversation={handleOpenConversation} />}
+            element={
+              <div className="rf-content-page rf-container">
+                <h1>Page not found.</h1>
+                <a href="/">Return to ReadFirst</a>
+              </div>
+            }
           />
         </Routes>
+      </main>
 
-        {/* Interactive Dialogue Modal */}
-        {conversationModalOpen && <ConversationModal
-          isOpen={conversationModalOpen}
-          onClose={() => setConversationModalOpen(false)}
-          initialAudience={initialAudience}
-        />}
-      </div>
+      {/* Global Footer for Interior Pages */}
+      <Routes>
+        <Route path="/" element={null} />
+        <Route
+          path="*"
+          element={<FinalDialogueSection onOpenConversation={handleOpenConversation} />}
+        />
+      </Routes>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <AppContent />
     </BrowserRouter>
   );
 }
