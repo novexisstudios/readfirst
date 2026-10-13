@@ -10,8 +10,9 @@ export const getEmailJsConfig = () => {
   return {
     serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
     templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+    confirmationTemplateId: import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || '',
     publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
-    toEmail: import.meta.env.VITE_EMAILJS_TO_EMAIL || 'admissions@readfirst.in',
+    toEmail: import.meta.env.VITE_EMAILJS_TO_EMAIL || 'office@thelearningmarathon.com',
   };
 };
 
@@ -639,7 +640,7 @@ export const sendApplicationEmail = async (formData) => {
     reply_to: formData.email,
     from_name: formData.fullName,
     applicant_name: formData.fullName,
-    
+
     // Core profile variables
     fullName: formData.fullName,
     email: formData.email,
@@ -647,7 +648,7 @@ export const sendApplicationEmail = async (formData) => {
     designation: formData.designation,
     organisation: formData.organisation,
     experience: formData.experience,
-    
+
     // Detailed question responses
     q5: formData.q5 || 'N/A',
     q6: formData.q6 || 'N/A',
@@ -660,11 +661,11 @@ export const sendApplicationEmail = async (formData) => {
     q13: formData.q13 || 'N/A',
     q14: formData.q14 || 'None provided',
     confirmed: formData.confirmed ? 'Confirmed' : 'Not confirmed',
-    
+
     // Formatted timestamps & metadata
     submitted_at: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     form_type: 'ReadFirst Educator Transformation Program Application',
-    
+
     // Full pre-rendered branded HTML layout
     // (In EmailJS dashboard, use {{{application_summary_html}}} or {{{message_html}}} with triple braces)
     application_summary_html: htmlContent,

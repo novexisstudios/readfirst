@@ -667,3 +667,157 @@
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Automated Application Confirmation Popup Modal
+   ========================================================================== */
+
+dialog.rf-application-success-modal {
+  margin: auto;
+  width: calc(100% - 32px);
+  max-width: 580px;
+  border: 1px solid #e5e0d8;
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--rf-ink);
+  padding: 40px 32px 32px;
+  box-shadow: 0 28px 70px rgba(0, 21, 45, 0.35);
+  box-sizing: border-box;
+  animation: rfModalFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+dialog.rf-application-success-modal::backdrop {
+  background: rgba(0, 21, 45, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+@keyframes rfModalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.rf-success-modal-content {
+  position: relative;
+}
+
+.rf-application-success-modal .rf-drawer-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.rf-application-success-modal .rf-drawer-close:hover {
+  background: rgba(0, 31, 66, 0.08);
+  color: var(--rf-navy-deep);
+}
+
+.rf-success-modal-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff4ee;
+  border: 1px solid #f7ba9e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.rf-success-modal-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rf-orange);
+  margin-bottom: 8px;
+}
+
+.rf-success-modal-title {
+  font-family: var(--rf-font-serif);
+  font-size: clamp(1.85rem, 4vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--rf-navy-deep);
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+
+.rf-success-modal-body {
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--rf-ink-soft);
+  margin-bottom: 18px;
+}
+
+.rf-success-modal-body p {
+  margin-bottom: 10px;
+}
+
+.rf-success-modal-quote {
+  font-family: var(--rf-font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--rf-navy);
+  padding: 12px 18px;
+  background: #faf8f5;
+  border-left: 3px solid var(--rf-orange);
+  border-radius: 6px;
+  margin: 14px 0 !important;
+}
+
+.rf-success-modal-meta {
+  background: #f8fafa;
+  border: 1px solid #d2dadb;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  color: var(--rf-ink-muted);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.rf-success-modal-meta strong {
+  color: var(--rf-navy-deep);
+}
+
+.rf-success-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  dialog.rf-application-success-modal {
+    padding: 32px 20px 24px;
+  }
+  .rf-success-modal-actions {
+    flex-direction: column;
+  }
+  .rf-success-modal-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

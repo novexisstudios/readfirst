@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -13,6 +13,7 @@ import {
   Send,
   Sparkles,
   RotateCcw,
+  X,
 } from 'lucide-react';
 import './ApplicationPage.css';
 import { sendApplicationEmail } from '../lib/emailjs';
@@ -50,10 +51,31 @@ export default function ApplicationPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [copied, setCopied] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [submissionFeedback, setSubmissionFeedback] = useState(null);
+
+  const successDialogRef = useRef(null);
+
+  // Manage modal open/close and lenis scroll locking
+  useEffect(() => {
+    const dialogEl = successDialogRef.current;
+    if (showSuccessPopup && dialogEl) {
+      if (!dialogEl.open) {
+        dialogEl.showModal();
+      }
+      window.__lenis?.stop();
+    } else if (dialogEl && dialogEl.open) {
+      dialogEl.close();
+      window.__lenis?.start();
+    }
+
+    return () => {
+      window.__lenis?.start();
+    };
+  }, [showSuccessPopup]);
 
   // Auto-save draft to local storage
   useEffect(() => {
@@ -161,6 +183,7 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
       }
 
       setIsSubmitted(true);
+      setShowSuccessPopup(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       console.error('[ReadFirst Application Submission Error]:', err);
@@ -204,6 +227,83 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
 
   return (
     <div className="rf-application-page">
+      {/* Automated Application Submitted Popup Modal */}
+      <dialog
+        ref={successDialogRef}
+        className="rf-application-success-modal"
+        aria-labelledby="success-popup-title"
+        data-lenis-prevent="true"
+        data-lenis-prevent-wheel="true"
+        data-lenis-prevent-touch="true"
+        onCancel={() => setShowSuccessPopup(false)}
+        onClick={(e) => {
+          if (e.target === successDialogRef.current) {
+            setShowSuccessPopup(false);
+          }
+        }}
+      >
+        <button
+          type="button"
+          className="rf-drawer-close"
+          aria-label="Close message"
+          onClick={() => setShowSuccessPopup(false)}
+        >
+          <X size={20} />
+        </button>
+
+        <div className="rf-success-modal-content">
+          <div className="rf-success-modal-badge">
+            <CheckCircle2 size={34} color="var(--rf-orange)" />
+          </div>
+
+          <p className="rf-success-modal-kicker">
+            ✦ ReadFirst · Educator Transformation Program
+          </p>
+
+          <h2 id="success-popup-title" className="rf-success-modal-title">
+            Thank You for Applying!
+          </h2>
+
+          <div className="rf-success-modal-body">
+            <p>
+              Thank you for your interest in <strong>ReadFirst</strong>. We appreciate the time and thought you have put into your responses.
+            </p>
+            <p>
+              Your application will be carefully reviewed, and we will be in touch regarding the next steps.
+            </p>
+            <p className="rf-success-modal-quote">
+              “We look forward to the possibility of learning and growing together.”
+            </p>
+          </div>
+
+          {formData.fullName && (
+            <div className="rf-success-modal-meta">
+              <div><strong>Applicant:</strong> {formData.fullName}</div>
+              {formData.email && <div><strong>Email:</strong> {formData.email}</div>}
+            </div>
+          )}
+
+          <div className="rf-success-modal-actions">
+            <button
+              type="button"
+              onClick={handleCopyResponses}
+              className="rf-btn-secondary-action"
+            >
+              {copied ? <Check size={16} color="#15803d" /> : <Copy size={16} />}
+              <span>{copied ? 'Responses Copied!' : 'Copy your responses'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowSuccessPopup(false)}
+              className="rf-btn-submit"
+            >
+              <span>Done</span>
+            </button>
+          </div>
+        </div>
+      </dialog>
+
       <div className="rf-app-container">
         {/* Top Navigation */}
         <Link to="/educators" className="rf-back-link">
@@ -215,7 +315,7 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
         <header className="rf-app-header">
           <div className="rf-app-meta-badge">
             <Sparkles size={13} color="var(--rf-orange)" />
-            <span>ReadFirst Educator Transformation · elevify.com</span>
+            <span>ReadFirst Educator Transformation</span>
           </div>
           <h1 className="rf-app-title">Program Application Form</h1>
           <p className="rf-app-subtitle">
@@ -251,6 +351,15 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
               >
                 {copied ? <Check size={16} color="#15803d" /> : <Copy size={16} />}
                 <span>{copied ? 'Responses Copied!' : 'Copy your submitted responses'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowSuccessPopup(true)}
+                className="rf-btn-secondary-action"
+              >
+                <Sparkles size={16} color="var(--rf-orange)" />
+                <span>View Thank You Message</span>
               </button>
 
               <button
