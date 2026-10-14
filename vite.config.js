@@ -8,7 +8,7 @@ export default defineConfig({
     {
       name: 'dev-api-send-confirmation',
       configureServer(server) {
-        server.middlewares.use('/api/send-confirmation', (req, res) => {
+        const handleSendConfirmation = (req, res) => {
           if (req.method === 'POST') {
             let body = '';
             req.on('data', chunk => { body += chunk; });
@@ -28,7 +28,7 @@ export default defineConfig({
                   return;
                 }
 
-                const fromSender = process.env.RESEND_FROM_EMAIL || 'ReadFirst <onboarding@resend.dev>';
+                const fromSender = process.env.RESEND_FROM_EMAIL || 'ReadFirst <admissions@no-reply.readfirst.in>';
                 const resendRes = await fetch('https://api.resend.com/emails', {
                   method: 'POST',
                   headers: {
@@ -59,7 +59,10 @@ export default defineConfig({
             res.statusCode = 405;
             res.end();
           }
-        });
+        };
+
+        server.middlewares.use('/.netlify/functions/send-confirmation', handleSendConfirmation);
+        server.middlewares.use('/api/send-confirmation', handleSendConfirmation);
       },
     },
   ],

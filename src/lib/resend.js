@@ -21,26 +21,38 @@ export const sendApplicantConfirmationEmail = async (formData) => {
     text: generateConfirmationPlainText(formData),
   };
 
-  try {
-    const response = await fetch('/api/send-confirmation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+  // Direct Netlify function path first, fallback to /api proxy
+  const endpoints = ['/.netlify/functions/send-confirmation', '/api/send-confirmation'];
 
-    if (!response.ok) {
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: true, ...result };
+      }
+
+      // If this endpoint 404s, try next candidate endpoint
+      if (response.status === 404 && endpoint !== endpoints[endpoints.length - 1]) {
+        continue;
+      }
+
       const errText = await response.text();
-      console.warn('[ReadFirst Confirmation Email] Server returned non-200:', response.status, errText);
+      console.warn(`[ReadFirst Confirmation Email] ${endpoint} returned ${response.status}:`, errText);
       return { success: false, status: response.status, error: errText };
+    } catch (error) {
+      if (endpoint !== endpoints[endpoints.length - 1]) {
+        continue;
+      }
+      console.warn('[ReadFirst Confirmation Email] Dispatch notice:', error.message);
+      return { success: false, error: error.message };
     }
-
-    const result = await response.json();
-    return { success: true, ...result };
-  } catch (error) {
-    // We log and return safely without breaking the user application experience
-    console.warn('[ReadFirst Confirmation Email] Dispatch notice:', error.message);
-    return { success: false, error: error.message };
   }
 };

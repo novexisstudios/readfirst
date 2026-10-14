@@ -8,6 +8,7 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+  force = true
 
 # SPA Fallback: Route all incoming paths to index.html with HTTP 200
 [[redirects]]
