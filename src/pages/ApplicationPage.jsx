@@ -83,6 +83,15 @@ export default function ApplicationPage() {
 
   const successDialogRef = useRef(null);
 
+  useEffect(() => {
+    document.title = 'Educator Transformation Program Application | ReadFirst';
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.content =
+        'Apply for the ReadFirst Educator Transformation Program. A selective 5-day online inquiry exploring the science and practice of learning.';
+    }
+  }, []);
+
   // Manage modal open/close and lenis scroll locking
   useEffect(() => {
     const dialogEl = successDialogRef.current;

@@ -14,11 +14,11 @@ const beliefs = [
 
 export default function HomePage({ onOpenConversation }) {
   useEffect(() => {
-    document.title = 'ReadFirst — Learn How to Learn';
+    document.title = 'ReadFirst — Learn How to Learn | Deep Learning & Independent Thinking';
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.content =
-        'Learning is more than knowing. Develop deep learning, self-learning and independent thinking through purposeful reading and the SMILE Learning Model.';
+        'Develop deep learning, self-learning and independent thinking through purposeful reading and the SMILE Learning Model. Research-based programmes for educators, schools and students.';
     }
   }, []);
 
