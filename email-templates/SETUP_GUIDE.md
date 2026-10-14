@@ -77,9 +77,8 @@ Every field submitted in the form is available for your template:
 | `{{q9}}` | Reaction to challenging research papers |
 | `{{q10}}` | 30–60 day application & impact metrics |
 | `{{q11}}` | Readiness for online sessions & research paper |
-| `{{q12}}` | Reflection on ₹50,000 fee and readiness |
-| `{{q13}}` | Contribution to cohort discussions |
-| `{{q14}}` | Additional notes (optional) |
+| `{{q12}}` | Contribution to cohort discussions |
+| `{{q13}}` | Additional notes (optional) |
 | `{{confirmed}}` | Declaration confirmation status (`Confirmed` / `Not confirmed`) |
 | `{{submitted_at}}` | Formatted submission date and time (IST) |
 | `{{{application_summary_html}}}` | Full pre-rendered branded HTML table/layout |

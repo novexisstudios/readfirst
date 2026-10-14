@@ -24,7 +24,31 @@ export default function ApplicationPage() {
   const [formData, setFormData] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // If old draft had q14 or q13 with cohort contribution, map them forward
+        if (parsed.q14 !== undefined || (parsed.q13 && !parsed.q12)) {
+          return {
+            fullName: parsed.fullName || '',
+            email: parsed.email || '',
+            phone: parsed.phone || '',
+            designation: parsed.designation || '',
+            organisation: parsed.organisation || '',
+            experience: parsed.experience || '',
+            q5: parsed.q5 || '',
+            q6: parsed.q6 || '',
+            q7: parsed.q7 || '',
+            q8: parsed.q8 || '',
+            q9: parsed.q9 || '',
+            q10: parsed.q10 || '',
+            q11: parsed.q11 || '',
+            q12: parsed.q13 || '',
+            q13: parsed.q14 || '',
+            confirmed: Boolean(parsed.confirmed),
+          };
+        }
+        return parsed;
+      }
     } catch {
       // Fallback
     }
@@ -44,7 +68,6 @@ export default function ApplicationPage() {
       q11: '',
       q12: '',
       q13: '',
-      q14: '',
       confirmed: false,
     };
   });
@@ -127,14 +150,11 @@ ${formData.q10 || '(No response entered)'}
 11. Making time for online sessions, reading, activities & 30-day research paper:
 ${formData.q11 || '(No response entered)'}
 
-12. Response regarding program fee (₹50,000) and readiness to proceed:
+12. Experience, perspective or question you wish to contribute to cohort:
 ${formData.q12 || '(No response entered)'}
 
-13. Experience, perspective or question you wish to contribute to cohort:
-${formData.q13 || '(No response entered)'}
-
-14. Additional information (Optional):
-${formData.q14 || '(None)'}
+13. Additional information (Optional):
+${formData.q13 || '(None)'}
 
 Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
 ============================================================`;
@@ -217,7 +237,6 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
         q11: '',
         q12: '',
         q13: '',
-        q14: '',
         confirmed: false,
       });
       setIsSubmitted(false);
@@ -768,11 +787,11 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q12" className="rf-field-label">
                     <span className="rf-question-title">
-                      12. The program fee is ₹50,000. Having reviewed the fee, please tell us whether you would be able to proceed if selected. If you would need further information, please explain briefly. <span className="rf-required-star">*</span>
+                      12. Every participant brings something to a learning community. What experience, perspective or question would you like to share with other educators? <span className="rf-required-star">*</span>
                     </span>
                   </label>
                   <p className="rf-question-hint">
-                    An honest response will help both you and ReadFirst assess the practical fit.
+                    Think about what you could contribute to a group that learns together.
                   </p>
                   <textarea
                     id="q12"
@@ -787,49 +806,26 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                   <div className="rf-char-indicator">{formData.q12.length} characters</div>
                 </div>
 
-                {/* Question 13 */}
+                {/* Question 13 (Optional) */}
                 <div className="rf-question-block">
                   <label htmlFor="q13" className="rf-field-label">
                     <span className="rf-question-title">
-                      13. Every participant brings something to a learning community. What experience, perspective or question would you like to share with other educators? <span className="rf-required-star">*</span>
-                    </span>
-                  </label>
-                  <p className="rf-question-hint">
-                    Think about what you could contribute to a group that learns together.
-                  </p>
-                  <textarea
-                    id="q13"
-                    name="q13"
-                    value={formData.q13}
-                    onChange={handleChange}
-                    placeholder="Write your response here..."
-                    required
-                    rows={4}
-                    className="rf-question-textarea"
-                  />
-                  <div className="rf-char-indicator">{formData.q13.length} characters</div>
-                </div>
-
-                {/* Question 14 (Optional) */}
-                <div className="rf-question-block">
-                  <label htmlFor="q14" className="rf-field-label">
-                    <span className="rf-question-title">
-                      14. Is there anything else you would like us to know about your interest in ReadFirst or your readiness to take part?
+                      13. Is there anything else you would like us to know about your interest in ReadFirst or your readiness to take part?
                     </span>
                   </label>
                   <p className="rf-question-hint">
                     Optional.
                   </p>
                   <textarea
-                    id="q14"
-                    name="q14"
-                    value={formData.q14}
+                    id="q13"
+                    name="q13"
+                    value={formData.q13}
                     onChange={handleChange}
                     placeholder="Share anything else you would like us to know..."
                     rows={3}
                     className="rf-question-textarea"
                   />
-                  <div className="rf-char-indicator">{formData.q14.length} characters</div>
+                  <div className="rf-char-indicator">{formData.q13.length} characters</div>
                 </div>
               </section>
 

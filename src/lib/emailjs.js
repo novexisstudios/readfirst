@@ -45,9 +45,8 @@ export const APPLICATION_QUESTIONS = {
   q9: '9. How you would respond if research papers challenge your long-used approach',
   q10: '10. Where you could apply ReadFirst insights in 30–60 days & measure impact',
   q11: '11. Readiness for online sessions, readings & 30-day collaborative research paper',
-  q12: '12. Thoughts on program fee (₹50,000) & readiness to proceed if selected',
-  q13: '13. Experience, perspective or question you wish to bring to cohort discussions',
-  q14: '14. Additional notes / background (Optional)',
+  q12: '12. Experience, perspective or question you wish to bring to cohort discussions',
+  q13: '13. Additional notes / background (Optional)',
 };
 
 /**
@@ -89,15 +88,12 @@ ${formData.q10 || '(No response entered)'}
 [Q11] Program Time Commitment (Online + 30-day paper):
 ${formData.q11 || '(No response entered)'}
 
-[Q12] Investment Readiness (₹50,000 Fee):
+SECTION 5: COHORT CONTRIBUTION & ADDITIONAL
+[Q12] Contribution to Cohort Discussions:
 ${formData.q12 || '(No response entered)'}
 
-SECTION 5: COHORT CONTRIBUTION & ADDITIONAL
-[Q13] Contribution to Cohort Discussions:
-${formData.q13 || '(No response entered)'}
-
-[Q14] Additional Information:
-${formData.q14 || '(None)'}
+[Q13] Additional Information:
+${formData.q13 || '(None)'}
 
 Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
 ============================================================`;
@@ -331,16 +327,6 @@ export const APPLICATION_EMAILJS_TEMPLATE = `<!DOCTYPE html>
 {{q11}}
                   </div>
                 </div>
-
-                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 12 (Investment: ₹50,000)</div>
-                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    The program fee is ₹50,000. Please share your thoughts on this investment and whether you are prepared to proceed if selected.
-                  </div>
-                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #FFF4EE; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #F2642A;">
-{{q12}}
-                  </div>
-                </div>
               </div>
 
               <!-- Section 5 -->
@@ -356,22 +342,22 @@ export const APPLICATION_EMAILJS_TEMPLATE = `<!DOCTYPE html>
                 </table>
 
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 13</div>
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 12</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
                     What is one experience, perspective or question you would like to bring to the cohort discussions?
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
-{{q13}}
+{{q12}}
                   </div>
                 </div>
 
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8898A7; margin-bottom: 5px;">Question 14 (Optional Notes)</div>
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8898A7; margin-bottom: 5px;">Question 13 (Optional Notes)</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
                     Is there anything else you would like us to know about your background, work or interest in ReadFirst?
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #D2DADB;">
-{{q14}}
+{{q13}}
                   </div>
                 </div>
               </div>
@@ -558,7 +544,6 @@ export const generateApplicationEmailHtml = (formData) => {
                 </h3>
                 ${renderQaItem(10, APPLICATION_QUESTIONS.q10, formData.q10)}
                 ${renderQaItem(11, APPLICATION_QUESTIONS.q11, formData.q11)}
-                ${renderQaItem(12, APPLICATION_QUESTIONS.q12, formData.q12)}
               </div>
 
               <!-- Section 5: Cohort Contribution & Notes -->
@@ -566,8 +551,8 @@ export const generateApplicationEmailHtml = (formData) => {
                 <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 700; color: #001F42; border-bottom: 2px solid #00326A; padding-bottom: 6px;">
                   Section 5: Cohort Contribution &amp; Additional Information
                 </h3>
-                ${renderQaItem(13, APPLICATION_QUESTIONS.q13, formData.q13)}
-                ${renderQaItem(14, APPLICATION_QUESTIONS.q14, formData.q14 || 'None provided')}
+                ${renderQaItem(12, APPLICATION_QUESTIONS.q12, formData.q12)}
+                ${renderQaItem(13, APPLICATION_QUESTIONS.q13, formData.q13 || 'None provided')}
               </div>
 
               <!-- Declaration Status -->
@@ -658,8 +643,8 @@ export const sendApplicationEmail = async (formData) => {
     q10: formData.q10 || 'N/A',
     q11: formData.q11 || 'N/A',
     q12: formData.q12 || 'N/A',
-    q13: formData.q13 || 'N/A',
-    q14: formData.q14 || 'None provided',
+    q13: formData.q13 || 'None provided',
+    q14: formData.q13 || 'None provided', // backward compatibility
     confirmed: formData.confirmed ? 'Confirmed' : 'Not confirmed',
 
     // Formatted timestamps & metadata

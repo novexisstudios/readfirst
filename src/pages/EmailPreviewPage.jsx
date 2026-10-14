@@ -35,9 +35,8 @@ const SAMPLE_DATA = {
   q9: 'I welcome it wholeheartedly. True pedagogical growth requires intellectual humility. If empirical research demonstrates that a habit I have practiced lacks efficacy, I see it as an exciting invitation to redesign my classroom interventions.',
   q10: 'We are launching our term-long cross-disciplinary reading seminar in 45 days. I will implement structured reflective prompts and measure student ownership and interpretive depth through pre-and-post reading diagnostic reflections.',
   q11: 'Yes, fully prepared. My institution has approved dedicated research study hours for the 5-day online intensive and the 30-day collaborative research paper.',
-  q12: 'The ₹50,000 fee represents a valuable investment in specialized, high-impact cognitive training. Our institutional professional development grant will fund my participation upon selection.',
-  q13: 'I can offer 12 years of hands-on classroom data on bridging adolescent reading resistance, as well as experience structuring collaborative peer inquiry groups.',
-  q14: 'Looking forward to engaging with like-minded educators and researchers from across India and beyond.',
+  q12: 'I can offer 12 years of hands-on classroom data on bridging adolescent reading resistance, as well as experience structuring collaborative peer inquiry groups.',
+  q13: 'Looking forward to engaging with like-minded educators and researchers from across India and beyond.',
   confirmed: true,
 };
 
