@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import './ApplicationPage.css';
 import { sendApplicationEmail } from '../lib/emailjs';
+import { sendApplicantConfirmationEmail } from '../lib/resend';
 
 const STORAGE_KEY = 'readfirst_educator_application_draft_v1';
 
@@ -183,6 +184,13 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
       // 1. Dispatch through EmailJS provider
       const emailResult = await sendApplicationEmail(formData);
       setSubmissionFeedback(emailResult);
+
+      // 2. Dispatch automated noreply confirmation email to applicant via Resend
+      try {
+        await sendApplicantConfirmationEmail(formData);
+      } catch (confirmErr) {
+        console.warn('[ReadFirst Applicant Confirmation Notice]:', confirmErr);
+      }
 
       // 2. Optional backup webhook endpoint if configured in environment
       const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT;

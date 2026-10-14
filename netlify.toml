@@ -1,6 +1,13 @@
 [build]
   publish = "dist"
   command = "npm run build"
+  functions = "netlify/functions"
+
+# API Proxy: Route /api/* calls to Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 # SPA Fallback: Route all incoming paths to index.html with HTTP 200
 [[redirects]]

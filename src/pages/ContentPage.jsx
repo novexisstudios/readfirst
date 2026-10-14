@@ -39,15 +39,15 @@ export default function ContentPage({ page, onOpenConversation }) {
 
   const pageFaqCategory = {
     students: 'Students',
-    mindfulness: 'Students',
-    'accelerate-your-learning': 'Students',
+    mindfulness: '14-Day Mindfulness',
+    'accelerate-your-learning': '30-Day Accelerate Your Learning',
     educators: 'Educators',
     schools: 'Schools & Colleges',
     'the-learning-marathon': 'Schools & Colleges',
   }[page];
 
   return (
-    <div className="rf-content-page rf-container">
+    <div className={`rf-content-page rf-container rf-content-page--${page}`}>
       <p className="rf-kicker">{data?.label}</p>
       <h1>{data?.title}</h1>
       <p className="rf-content-intro">{data?.intro}</p>
@@ -86,6 +86,16 @@ export default function ContentPage({ page, onOpenConversation }) {
             </button>
           ))}
         </div>
+      ) : data?.ctaLink || page === 'the-learning-marathon' ? (
+        <a
+          className="rf-btn-primary"
+          href={data?.ctaLink || 'https://thelearningmarathon.com'}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {data?.cta || 'Enquire about TLM'}
+          <ArrowUpRight size={17} />
+        </a>
       ) : (
         <button
           className="rf-btn-primary"

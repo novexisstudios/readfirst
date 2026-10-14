@@ -149,7 +149,7 @@ export default function Navbar({ onOpenConversation }) {
           <div className="rf-mobile-pathway-links">
             {[
               { path: '/students', title: 'Students', desc: 'Learn How to Learn', Icon: GraduationCap },
-              { path: '/educators', title: 'Educators', desc: 'Selective Cohort Immersion', Icon: BookOpenCheck },
+              { path: '/educators', title: 'Educators', desc: 'Research-Based Teaching & Learning', Icon: BookOpenCheck },
               { path: '/institutions', title: 'Institutions', desc: 'The Learning Marathon (TLM)', Icon: Building2 },
             ].map(({ path, title, desc, Icon }) => (
               <Link key={path} to={path} className="rf-mobile-pathway-card" onClick={() => setMobileMenuOpen(false)}>

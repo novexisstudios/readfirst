@@ -1,53 +1,232 @@
-// Copy adapted from the supplied ReadFirst wireframe and keyword documents.
-// Keep unverified programme details, studies and outcomes out of public content.
+// Copy adapted from ReadFirst official website content update.
 export const pages = {
-  learning: { title: 'Learning should create learners.', label: 'Learn how to learn', intro: 'Learning develops more than knowledge. It develops the ability to understand, question, reflect and continue learning independently.', sections: [['Deep learning', 'Move beyond surface-level memorisation towards genuine understanding.'], ['Self-learning', 'Develop the ability and confidence to engage with learning without constant instruction, using appropriate guidance, resources and collaboration.'], ['Independent thinking', 'Question, analyse and form your own understanding.']], links: [['Explore purposeful reading', '/reading'], ['Discover SMILE', '/smile']] },
-  reading: { title: 'Read to understand. Read to think.', label: 'Purposeful reading', intro: 'ReadFirst uses textbooks and reading as tools for deep learning and independent thinking.', sections: [['Deep reading', 'Give ideas the attention they need. Reading can create space to understand, question and reflect.'], ['Active reading', 'Engage with the meaning of a text rather than simply consuming information.'], ['A reading culture', 'Create learning environments where books, curiosity and reflection support independent learners.']], links: [['Explore student programmes', '/students'], ['Build a learning culture', '/schools']] },
-  students: { title: 'Become a learner. Not just a student.', label: 'For students', audience: 'Students', intro: 'ReadFirst’s student programmes focus on developing the learner behind the marks: awareness, purposeful reading, understanding and independent thinking.', sections: [['14-Day Mindfulness Programme', 'Pause. Observe. Reset. Develop awareness, attention, focus, presence, concentration and mental readiness for learning.'], ['30-Day Accelerate Your Learning', 'Learn how to learn. Develop as a self-learner, independent thinker and deeper learner through the SMILE Learning Model, textbooks, reading and reflection.']], links: [['Explore Mindfulness', '/mindfulness'], ['Explore Accelerate Your Learning', '/accelerate-your-learning']] },
-  mindfulness: { title: 'Pause. Observe. Reset.', label: '14-Day Mindfulness Programme', audience: 'Students', intro: 'A learner-development experience focused on greater awareness, attention and mental readiness for learning.', sections: [['Make room for attention', 'Explore awareness, focus, presence and concentration as part of the learning journey.'], ['Prepare to learn', 'Mindfulness is part of developing the learner: taking time to observe and reflect before engaging with learning.']], links: [['Explore Accelerate Your Learning', '/accelerate-your-learning']] },
-  'accelerate-your-learning': { title: 'Learn how to learn.', label: '30-Day Accelerate Your Learning', audience: 'Students', intro: 'Develop as a self-learner, independent thinker and deeper learner. The central proposition is learning how to learn, rather than simply studying faster.', sections: [['Understanding through reading', 'Use textbooks and purposeful reading to engage with ideas and build deep understanding.'], ['Learning independence', 'The programme uses the SMILE Learning Model and focuses on deep learning, self-learning, independent thinking and reduced screen dependence.']], links: [['Explore the SMILE Learning Model', '/smile'], ['Explore Mindfulness', '/mindfulness']] },
-  educators: { title: 'Understand learning deeply enough to transform practice.', label: 'Research-Based Teaching & Learning', audience: 'Educators', cta: 'Apply to the Programme', intro: 'For educators who believe teaching can be more than delivering a syllabus. A serious, research-led learning experience for those ready to rethink how learning happens.', sections: [['Understand the learner', 'Explore how students learn and understand, what influences learning behaviour and how educators can guide them more effectively.'], ['Rethink teaching practice', 'The programme focuses on reflective practice, teacher transformation and the role of the Learning Coach. Its purpose goes beyond adding another set of classroom techniques.'], ['Participation is intentionally selective', 'Screening considers curiosity, openness to questioning existing practices, willingness to reflect, seriousness about learning and genuine interest in understanding students.']], links: [['Apply to the Programme', '/apply'], ['Explore the ReadFirst approach', '/smile']] },
-  schools: { title: 'Build a culture of independent learning.', label: 'For schools & colleges', audience: 'Institutions', intro: 'ReadFirst works with educational institutions to create environments that encourage deeper engagement with learning, curiosity, reading, reflection and independent learning.', sections: [['The Learning Marathon — TLM', 'An institutional learning offering that connects educator development with the wider learning culture.'], ['From syllabus completion to genuine learning', 'Make space for curiosity and exploration, purposeful reading and independent thinking.']], links: [['Explore The Learning Marathon', '/the-learning-marathon'], ['Explore educator development', '/educators']] },
-  'the-learning-marathon': { title: 'A learning culture. Across your institution.', label: 'The Learning Marathon — TLM', audience: 'Institutions', cta: 'Enquire about TLM', intro: 'The Learning Marathon is ReadFirst’s institutional learning offering, designed around deeper engagement with learning, curiosity, reading, reflection and independent learning.', sections: [['Beyond a standalone course', 'Educator development is part of a wider institutional proposition: an environment that helps students become independent learners.'], ['The shift we work towards', 'From syllabus completion to genuine learning. From instruction to independent thinking. From information consumption to exploration.'], ['Start with your institution', 'Tell us what you would like to understand or change in your learning environment.']], links: [['Explore research-based teaching', '/educators']] },
-  smile: { title: 'SMILE', label: 'The ReadFirst learning model', intro: 'Self-Motivated Intelligent Learning Environment. The model through which ReadFirst approaches learning.', sections: [['The learner comes first', 'SMILE brings together the conditions and behaviours that support deep learning, self-learning and independent thinking.'], ['Reading. Reflection. Learning independence.', 'The model connects purposeful reading and reflection with reduced dependence on constant instruction and screens.'], ['Technology serves the learning need', 'ReadFirst starts with the learner and asks what supports meaningful learning. Technology is a resource, rather than the starting point.']], links: [['For students', '/students'], ['For educators', '/educators'], ['For schools & colleges', '/schools']] },
-  research: { title: 'Questions are where research begins.', label: 'Research & Insights', intro: 'Research-based learning and teaching begin with understanding the learner. Explore the questions that shape ReadFirst’s approach.', sections: [['How do students learn?', 'Understanding learning behaviour helps us ask what supports deep learning and learner independence.'], ['What makes reading purposeful?', 'How can reading help a learner understand, question and think independently?'], ['How can educators transform practice?', 'Observation, curiosity and reflective practice create space to rethink the learning environment.']], links: [['Explore the learning model', '/smile'], ['Explore reflective teaching practice', '/educators']] },
-  about: { title: 'Building a different way of learning.', label: 'About ReadFirst', intro: 'ReadFirst is a learning-focused organisation working with students, educators and educational institutions to develop deeper learning, purposeful reading, self-learning and independent thinking.', sections: [['Our belief', 'Learning should create learners. It should develop the ability to understand, question, reflect and continue learning independently.'], ['Our starting point', 'We start with the learner: how they learn, how they understand and what helps them become independent.'], ['One learning ecosystem', 'ReadFirst works with schools and colleges through The Learning Marathon, educators through Research-Based Teaching & Learning, and students through Mindfulness and Accelerate Your Learning.']], links: [['Our learning model', '/smile'], ['Who we work with', '/#who-we-work-with']] },
-  contact: { title: 'Start with a question.', label: 'Get in touch', intro: 'Tell us what you’re trying to understand, change or explore. Choose the pathway that best describes you.', sections: [], links: [] },
+  learning: {
+    title: 'Learning should create learners.',
+    label: 'A different way of learning',
+    intro: 'Learning is more than knowing. It is about understanding how to learn, how to question what we encounter, and how to make sense of what we discover. Learners who can think beyond answers, find their own questions and develop an understanding that is truly their own.',
+    sections: [
+      ['Deep learning', 'Go beyond memorisation to understand ideas and make connections.'],
+      ['Self-learning', 'Develop the ability to explore, understand and learn without constant instruction.'],
+      ['Independent thinking', 'Question ideas, examine perspectives and form your own understanding.'],
+      ['Purposeful reading', 'Read to understand. Read to question. Read to think.'],
+    ],
+    links: [
+      ['Explore purposeful reading', '/reading'],
+      ['Discover the SMILE Learning Model', '/smile'],
+    ],
+  },
+
+  reading: {
+    title: 'Read to understand. Read to question. Read to think.',
+    label: 'Purposeful reading',
+    intro: 'Purposeful reading helps learners engage deeply with ideas. Reflection helps them examine what they understand, question what they encounter and recognise where they need to learn more.',
+    sections: [
+      ['Deep reading', 'Read to understand. Read to question. Read to think. Give ideas the attention they need to create space to understand, question and reflect.'],
+      ['Self-learning through reading', 'Go beyond reading words or collecting information. Learn to engage with textbooks and other learning material, question ideas, make connections and develop your own understanding.'],
+      ['Learning independence', 'Together, these practices support a gradual shift towards learning with greater independence, rather than relying constantly on instruction or screens to guide the process.'],
+    ],
+    links: [
+      ['Explore student programmes', '/students'],
+      ['Build a learning culture', '/schools'],
+    ],
+  },
+
+  students: {
+    title: 'Learn how to learn.',
+    label: 'For students',
+    audience: 'Students',
+    intro: 'Different learners. One fundamental question: How can we create the conditions for meaningful, independent learning? ReadFirst offers two learner-development programmes designed to develop awareness, attention, purposeful reading, deeper understanding and ownership of the learning process.',
+    sections: [
+      ['14-Day Mindfulness Programme', 'Pause. Observe. Reset. Develop focus, attention and self-awareness to engage more consciously with the process of learning.'],
+      ['30-Day Accelerate Your Learning', 'Develop the ability to learn independently through purposeful reading, deeper understanding and the SMILE Learning Model.'],
+    ],
+    links: [
+      ['Explore Mindfulness', '/mindfulness'],
+      ['Explore Accelerate Your Learning', '/accelerate-your-learning'],
+    ],
+  },
+
+  mindfulness: {
+    title: 'Pause. Observe. Reset.',
+    label: '14-Day Mindfulness Programme',
+    audience: 'Students',
+    intro: 'Learning requires more than receiving information. It involves directing attention, engaging with ideas and reflecting on experiences. Through mindfulness, students can develop greater awareness of the processes that shape how they engage with learning.',
+    sections: [
+      ['Build awareness and attention', 'Explore practices that encourage focus and help you become more conscious of how you engage with learning activities.'],
+      ['Pause, observe and reflect', 'Create space to observe your thoughts and responses before reacting. Reflect on your experiences and develop a more intentional approach to challenges, unfamiliar ideas and the process of learning.'],
+    ],
+    links: [
+      ['Explore Accelerate Your Learning', '/accelerate-your-learning'],
+      ['Explore the SMILE Learning Model', '/smile'],
+    ],
+  },
+
+  'accelerate-your-learning': {
+    title: 'Develop as a self-learner who can engage with ideas, build understanding and take greater ownership of the learning process.',
+    label: '30-Day Accelerate Your Learning',
+    audience: 'Students',
+    intro: 'Develop the ability to learn independently through purposeful reading, deeper understanding and the SMILE Learning Model.',
+    sections: [
+      ['Understanding through reading', 'Go beyond reading words or collecting information. Learn to engage with textbooks and other learning material, question ideas, make connections and develop your own understanding.'],
+      ['Take ownership of your learning', 'Explore how to approach unfamiliar concepts, work through questions and build understanding independently. The SMILE Learning Model provides the foundation for developing these capabilities through purposeful reading, deeper learning and independent thinking.'],
+    ],
+    links: [
+      ['Explore Mindfulness', '/mindfulness'],
+      ['Explore the SMILE Learning Model', '/smile'],
+    ],
+  },
+
+  educators: {
+    title: 'Understand learning deeply enough to transform practice.',
+    label: 'Research-Based Teaching & Learning',
+    audience: 'Educators',
+    cta: 'Apply to the programme',
+    intro: 'A research-led learning experience that combines a deeper understanding of how students learn with practical tools to examine learning and inform teaching practice. Explore how learning happens and how educators can create conditions in which learners can think, question and learn independently.',
+    sections: [
+      ['Understand the learner', "Explore how students learn, develop understanding and engage with ideas. Examine the factors that influence learning behaviour and how educators can better understand their students' learning processes."],
+      ['Rethink teaching practice', 'Reflect on existing teaching practices and explore the role of the Learning Coach. Develop a deeper understanding of how educators can create conditions that encourage curiosity, reflection and independent learning.'],
+      ['Put understanding into practice', "Work with practical implementation tools to examine students' learning, observe how they engage with ideas and reflect on their learning processes. Connect insights about learning with informed decisions about teaching practice."],
+      ['Participation is intentionally selective', 'The programme seeks educators who demonstrate curiosity, openness to questioning existing practices, willingness to reflect and a genuine interest in understanding how students learn.'],
+    ],
+    links: [
+      ['Apply to the programme', '/apply'],
+      ['Explore the SMILE Learning Model', '/smile'],
+    ],
+  },
+
+  schools: {
+    title: 'Build a culture of independent learning.',
+    label: 'Schools & colleges',
+    audience: 'Institutions',
+    intro: 'Different learners. One fundamental question: How can we create the conditions for meaningful, independent learning?',
+    sections: [
+      ['The Learning Marathon — TLM', 'An institutional learning initiative that encourages curiosity, purposeful reading, reflection and deeper engagement with learning. It aims to make these practices part of the wider learning culture.'],
+      ['From syllabus completion to genuine learning', 'Make space for curiosity and exploration, purposeful reading, reflection and independent learning across your institution.'],
+    ],
+    links: [
+      ['Explore The Learning Marathon', '/the-learning-marathon'],
+      ['Explore educator development', '/educators'],
+    ],
+  },
+
+  'the-learning-marathon': {
+    title: 'Build a culture of independent learning.',
+    label: 'The Learning Marathon — TLM',
+    audience: 'Institutions',
+    cta: 'Enquire about TLM',
+    ctaLink: 'https://thelearningmarathon.com',
+    intro: 'The Learning Marathon is an institutional learning initiative that encourages curiosity, purposeful reading, reflection and deeper engagement with learning. It aims to make these practices part of the wider learning culture.',
+    sections: [
+      ['An institutional learning initiative', 'Learning independence does not develop simply by asking students to study on their own. It requires an environment that encourages curiosity, supports understanding and gives learners the space to think for themselves.'],
+      ['Connecting educators and culture', 'TLM connects educator development with the wider learning culture, creating conditions in which curiosity can grow, understanding can deepen and independence can develop.'],
+      ['The shift we work towards', 'From syllabus completion to genuine learning. From instruction to independent thinking. From passive information consumption to purposeful reading and reflection.'],
+    ],
+    links: [
+      ['Explore Research-Based Teaching & Learning', '/educators'],
+      ['Explore the SMILE Learning Model', '/smile'],
+    ],
+  },
+
+  smile: {
+    title: 'The conditions for independent learning.',
+    label: 'SMILE // Self-Motivated Intelligent Learning Environment',
+    intro: 'Learning independence does not develop simply by asking students to study on their own. It requires an environment that encourages curiosity, supports understanding and gives learners the space to think for themselves. The SMILE Learning Model brings together deep learning, purposeful reading, self-learning and reflection to support this process. It begins with understanding the learner and creating the conditions in which curiosity can grow, understanding can deepen and independence can develop.',
+    sections: [
+      ['SMILE: Self-Motivated Intelligent Learning Environment', 'SMILE is the learning model through which ReadFirst approaches the development of independent learners.'],
+      ['The learner comes first', 'Learning begins with understanding the learner: how they engage with ideas, develop understanding and gradually take ownership of their learning. SMILE brings together the conditions and practices that support deep learning, self-learning and independent thinking.'],
+      ['Reading. Reflection. Learning independence.', 'Purposeful reading helps learners engage deeply with ideas. Reflection helps them examine what they understand, question what they encounter and recognise where they need to learn more. Together, these practices support a gradual shift towards learning with greater independence, rather than relying constantly on instruction or screens to guide the process.'],
+      ['Technology serves the learning need', 'Technology can support learning when it serves a clear educational purpose. ReadFirst begins by asking what the learner needs and what will support meaningful understanding. The choice of tools follows from that need, keeping technology aligned with the learning purpose.'],
+    ],
+    links: [
+      ['For students', '/students'],
+      ['For educators', '/educators'],
+      ['For schools & colleges', '/schools'],
+    ],
+  },
+
+  research: {
+    title: 'Questions are where research begins.',
+    label: 'Research & Insights',
+    intro: 'Research-based learning and teaching begin with understanding the learner: how they engage with ideas, develop understanding and gradually take ownership of their learning.',
+    sections: [
+      ['How do students learn?', 'Understanding learning behaviour helps us ask what supports deep learning and learner independence.'],
+      ['What makes reading purposeful?', 'Purposeful reading helps learners engage deeply with ideas, examine what they understand, question what they encounter and recognise where they need to learn more.'],
+      ['How can educators transform practice?', 'Explore how learning happens and how educators can create conditions in which learners can think, question and learn independently.'],
+    ],
+    links: [
+      ['Explore the SMILE Learning Model', '/smile'],
+      ['Explore reflective teaching practice', '/educators'],
+    ],
+  },
+
+  about: {
+    title: 'Building a different way of learning.',
+    label: 'About ReadFirst',
+    intro: 'ReadFirst is a learning initiative built around the belief that learning is an art. It explores ways to help individuals develop curiosity, engage meaningfully with knowledge and become more intentional about their intellectual growth.',
+    sections: [
+      ['Our belief', 'Learning is more than knowing. It is about understanding how to learn, how to question what we encounter, and how to make sense of what we discover. Learning should create learners who can think beyond answers, find their own questions and develop an understanding that is truly their own.'],
+      ['The SMILE Learning Model', 'SMILE (Self-Motivated Intelligent Learning Environment) brings together deep learning, purposeful reading, self-learning and reflection to support the conditions for independent learning.'],
+      ['Who we work with', 'ReadFirst connects its learning philosophy to distinct offerings for schools & colleges (The Learning Marathon — TLM), educators (Research-Based Teaching & Learning), and students (14-Day Mindfulness and 30-Day Accelerate Your Learning).'],
+    ],
+    links: [
+      ['Our learning model', '/smile'],
+      ['Who we work with', '/#who-we-work-with'],
+    ],
+  },
+
+  contact: {
+    title: 'Start with a question.',
+    label: 'Get in touch',
+    intro: 'Different learners. One fundamental question: How can we create the conditions for meaningful, independent learning? Tell us what you are trying to understand, change or explore.',
+    sections: [],
+    links: [],
+  },
 };
+
 export const faqs = [
   ['General', [
-    ['What is ReadFirst?', pages.about.intro],
-    ['Is ReadFirst an EdTech company?', 'ReadFirst does not begin with technology. It begins with the learner and with understanding how learning happens.'],
-    ['What makes ReadFirst different?', 'ReadFirst focuses on how people learn, understand, question, reflect and become independent learners rather than simply delivering content or classroom techniques.'],
-    ['Why focus on learning how to learn?', 'Learning is about both what a learner knows today and the ability to continue learning independently.'],
+    ['What is ReadFirst?', 'ReadFirst is a learning initiative built around the belief that learning is an art. It explores ways to help individuals develop curiosity, engage meaningfully with knowledge and become more intentional about their intellectual growth.'],
+    ['Is ReadFirst an EdTech company?', 'ReadFirst is pedagogy-led rather than technology-led. Its work begins with the learner and the conditions that support meaningful learning. Research, learning practices and appropriate tools inform its approach.'],
+    ['What makes ReadFirst different?', 'ReadFirst connects its learning philosophy to the SMILE Learning Model and to distinct offerings for students, educators and institutions. This allows its approach to be explored through individual learning, teaching practice and institutional learning culture.'],
+    ['Why focus on learning how to learn?', 'The ability to learn independently becomes valuable whenever we encounter something unfamiliar. Knowing how to ask questions, explore ideas and build understanding helps individuals continue learning beyond any single subject, classroom or stage of life.'],
   ]],
   ['Students', [
+    ['What are ReadFirst’s student programmes?', 'ReadFirst offers two learner-development programmes: the 14-Day Mindfulness Programme and the 30-Day Accelerate Your Learning programme.'],
+    ['How are the two programmes different?', 'Mindfulness helps learners become more aware of their attention, thoughts and responses. Accelerate Your Learning focuses on developing the ability to engage deeply with ideas, understand what they read and take greater ownership of their learning. Each programme addresses a different aspect of becoming an independent learner.'],
     ['What do students learn through ReadFirst?', 'Students develop habits and capabilities around reading, understanding, curiosity, focus, self-learning and independent thinking.'],
-    ['What is the 14-Day Mindfulness Programme?', pages.mindfulness.intro],
-    ['What is Accelerate Your Learning?', 'A 30-day learning experience focused on helping students become self-learners, independent thinkers and deeper learners.'],
-    ['Is Accelerate Your Learning about studying faster?', 'Its central proposition is Learn How to Learn, rather than simply learning faster.'],
+  ]],
+  ['14-Day Mindfulness', [
+    ['What is the 14-Day Mindfulness Programme?', 'Pause. Observe. Reset. A learner-development experience where students develop focus, attention and self-awareness to engage more consciously with the process of learning.'],
+    ['How does mindfulness support learning?', 'Learning requires more than receiving information. It involves directing attention, engaging with ideas and reflecting on experiences. Through mindfulness, students develop greater awareness of the processes that shape how they engage with learning.'],
+    ['What practices are explored in the 14-day programme?', 'Students explore practices that build awareness and attention, learning to pause, observe and reflect before reacting to challenges, unfamiliar ideas and learning activities.'],
+  ]],
+  ['30-Day Accelerate Your Learning', [
+    ['What is Accelerate Your Learning?', 'A 30-day programme to develop as a self-learner who can engage with ideas, build understanding and take greater ownership of the learning process through purposeful reading and the SMILE Learning Model.'],
+    ['Is Accelerate Your Learning about studying faster?', 'Its central proposition is learning how to learn and taking ownership of your learning, rather than simply studying faster or memorising answers.'],
+    ['How does purposeful reading help in this programme?', 'Go beyond reading words or collecting information. Learn to engage with textbooks and other learning material, question ideas, make connections and develop your own understanding.'],
+    ['What role does the SMILE Learning Model play?', 'The SMILE Learning Model provides the foundation for developing capabilities around purposeful reading, deeper learning, self-learning and independent thinking.'],
   ]],
   ['Educators', [
-    ['Is this conventional teacher training?', 'It is a serious learning experience designed to help educators understand learning deeply enough to transform their own practice.'],
-    ['Who is the programme for?', 'Educators who are curious, reflective, serious about learning and willing to question and rethink existing practice.'],
-    ['Why is the educator programme selective?', 'The experience requires curiosity, openness, reflection and a willingness to rethink how learning happens.'],
-    ['Will educators learn classroom techniques?', 'The programme is not primarily about adding another set of classroom techniques. It focuses on understanding learning deeply enough to transform practice.'],
+    ['What is Research-Based Teaching & Learning?', 'A research-led learning experience that combines a deeper understanding of how students learn with practical tools to examine learning and inform teaching practice.'],
+    ['Who is the programme for?', 'This selective programme is for educators who are curious about learning, willing to reflect on their practice and open to questioning familiar approaches to teaching.'],
+    ['Why is participation intentionally selective?', 'The programme seeks educators who demonstrate curiosity, openness to questioning existing practices, willingness to reflect and a genuine interest in understanding how students learn.'],
+    ['Will educators learn classroom techniques?', 'The experience goes deeper than classroom techniques. It focuses on reflective practice, the role of the Learning Coach, and creating conditions that encourage curiosity, reflection and independent learning.'],
   ]],
   ['Schools & Colleges', [
-    ['What is The Learning Marathon (TLM)?', pages['the-learning-marathon'].intro],
-    ['Is TLM just a teacher-training programme?', 'TLM is an institutional learning offering. Educator development is part of the wider institutional learning proposition.'],
-    ['Who can work with ReadFirst?', 'Schools and educational institutions interested in stronger learning cultures, independent learners, reading, research-based education and deeper engagement with learning.'],
-    ['What is a learning culture?', 'An environment where learning goes beyond instruction and syllabus completion to include curiosity, reading, reflection, inquiry and independent learning.'],
+    ['What is The Learning Marathon (TLM)?', 'An institutional learning initiative that encourages curiosity, purposeful reading, reflection and deeper engagement with learning. It aims to make these practices part of the wider learning culture.'],
+    ['Is TLM just teacher training?', 'TLM is an institutional learning offering. Educator development is part of the wider institutional proposition: creating an environment that helps students become independent learners.'],
+    ['Who can work with ReadFirst?', 'Schools and educational institutions interested in building a culture of independent learning, purposeful reading, reflection and deeper engagement with learning.'],
+    ['What shift does ReadFirst work towards?', 'From syllabus completion to genuine learning. From constant instruction to independent thinking. From passive information consumption to purposeful reading, reflection and exploration.'],
   ]],
   ['Approach', [
-    ['What is SMILE?', 'SMILE stands for Self-Motivated Intelligent Learning Environment. It is the learning model behind the ReadFirst approach.'],
-    ['Is SMILE a course?', 'SMILE is the learning model through which ReadFirst approaches learning.'],
-    ['Does ReadFirst reject technology?', 'No. Technology should serve the learning need rather than become the starting point.'],
-    ['What does independent learning mean?', 'Developing the ability and confidence to engage with learning without constant instruction, while using appropriate guidance, resources and collaboration.'],
+    ['What is the SMILE Learning Model?', 'SMILE stands for Self-Motivated Intelligent Learning Environment. It is the learning model through which ReadFirst approaches the development of independent learners, bringing together deep learning, purposeful reading, self-learning and reflection.'],
+    ['Does ReadFirst reject technology?', 'No. Technology serves the learning need. Technology can support learning when it serves a clear educational purpose. ReadFirst begins by asking what the learner needs and what will support meaningful understanding. The choice of tools follows from that need, keeping technology aligned with the learning purpose.'],
+    ['What does independent learning mean?', 'Developing the ability to explore, understand and learn without constant instruction, questioning ideas, examining perspectives and forming your own understanding.'],
+    ['What role does purposeful reading play?', 'Purposeful reading helps learners engage deeply with ideas, examine what they understand, question what they encounter and recognise where they need to learn more.'],
   ]],
   ['Contact', [
-    ['How do I start a conversation?', 'Choose School or College, Educator, Student or a general enquiry and tell us what you would like to understand, change or explore.'],
-    ['Can I enquire about TLM for my institution?', 'Yes. Use the Schools & Colleges pathway and select The Learning Marathon.'],
-    ['How can an educator apply?', 'Use the Educators pathway and choose Apply to the Programme. Participation is intentionally selective.'],
+    ['How do I start a conversation?', 'Choose Schools & Colleges, Educators, Students or a general enquiry and tell us what you would like to understand, change or explore.'],
+    ['Can I enquire about TLM for my institution?', 'Yes. Select Schools & Colleges to explore The Learning Marathon for your institution.'],
+    ['How can an educator apply?', 'Visit the Educators page or choose Apply to the programme. Participation is intentionally selective.'],
   ]],
 ];

@@ -34,7 +34,7 @@ body:has(dialog[open]) { overflow:hidden; }
 .rf-narrative h2, .rf-conversation-footer h2 { font-size:clamp(2.5rem,4.4vw,4.5rem); font-weight:400; line-height:1.12; }
 .rf-story-copy p { margin-bottom:22px; color:#455464; font-size:1rem; }
 .rf-story-copy h3 { font-size:1.8rem; font-weight:400; margin-bottom:18px; }
-.rf-belief-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:28px; margin-top:65px; border-top:1px solid #cbd2d6; padding-top:30px; }
+.rf-belief-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:65px; border-top:1px solid #cbd2d6; padding-top:30px; }
 .rf-belief-strip h3 { font-size:1.3rem; margin-bottom:12px; }
 .rf-belief-strip p { font-size:.82rem; color:#526170; }
 .rf-smile-feature { padding:85px 0; background:#eaf0f2; }
@@ -61,7 +61,8 @@ body:has(dialog[open]) { overflow:hidden; }
 .rf-compact-footer nav a { color:#d0dce6; text-decoration:none; font-size:.75rem; }
 .rf-compact-footer small { font-size:.7rem; color:#aabccc; }
 .rf-content-page { padding-top:160px; padding-bottom:80px; max-width:1100px; }
-.rf-content-page h1 { font-size:clamp(2.8rem,6vw,5.7rem); font-weight:400; max-width:950px; }
+.rf-content-page h1 { font-size:clamp(2.2rem,3.8vw,3.5rem); font-weight:400; line-height:1.16; letter-spacing:-.03em; max-width:950px; }
+.rf-content-page--accelerate-your-learning h1 { font-size:clamp(1.85rem,2.75vw,2.6rem); line-height:1.24; letter-spacing:-.025em; max-width:840px; }
 .rf-content-intro { max-width:780px; font-size:1.15rem; color:#526170; margin:30px 0 50px; }
 .rf-content-sections section { padding:30px 0; border-top:1px solid #d2dadb; display:grid; grid-template-columns:1fr 1.5fr; gap:40px; }
 .rf-content-sections h2 { font-size:1.9rem; font-weight:400; }
@@ -90,7 +91,6 @@ body:has(dialog[open]) { overflow:hidden; }
   .rf-narrative, .rf-smile-feature { padding:60px 0; scroll-margin-top:74px; }
   .rf-story-grid, .rf-pathway-row { grid-template-columns:1fr; gap:28px; }
   .rf-belief-strip { grid-template-columns:1fr 1fr; gap:25px; margin-top:30px; }
-  .rf-belief-strip > div:last-child { grid-column:1/-1; }
   .rf-pathway-row { padding:32px 0; }
   .rf-pathway-row h3 { font-size:2rem; }
   .rf-conversation-footer { padding-top:60px; }

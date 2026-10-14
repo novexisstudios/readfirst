@@ -17,22 +17,35 @@ export default function FaqSection({
   const [openIndex, setOpenIndex] = useState(0);
 
   const defaultTitles = {
-    'General': 'Questions about<br /><em>how we think.</em>',
+    'General': 'Understanding ReadFirst.<br /><em>Frequently asked questions.</em>',
     'Students': 'Questions for<br /><em>students & families.</em>',
+    '14-Day Mindfulness': 'Questions about the<br /><em>14-Day Mindfulness Programme.</em>',
+    '30-Day Accelerate Your Learning': 'Questions about<br /><em>Accelerate Your Learning.</em>',
     'Educators': 'Questions about the<br /><em>educator programme.</em>',
     'Schools & Colleges': 'Questions from<br /><em>schools & institutions.</em>',
   };
 
   const defaultDescriptions = {
-    'General': 'Answers about ReadFirst, SMILE, independent learning and our educational proposition.',
-    'Students': 'What learners explore, how our programmes operate, and learning how to learn.',
+    'General': 'Discover the philosophy, approach and purpose behind ReadFirst.',
+    'Students': 'Understand our student programmes and how ReadFirst approaches learning.',
+    '14-Day Mindfulness': 'Focus, attention, self-awareness and preparing for learning.',
+    '30-Day Accelerate Your Learning': 'Purposeful reading, deeper understanding and learning independently.',
     'Educators': 'Understanding the selective immersion, reflective teaching practice, and cohort expectations.',
     'Schools & Colleges': 'Institutional partnerships, The Learning Marathon (TLM), and building a culture of inquiry.',
   };
 
+  const defaultKickers = {
+    'General': '04 / Common Questions',
+    'Students': 'FAQs // Students',
+    '14-Day Mindfulness': 'FAQs // 14-Day Mindfulness',
+    '30-Day Accelerate Your Learning': 'FAQs // Accelerate Your Learning',
+    'Educators': 'FAQs // Educators',
+    'Schools & Colleges': 'FAQs // Schools & Colleges',
+  };
+
   const displayTitle = title || defaultTitles[category] || 'Questions, answered.';
   const displayDesc = description || defaultDescriptions[category] || 'Common questions and answers.';
-  const displayKicker = kicker || `FAQs // ${category}`;
+  const displayKicker = kicker || defaultKickers[category] || `FAQs // ${category}`;
 
   const toggleItem = (idx) => {
     setOpenIndex((prev) => (prev === idx ? -1 : idx));
