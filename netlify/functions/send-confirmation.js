@@ -50,19 +50,17 @@ export const handler = async (event) => {
 
     const apiKey = process.env.RESEND_API_KEY;
 
-    // Simulation fallback if API key is not yet set in Netlify
+    // Check if API key is configured in environment
     if (!apiKey) {
-      console.warn('[Resend] RESEND_API_KEY is not configured yet. Running in simulation mode.');
+      console.error('[Resend Configuration Error] RESEND_API_KEY is not configured in hosting environment variables.');
       return {
-        statusCode: 200,
+        statusCode: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          success: true,
-          simulated: true,
-          message: 'RESEND_API_KEY not set in environment. Simulated confirmation email to: ' + email,
+          error: 'RESEND_API_KEY is not configured in Netlify environment variables. Please add RESEND_API_KEY and RESEND_FROM_EMAIL in Netlify Site Settings.',
         }),
       };
     }
