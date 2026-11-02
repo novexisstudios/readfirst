@@ -7,12 +7,13 @@ import emailjs from '@emailjs/browser';
  */
 
 export const getEmailJsConfig = () => {
+  const env = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : {};
   return {
-    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
-    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
-    confirmationTemplateId: import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || '',
-    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
-    toEmail: import.meta.env.VITE_EMAILJS_TO_EMAIL || 'office@thelearningmarathon.com',
+    serviceId: env.VITE_EMAILJS_SERVICE_ID || '',
+    templateId: env.VITE_EMAILJS_TEMPLATE_ID || '',
+    confirmationTemplateId: env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || '',
+    publicKey: env.VITE_EMAILJS_PUBLIC_KEY || '',
+    toEmail: env.VITE_EMAILJS_TO_EMAIL || 'pratyush@readfirst.in',
   };
 };
 
@@ -32,21 +33,20 @@ export const isEmailJsConfigured = () => {
  * Question descriptions matching the Application Form
  */
 export const APPLICATION_QUESTIONS = {
-  fullName: 'Full Name',
-  email: 'Email Address',
-  phone: 'Phone Number',
-  designation: 'Current Designation / Role',
-  organisation: 'School / Institution / Organisation',
-  experience: 'Total Years in Education',
-  q5: '5. A time a learner did not learn as expected, or a lesson didn\'t go as planned',
-  q6: '6. Questions about learning or teaching you think about most often',
-  q7: '7. What has drawn you to ReadFirst & what you hope to take away',
-  q8: '8. A time you changed your thinking or approach after learning something new',
-  q9: '9. How you would respond if research papers challenge your long-used approach',
-  q10: '10. Where you could apply ReadFirst insights in 30–60 days & measure impact',
-  q11: '11. Readiness for online sessions, readings & 30-day collaborative research paper',
-  q12: '12. Experience, perspective or question you wish to bring to cohort discussions',
-  q13: '13. Additional notes / background (Optional)',
+  fullName: "1. What's your full name?",
+  email: '2. Email address',
+  phone: '2. Phone number',
+  designation: '3. What is your current role or designation?',
+  organisation: '4. Where do you currently work or teach?',
+  experience: '5. How long have you been working in education?',
+  q6: "6. There must have been a chapter, a book, or a lesson that has stayed with you or made you more curious. We'd love to hear about your experience, reflections and thoughts you've had while teaching or learning it.",
+  q7: '7. We would love to know what interests you most about teaching and how children learn, along with the ideas, questions, or aspects of learning you would like to explore more deeply.',
+  q8: "8. We'd be happy to know what draws you towards ReadFirst at this point in your journey, and what you hope to discover, understand, or take away from this experience.",
+  q9: '9. We are eager to hear from you about an experience, a new idea or learning that has influenced the way you think, teach, or work. You could also reflect on how you explore new ideas that may differ from your existing understanding.',
+  q10: "10. As you explore ReadFirst, we'd love to hear about your plans to bring your learning into practice over the next 30–60 days, and the difference and impact you hope to make for your students and their learning environment.",
+  q11: "11. We'd like to understand how you plan to make time for the sessions, preparatory reading, reflection, and collaborative research alongside teaching and your other commitments, including the research paper to be completed within 30 days after the program.",
+  q12: "12. Every educator brings something special to the learning community. We'd love to hear about the experiences, insights, ideas, or life lessons you would enjoy sharing with fellow educators as you learn and grow together.",
+  q13: '13. Feel free to share anything more about your interest in ReadFirst, your expectations from the program, or how you hope to contribute to this learning journey. (Optional)',
 };
 
 /**
@@ -56,43 +56,37 @@ export const generatePlainTextSummary = (formData) => {
   return `=== READFIRST EDUCATOR TRANSFORMATION PROGRAM APPLICATION ===
 Submitted At: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
 
-APPLICANT PROFILE:
-- Full Name: ${formData.fullName || '(Not provided)'}
-- Email: ${formData.email || '(Not provided)'}
-- Phone: ${formData.phone || '(Not provided)'}
-- Current Designation: ${formData.designation || '(Not provided)'}
-- School / Organisation: ${formData.organisation || '(Not provided)'}
-- Years in Education: ${formData.experience || '(Not provided)'}
+SECTION 1: A LITTLE ABOUT YOU
+1. Full Name: ${formData.fullName || '(Not provided)'}
+2. Email Address: ${formData.email || '(Not provided)'}
+   Phone Number: ${formData.phone || '(Not provided)'}
+3. Current Role / Designation: ${formData.designation || '(Not provided)'}
+4. Work / Teaching Institution: ${formData.organisation || '(Not provided)'}
+5. Years Working in Education: ${formData.experience || '(Not provided)'}
 
-SECTION 2: LEARNING JOURNEY & REFLECTIONS
-[Q5] Lesson Breakdown / Reflection:
-${formData.q5 || '(No response entered)'}
-
-[Q6] Questions About Learning & Teaching:
+SECTION 2: YOUR LEARNING JOURNEY
+[Q6] Chapter, Book, or Lesson That Stayed With You:
 ${formData.q6 || '(No response entered)'}
 
-[Q7] Draw to ReadFirst & Hoped Outcomes:
+[Q7] Interests About Teaching & How Children Learn:
 ${formData.q7 || '(No response entered)'}
 
-SECTION 3: INTELLECTUAL CURIOSITY & OPENNESS
-[Q8] Changed Approach / Mindset Shift:
+[Q8] What Draws You Towards ReadFirst & Hoped Outcomes:
 ${formData.q8 || '(No response entered)'}
 
-[Q9] Reaction to Challenging Research:
+[Q9] Influential Experience / Exploring Differing Ideas:
 ${formData.q9 || '(No response entered)'}
 
-SECTION 4: APPLICATION & COMMITMENT
 [Q10] 30–60 Day Practical Application & Impact:
 ${formData.q10 || '(No response entered)'}
 
-[Q11] Program Time Commitment (Online + 30-day paper):
+[Q11] Making Time for Sessions, Readings, and 30-Day Research Paper:
 ${formData.q11 || '(No response entered)'}
 
-SECTION 5: COHORT CONTRIBUTION & ADDITIONAL
-[Q12] Contribution to Cohort Discussions:
+[Q12] Special Experiences, Insights, or Lessons to Share With Fellow Educators:
 ${formData.q12 || '(No response entered)'}
 
-[Q13] Additional Information:
+[Q13] Additional Notes, Expectations, or Contributions (Optional):
 ${formData.q13 || '(None)'}
 
 Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
@@ -226,135 +220,100 @@ export const APPLICATION_EMAILJS_TEMPLATE = `<!DOCTYPE html>
                   <tr>
                     <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
                       <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
-                        Section 2: Learning Journey &amp; Reflections
+              <!-- Section 2: Your Learning Journey -->
+              <div style="margin-bottom: 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+                  <tr>
+                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
+                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Section 2: Your Learning Journey
                       </span>
                     </td>
                   </tr>
                 </table>
 
-                <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 5</div>
-                  <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    Tell us about a time when a learner did not learn as expected, or a lesson did not go the way you planned. What do you think happened, and what did it make you reflect on?
-                  </div>
-                  <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
-{{q5}}
-                  </div>
-                </div>
-
+                <!-- Q6 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 6</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    What questions about learning or teaching do you find yourself thinking about most often? What would you like to explore more deeply?
+                    There must have been a chapter, a book, or a lesson that has stayed with you or made you more curious. We'd love to hear about your experience, reflections and thoughts you've had while teaching or learning it.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q6}}
                   </div>
                 </div>
 
+                <!-- Q7 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 7</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    What has drawn you to ReadFirst? What are you hoping to take away from this experience?
+                    We would love to know what interests you most about teaching and how children learn, along with the ideas, questions, or aspects of learning you would like to explore more deeply.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q7}}
                   </div>
                 </div>
-              </div>
 
-              <!-- Section 3 -->
-              <div style="margin-bottom: 30px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
-                  <tr>
-                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
-                        Section 3: Intellectual Curiosity &amp; Openness
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-
+                <!-- Q8 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 8</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    Tell us about a time when you changed your thinking or approach because you learned something new.
+                    We'd be happy to know what draws you towards ReadFirst at this point in your journey, and what you hope to discover, understand, or take away from this experience.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q8}}
                   </div>
                 </div>
 
+                <!-- Q9 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 9</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    If you read something in the research papers that challenges an approach you have used for a long time, how would you respond?
+                    We are eager to hear from you about an experience, a new idea or learning that has influenced the way you think, teach, or work. You could also reflect on how you explore new ideas that may differ from your existing understanding.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q9}}
                   </div>
                 </div>
-              </div>
 
-              <!-- Section 4 -->
-              <div style="margin-bottom: 30px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
-                  <tr>
-                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
-                        Section 4: Application &amp; Commitment
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-
+                <!-- Q10 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 10</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    Where in your current work could you apply insights from ReadFirst within the next 30–60 days, and how might you know whether it made a difference?
+                    As you explore ReadFirst, we'd love to hear about your plans to bring your learning into practice over the next 30–60 days, and the difference and impact you hope to make for your students and their learning environment.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q10}}
                   </div>
                 </div>
 
+                <!-- Q11 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 11 (Commitment)</div>
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 11</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    Are you prepared to set aside time for online sessions, reading, activities and a 30-day collaborative research paper?
+                    We'd like to understand how you plan to make time for the sessions, preparatory reading, reflection, and collaborative research alongside teaching and your other commitments, including the research paper to be completed within 30 days after the program.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q11}}
                   </div>
                 </div>
-              </div>
 
-              <!-- Section 5 -->
-              <div style="margin-bottom: 24px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
-                  <tr>
-                    <td style="border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                      <span style="font-size: 15px; font-weight: 700; color: #001F42; text-transform: uppercase; letter-spacing: 0.05em;">
-                        Section 5: Cohort Contribution &amp; Additional Info
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-
+                <!-- Q12 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
                   <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F2642A; margin-bottom: 5px;">Question 12</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    What is one experience, perspective or question you would like to bring to the cohort discussions?
+                    Every educator brings something special to the learning community. We'd love to hear about the experiences, insights, ideas, or life lessons you would enjoy sharing with fellow educators as you learn and grow together.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #00326A;">
 {{q12}}
                   </div>
                 </div>
 
+                <!-- Q13 -->
                 <div style="margin-bottom: 18px; padding: 18px 20px; background-color: #FFFFFF; border: 1px solid #E5E0D8; border-radius: 8px;">
-                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8898A7; margin-bottom: 5px;">Question 13 (Optional Notes)</div>
+                  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8898A7; margin-bottom: 5px;">Question 13 (Optional)</div>
                   <div style="font-size: 14px; font-weight: 600; color: #001F42; line-height: 1.45; margin-bottom: 10px;">
-                    Is there anything else you would like us to know about your background, work or interest in ReadFirst?
+                    Feel free to share anything more about your interest in ReadFirst, your expectations from the program, or how you hope to contribute to this learning journey.
                   </div>
                   <div style="font-size: 14px; color: #1E2D3D; line-height: 1.65; white-space: pre-wrap; background-color: #F8FAFA; padding: 14px 16px; border-radius: 6px; border-left: 3px solid #D2DADB;">
 {{q13}}
@@ -403,7 +362,10 @@ export const APPLICATION_EMAILJS_TEMPLATE = `<!DOCTYPE html>
  * Generates high-fidelity, responsive HTML styled email matching ReadFirst design system
  * Primary Navy: #00326A, Deep Navy: #001F42, Warm Accent: #F2642A, Warm Neutral: #FAF8F5
  */
-export const generateApplicationEmailHtml = (formData) => {
+export const generateApplicationEmailHtml = (formData, customToEmail = null) => {
+  const config = getEmailJsConfig();
+  const toEmail = customToEmail || config.toEmail || 'pratyush@readfirst.in';
+
   const submittedTime = new Date().toLocaleString('en-IN', {
     dateStyle: 'full',
     timeStyle: 'short',
@@ -518,39 +480,17 @@ export const generateApplicationEmailHtml = (formData) => {
           <tr>
             <td style="padding: 32px 36px; background-color: #FAF8F5;">
               
-              <!-- Section 2: Learning Journey Reflections -->
+              <!-- Section 2: Your Learning Journey -->
               <div style="margin-bottom: 28px;">
                 <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 700; color: #001F42; border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                  Section 2: Learning Journey &amp; Reflections
+                  Section 2: Your Learning Journey
                 </h3>
-                ${renderQaItem(5, APPLICATION_QUESTIONS.q5, formData.q5)}
                 ${renderQaItem(6, APPLICATION_QUESTIONS.q6, formData.q6)}
                 ${renderQaItem(7, APPLICATION_QUESTIONS.q7, formData.q7)}
-              </div>
-
-              <!-- Section 3: Intellectual Curiosity & Openness -->
-              <div style="margin-bottom: 28px;">
-                <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 700; color: #001F42; border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                  Section 3: Intellectual Curiosity &amp; Openness
-                </h3>
                 ${renderQaItem(8, APPLICATION_QUESTIONS.q8, formData.q8)}
                 ${renderQaItem(9, APPLICATION_QUESTIONS.q9, formData.q9)}
-              </div>
-
-              <!-- Section 4: Application & Commitment -->
-              <div style="margin-bottom: 28px;">
-                <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 700; color: #001F42; border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                  Section 4: Application &amp; Commitment
-                </h3>
                 ${renderQaItem(10, APPLICATION_QUESTIONS.q10, formData.q10)}
                 ${renderQaItem(11, APPLICATION_QUESTIONS.q11, formData.q11)}
-              </div>
-
-              <!-- Section 5: Cohort Contribution & Notes -->
-              <div style="margin-bottom: 20px;">
-                <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 700; color: #001F42; border-bottom: 2px solid #00326A; padding-bottom: 6px;">
-                  Section 5: Cohort Contribution &amp; Additional Information
-                </h3>
                 ${renderQaItem(12, APPLICATION_QUESTIONS.q12, formData.q12)}
                 ${renderQaItem(13, APPLICATION_QUESTIONS.q13, formData.q13 || 'None provided')}
               </div>
@@ -570,10 +510,10 @@ export const generateApplicationEmailHtml = (formData) => {
                 <tr>
                   <td>
                     <div style="font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 4px;">
-                      ReadFirst · elevify.com
+                      ReadFirst · Educator Transformation Program
                     </div>
                     <div>
-                      Educator Transformation Program · Admissions &amp; Inquiries: <a href="mailto:admissions@readfirst.in" style="color: #FBCFBA; text-decoration: none;">admissions@readfirst.in</a>
+                      Admissions &amp; Review Desk: <a href="mailto:${escapeHtml(toEmail)}" style="color: #FBCFBA; text-decoration: none;">${escapeHtml(toEmail)}</a>
                     </div>
                     <div style="margin-top: 8px; font-size: 11px; color: #576778;">
                       Confidential notification: This message contains application reflections submitted directly by the candidate.
@@ -635,7 +575,7 @@ export const sendApplicationEmail = async (formData) => {
     experience: formData.experience,
 
     // Detailed question responses
-    q5: formData.q5 || 'N/A',
+    q5: formData.experience || formData.q6 || 'N/A', // backward compatibility
     q6: formData.q6 || 'N/A',
     q7: formData.q7 || 'N/A',
     q8: formData.q8 || 'N/A',

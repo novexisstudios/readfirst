@@ -19,36 +19,31 @@ import './ApplicationPage.css';
 import { sendApplicationEmail } from '../lib/emailjs';
 import { sendApplicantConfirmationEmail } from '../lib/resend';
 
-const STORAGE_KEY = 'readfirst_educator_application_draft_v1';
+const STORAGE_KEY = 'readfirst_educator_application_draft_v2';
 
 export default function ApplicationPage() {
   const [formData, setFormData] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('readfirst_educator_application_draft_v1');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // If old draft had q14 or q13 with cohort contribution, map them forward
-        if (parsed.q14 !== undefined || (parsed.q13 && !parsed.q12)) {
-          return {
-            fullName: parsed.fullName || '',
-            email: parsed.email || '',
-            phone: parsed.phone || '',
-            designation: parsed.designation || '',
-            organisation: parsed.organisation || '',
-            experience: parsed.experience || '',
-            q5: parsed.q5 || '',
-            q6: parsed.q6 || '',
-            q7: parsed.q7 || '',
-            q8: parsed.q8 || '',
-            q9: parsed.q9 || '',
-            q10: parsed.q10 || '',
-            q11: parsed.q11 || '',
-            q12: parsed.q13 || '',
-            q13: parsed.q14 || '',
-            confirmed: Boolean(parsed.confirmed),
-          };
-        }
-        return parsed;
+        return {
+          fullName: parsed.fullName || '',
+          email: parsed.email || '',
+          phone: parsed.phone || '',
+          designation: parsed.designation || '',
+          organisation: parsed.organisation || '',
+          experience: parsed.experience || '',
+          q6: parsed.q6 || parsed.q5 || '',
+          q7: parsed.q7 || '',
+          q8: parsed.q8 || '',
+          q9: parsed.q9 || '',
+          q10: parsed.q10 || '',
+          q11: parsed.q11 || '',
+          q12: parsed.q12 || '',
+          q13: parsed.q13 || '',
+          confirmed: Boolean(parsed.confirmed),
+        };
       }
     } catch {
       // Fallback
@@ -60,7 +55,6 @@ export default function ApplicationPage() {
       designation: '',
       organisation: '',
       experience: '',
-      q5: '',
       q6: '',
       q7: '',
       q8: '',
@@ -88,7 +82,7 @@ export default function ApplicationPage() {
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.content =
-        'Apply for the ReadFirst Educator Transformation Program. A selective 5-day online inquiry exploring the science and practice of learning.';
+        'Apply for the ReadFirst Educator Transformation Program. Welcome! Let\'s Start With a Question.';
     }
   }, []);
 
@@ -130,40 +124,37 @@ export default function ApplicationPage() {
 
   const handleCopyResponses = async () => {
     const formatted = `=== READFIRST EDUCATOR TRANSFORMATION PROGRAM APPLICATION ===
-Applicant Information:
-- Full Name: ${formData.fullName || '(Not provided)'}
-- Email: ${formData.email || '(Not provided)'}
-- Phone: ${formData.phone || '(Not provided)'}
-- Current Designation: ${formData.designation || '(Not provided)'}
-- School / Organisation: ${formData.organisation || '(Not provided)'}
-- Years of Experience: ${formData.experience || '(Not provided)'}
+Section 1: A Little About You:
+1. Full Name: ${formData.fullName || '(Not provided)'}
+2. Email Address: ${formData.email || '(Not provided)'}
+   Phone Number: ${formData.phone || '(Not provided)'}
+3. Current Role / Designation: ${formData.designation || '(Not provided)'}
+4. Work / Teaching Institution: ${formData.organisation || '(Not provided)'}
+5. Years Working in Education: ${formData.experience || '(Not provided)'}
 
-Section 2: Learning Journey Reflections:
-5. Time a learner didn't learn as expected / lesson didn't go as planned:
-${formData.q5 || '(No response entered)'}
-
-6. Questions about learning or teaching you'd like to explore:
+Section 2: Your Learning Journey:
+6. Chapter, book, or lesson that stayed with you / made you curious:
 ${formData.q6 || '(No response entered)'}
 
-7. What has drawn you to ReadFirst & hoped outcomes:
+7. What interests you most about teaching & how children learn:
 ${formData.q7 || '(No response entered)'}
 
-8. Time you changed your thinking or approach after learning something new:
+8. What draws you towards ReadFirst & what you hope to discover/take away:
 ${formData.q8 || '(No response entered)'}
 
-9. Response to reading something challenging a long-used teaching approach:
+9. Experience/idea that influenced your thinking or how you explore differing ideas:
 ${formData.q9 || '(No response entered)'}
 
-10. Where you could apply ReadFirst insights in 30-60 days & measure impact:
+10. Plans to bring learning into practice in next 30-60 days & measure impact:
 ${formData.q10 || '(No response entered)'}
 
-11. Making time for online sessions, reading, activities & 30-day research paper:
+11. How you plan to make time for sessions, reading, and 30-day research paper:
 ${formData.q11 || '(No response entered)'}
 
-12. Experience, perspective or question you wish to contribute to cohort:
+12. Experiences, insights, or life lessons you would enjoy sharing with fellow educators:
 ${formData.q12 || '(No response entered)'}
 
-13. Additional information (Optional):
+13. Additional notes / expectations / contributions (Optional):
 ${formData.q13 || '(None)'}
 
 Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
@@ -194,14 +185,15 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
       const emailResult = await sendApplicationEmail(formData);
       setSubmissionFeedback(emailResult);
 
-      // 2. Dispatch automated noreply confirmation email to applicant via Resend
+      // 2. Dispatch automated confirmation email to applicant via Resend
       try {
-        await sendApplicantConfirmationEmail(formData);
+        const confirmResult = await sendApplicantConfirmationEmail(formData);
+        console.log('[ReadFirst Confirmation Email Result]:', confirmResult);
       } catch (confirmErr) {
         console.warn('[ReadFirst Applicant Confirmation Notice]:', confirmErr);
       }
 
-      // 2. Optional backup webhook endpoint if configured in environment
+      // 3. Optional backup webhook endpoint if configured in environment
       const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT;
       if (endpoint) {
         try {
@@ -227,8 +219,8 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
       const detailedError = err?.text || err?.message || '';
       setErrorMessage(
         detailedError
-          ? `Submission failed (${detailedError}). Please check your EmailJS keys or copy your responses below and email admissions@readfirst.in.`
-          : 'There was an issue submitting your application via EmailJS. Please copy your responses using the button below and email admissions@readfirst.in.'
+          ? `Submission failed (${detailedError}). Please check your connection or copy your responses below and email pratyush@readfirst.in.`
+          : 'There was an issue submitting your application. Please copy your responses using the button below and email pratyush@readfirst.in.'
       );
     } finally {
       setIsSubmitting(false);
@@ -245,7 +237,6 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
         designation: '',
         organisation: '',
         experience: '',
-        q5: '',
         q6: '',
         q7: '',
         q8: '',
@@ -297,18 +288,18 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
           </p>
 
           <h2 id="success-popup-title" className="rf-success-modal-title">
-            Thank You for Applying!
+            Thank You for Sharing!
           </h2>
 
           <div className="rf-success-modal-body">
             <p>
-              Thank you for your interest in <strong>ReadFirst</strong>. We appreciate the time and thought you have put into your responses.
+              Thank you for taking the time to tell us a little about yourself, your experiences, and the questions that matter to you.
             </p>
             <p>
-              Your application will be carefully reviewed, and we will be in touch regarding the next steps.
+              Every educator has a story, and every learning journey begins somewhere. We're glad you've taken this first step towards exploring yours with ReadFirst.
             </p>
             <p className="rf-success-modal-quote">
-              “We look forward to the possibility of learning and growing together.”
+              “We look forward to learning more about you!”
             </p>
           </div>
 
@@ -351,32 +342,32 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
         <header className="rf-app-header">
           <div className="rf-app-meta-badge">
             <Sparkles size={13} color="var(--rf-orange)" />
-            <span>ReadFirst Educator Transformation</span>
+            <span>ReadFirst | Learning and Growing Together</span>
           </div>
-          <h1 className="rf-app-title">Program Application Form</h1>
+          <h1 className="rf-app-title">Welcome! Let's Start With a Question</h1>
           <p className="rf-app-subtitle">
-            A selective learning experience for educators ready to explore the science and practice of learning through research, deep reading, reflection, and inquiry.
+            At ReadFirst, we believe that some of the most meaningful learning begins when we become curious, ask questions, and explore ideas together.
           </p>
         </header>
 
         {isSubmitted ? (
-          /* Thank You Screen (Page 5 & 6 of PDF) */
+          /* Thank You Screen */
           <div className="rf-thank-you-card" role="region" aria-label="Application Submitted Confirmation">
             <div className="rf-thank-you-badge">
               <CheckCircle2 size={36} />
             </div>
-            <h2 className="rf-thank-you-title">Thank You</h2>
+            <h2 className="rf-thank-you-title">Thank You for Sharing!</h2>
             <div className="rf-thank-you-text">
               <p>
-                Thank you for taking the time to reflect and share your responses. By completing this application, you have already begun to examine your own questions about learning—and that spirit of inquiry is an important part of the ReadFirst journey.
+                Thank you for taking the time to tell us a little about yourself, your experiences, and the questions that matter to you.
               </p>
               <p>
-                ReadFirst is a selective program, and applications are reviewed carefully for alignment with the program’s learning approach, participation requirements and opportunities for meaningful application. We appreciate your interest and the thought you have brought to this process.
+                Every educator has a story, and every learning journey begins somewhere. We're glad you've taken this first step towards exploring yours with ReadFirst.
               </p>
             </div>
 
             <p className="rf-thank-you-closing">
-              “We look forward to the possibility of exploring a more thoughtful, curious and meaningful culture of learning together.”
+              “We look forward to learning more about you!”
             </p>
 
             <div className="rf-thank-you-actions">
@@ -419,13 +410,13 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 </div>
               )}
               <div style={{ marginTop: '8px' }}>
-                Our admissions committee will review your reflective inquiry within 3 to 5 business days and contact you via email ({formData.email}) or phone ({formData.phone}).
+                Our admissions committee will review your reflective inquiry within 3 to 5 business days and contact you via email ({formData.email}) or phone ({formData.phone}). For inquiries, reach out to pratyush@readfirst.in.
               </div>
             </div>
           </div>
         ) : (
           <>
-            {/* Welcome to a New Way of Thinking About Learning Card (Page 1 of PDF) */}
+            {/* Welcome to ReadFirst Educator Transformation Overview Card */}
             <section className="rf-app-welcome-card" aria-label="Welcome Overview">
               <div className="rf-app-hero-image-wrap">
                 <img
@@ -439,97 +430,77 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
               </div>
 
               <div className="rf-app-welcome-body">
-                <h2>Welcome to a New Way of Thinking About Learning</h2>
+                <h2>Welcome! Let's Start With a Question</h2>
                 <p>
-                  Learning can be more than completing a syllabus, remembering information or preparing for examinations. What if we could create learning environments where curiosity grows, learners take ownership, and understanding continues beyond the classroom?
+                  At ReadFirst, we believe that some of the most meaningful learning begins when we become curious, ask questions, and explore ideas together.
                 </p>
                 <p>
-                  ReadFirst brings educators together to explore the science and practice of learning through research, deep reading, reflection and inquiry.
+                  Our Educator Transformation Program brings educators together to explore the science and practice of learning through research, deep reading, reflection, and inquiry.
                 </p>
                 <p>
-                  Our <strong>Educator Transformation Program</strong> is a selective learning experience for educators who are ready to question familiar approaches, explore research-based ideas and consider how learning can be made more meaningful.
+                  Before we begin, we'd love to get to know you a little better. There are no perfect answers here, and you don't need to have a background in research. Just bring your experiences, your questions, and a willingness to learn.
                 </p>
-                <div className="rf-app-quote-box">
-                  “A meaningful transformation in learning begins when educators are willing to rethink what learning can be.”
-                </div>
               </div>
             </section>
 
-            {/* About the Program Section (Page 1 & 2 of PDF) */}
-            <section className="rf-program-overview-section" aria-label="About the Program">
-              <h2 className="rf-overview-heading">About the Program</h2>
-              <p className="rf-overview-sub">
-                Please review the program details before beginning your application.
-              </p>
+            {/* A little about the program Section */}
+            <section className="rf-program-overview-section" aria-label="A little about the program">
+              <h2 className="rf-overview-heading">A little about the program</h2>
 
-              <div className="rf-program-spec-grid">
-                <div className="rf-spec-item">
-                  <div className="rf-spec-header">
-                    <div className="rf-spec-icon-wrap"><Calendar size={18} /></div>
-                    <h3>Duration and format</h3>
+              <ul className="rf-program-bullets-list">
+                <li>
+                  <div className="rf-bullet-dot" />
+                  <div>
+                    <strong>Duration:</strong> Five days, entirely online.
                   </div>
-                  <p>Five days, conducted entirely online.</p>
-                </div>
-
-                <div className="rf-spec-item fee-highlight">
-                  <div className="rf-spec-header">
-                    <div className="rf-spec-icon-wrap"><IndianRupee size={18} /></div>
-                    <h3>Program fee</h3>
+                </li>
+                <li>
+                  <div className="rf-bullet-dot" />
+                  <div>
+                    <strong>Program fee:</strong> ₹50,000.
                   </div>
-                  <p className="rf-fee-amount">₹50,000.</p>
-                </div>
-
-                <div className="rf-spec-item">
-                  <div className="rf-spec-header">
-                    <div className="rf-spec-icon-wrap"><BookOpen size={18} /></div>
-                    <h3>Preparation and participation</h3>
+                </li>
+                <li>
+                  <div className="rf-bullet-dot" />
+                  <div>
+                    <strong>What to expect:</strong> Preparatory reading, reflective activities, discussions, and active participation throughout the program.
                   </div>
-                  <p>Preparatory reading, reflective activities, discussions and active participation throughout the program.</p>
-                </div>
-
-                <div className="rf-spec-item">
-                  <div className="rf-spec-header">
-                    <div className="rf-spec-icon-wrap"><Users size={18} /></div>
-                    <h3>Collaborative research</h3>
+                </li>
+                <li>
+                  <div className="rf-bullet-dot" />
+                  <div>
+                    <strong>What comes next:</strong> After the five days, you'll work with a group of five educators to prepare and submit a research paper within 30 days.
                   </div>
-                  <p>After the five-day program, participants work in groups of five to prepare and submit a research paper within 30 days.</p>
-                </div>
+                </li>
+              </ul>
 
-                <div className="rf-approach-block">
-                  <div className="rf-spec-header" style={{ marginBottom: '8px' }}>
-                    <div className="rf-spec-icon-wrap"><Lightbulb size={18} /></div>
-                    <h3>Our approach</h3>
-                  </div>
-                  <p>
-                    Curiosity, evidence, reflection, intellectual openness, collaboration and thoughtful application. Previous research experience is not required; a willingness to engage sincerely is important.
-                  </p>
-                </div>
-              </div>
-
-              <div className="rf-selection-notice">
+              <div className="rf-program-narrative">
                 <p>
-                  This application is the first step in our selection process. You do not need to have all the answers or be a research expert. We want to understand the questions you carry, the experiences that have shaped your thinking, and your willingness to explore and apply new ideas.
+                  The journey calls for curiosity, openness to new ideas, thoughtful reflection, and a willingness to learn with others.
                 </p>
                 <p>
-                  Places are limited, and applications are reviewed carefully for alignment with the program’s approach and expectations.
+                  Places are limited, and we review each application carefully to understand whether the program is the right fit for you and your learning goals.
+                </p>
+                <p className="rf-begin-callout">
+                  So, let's begin!
                 </p>
               </div>
             </section>
 
             {/* Application Form */}
             <form onSubmit={handleSubmit} className="rf-application-form-wrap" noValidate={false}>
-              {/* SECTION 1: ABOUT YOU */}
+              {/* SECTION 1: A LITTLE ABOUT YOU */}
               <section className="rf-form-section" aria-labelledby="section-1-heading">
                 <div className="rf-form-section-header">
-                  <h2 id="section-1-heading">Section 1: About You</h2>
-                  <p>Please complete the following details. Fields marked * are required.</p>
+                  <h2 id="section-1-heading">Section 1: A Little About You</h2>
+                  <p>First, we'd like to know a few things about you and your work.</p>
                 </div>
 
-                <div className="rf-fields-grid">
+                <div className="rf-fields-stack">
                   {/* Field 1: Full name */}
-                  <div className="rf-field-group">
+                  <div className="rf-field-group full-width">
                     <label htmlFor="fullName" className="rf-field-label">
-                      <span>1. Full name <span className="rf-required-star">*</span></span>
+                      <span>1. What's your full name? <span className="rf-required-star">*</span></span>
                     </label>
                     <input
                       type="text"
@@ -543,44 +514,50 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                     />
                   </div>
 
-                  {/* Email (User requested) */}
-                  <div className="rf-field-group">
-                    <label htmlFor="email" className="rf-field-label">
-                      <span>Email address <span className="rf-required-star">*</span></span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email address"
-                      required
-                      className="rf-input-text"
-                    />
+                  {/* Field 2: Email & Phone compound question */}
+                  <div className="rf-field-compound full-width">
+                    <div className="rf-compound-title">
+                      2. What's the best email address and phone number to reach you on? <span className="rf-required-star">*</span>
+                    </div>
+                    <div className="rf-compound-grid">
+                      <div className="rf-field-group">
+                        <label htmlFor="email" className="rf-subfield-label">
+                          <span>• Email address <span className="rf-required-star">*</span></span>
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="Enter your email address"
+                          required
+                          className="rf-input-text"
+                        />
+                      </div>
+
+                      <div className="rf-field-group">
+                        <label htmlFor="phone" className="rf-subfield-label">
+                          <span>• Phone number <span className="rf-required-star">*</span></span>
+                        </label>
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="e.g. +91 98765 43210"
+                          required
+                          className="rf-input-text"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Phone (User requested) */}
-                  <div className="rf-field-group">
-                    <label htmlFor="phone" className="rf-field-label">
-                      <span>Phone number <span className="rf-required-star">*</span></span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="e.g. +91 98765 43210"
-                      required
-                      className="rf-input-text"
-                    />
-                  </div>
-
-                  {/* Field 2: Current designation */}
-                  <div className="rf-field-group">
+                  {/* Field 3: Current designation */}
+                  <div className="rf-field-group full-width">
                     <label htmlFor="designation" className="rf-field-label">
-                      <span>2. Current designation <span className="rf-required-star">*</span></span>
+                      <span>3. What is your current role or designation? <span className="rf-required-star">*</span></span>
                     </label>
                     <input
                       type="text"
@@ -594,27 +571,30 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                     />
                   </div>
 
-                  {/* Field 3: Organisation */}
-                  <div className="rf-field-group">
+                  {/* Field 4: Organisation */}
+                  <div className="rf-field-group full-width">
                     <label htmlFor="organisation" className="rf-field-label">
-                      <span>3. School, college, university or organisation <span className="rf-required-star">*</span></span>
+                      <span>4. Where do you currently work or teach? <span className="rf-required-star">*</span></span>
                     </label>
+                    <p className="rf-field-subhint">
+                      Please share the name of your school, college, university, or organisation.
+                    </p>
                     <input
                       type="text"
                       id="organisation"
                       name="organisation"
                       value={formData.organisation}
                       onChange={handleChange}
-                      placeholder="Enter your institution or organisation"
+                      placeholder="Enter school, college, university, or organisation name"
                       required
                       className="rf-input-text"
                     />
                   </div>
 
-                  {/* Field 4: Years of experience */}
-                  <div className="rf-field-group">
+                  {/* Field 5: Experience */}
+                  <div className="rf-field-group full-width">
                     <label htmlFor="experience" className="rf-field-label">
-                      <span>4. Years of experience in education <span className="rf-required-star">*</span></span>
+                      <span>5. How long have you been working in education? <span className="rf-required-star">*</span></span>
                     </label>
                     <input
                       type="text"
@@ -635,43 +615,17 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-form-section-header">
                   <h2 id="section-2-heading">Section 2: Your Learning Journey</h2>
                   <p>
-                    There are no model answers. Please respond in your own words, drawing on your experiences, questions and reflections.
+                    Every educator brings their own experiences, ideas, and questions to the learning journey. We'd love to hear a little about yours. There are no right or wrong answers, so feel free to share what comes naturally to you.
                   </p>
-                </div>
-
-                {/* Question 5 */}
-                <div className="rf-question-block">
-                  <label htmlFor="q5" className="rf-field-label">
-                    <span className="rf-question-title">
-                      5. Think of a time when a learner did not learn what you expected, or a lesson did not go as planned. What happened, and what did it make you wonder about learning? <span className="rf-required-star">*</span>
-                    </span>
-                  </label>
-                  <p className="rf-question-hint">
-                    Describe a real experience and what you took away from it.
-                  </p>
-                  <textarea
-                    id="q5"
-                    name="q5"
-                    value={formData.q5}
-                    onChange={handleChange}
-                    placeholder="Write your response here..."
-                    required
-                    rows={4}
-                    className="rf-question-textarea"
-                  />
-                  <div className="rf-char-indicator">{formData.q5.length} characters</div>
                 </div>
 
                 {/* Question 6 */}
                 <div className="rf-question-block">
                   <label htmlFor="q6" className="rf-field-label">
                     <span className="rf-question-title">
-                      6. What questions about learning or teaching would you most like to explore at this stage of your professional journey? <span className="rf-required-star">*</span>
+                      6. There must have been a chapter, a book, or a lesson that has stayed with you or made you more curious. We'd love to hear about your experience, reflections and thoughts you've had while teaching or learning it. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    Share the questions you genuinely want to understand.
-                  </p>
                   <textarea
                     id="q6"
                     name="q6"
@@ -689,12 +643,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q7" className="rf-field-label">
                     <span className="rf-question-title">
-                      7. What has drawn you to ReadFirst at this point in your journey? What would you hope to understand or do differently after the program? <span className="rf-required-star">*</span>
+                      7. We would love to know what interests you most about teaching and how children learn, along with the ideas, questions, or aspects of learning you would like to explore more deeply. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    Tell us what makes this opportunity meaningful to you.
-                  </p>
                   <textarea
                     id="q7"
                     name="q7"
@@ -712,12 +663,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q8" className="rf-field-label">
                     <span className="rf-question-title">
-                      8. Can you share a time when you changed the way you thought about or approached something after learning something new? What did you learn, and what did you do differently? <span className="rf-required-star">*</span>
+                      8. We'd be happy to know what draws you towards ReadFirst at this point in your journey, and what you hope to discover, understand, or take away from this experience. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    You can use an example from teaching, personal experience or feedback you received. If no example comes to mind, describe how you might respond if you discovered that something you believed was not correct.
-                  </p>
                   <textarea
                     id="q8"
                     name="q8"
@@ -735,12 +683,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q9" className="rf-field-label">
                     <span className="rf-question-title">
-                      9. Imagine you read something that challenges a teaching approach you have used for years. How would you respond, and what would you do next? <span className="rf-required-star">*</span>
+                      9. We are eager to hear from you about an experience, a new idea or learning that has influenced the way you think, teach, or work. You could also reflect on how you explore new ideas that may differ from your existing understanding. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    We are interested in how you approach new evidence and differing perspectives.
-                  </p>
                   <textarea
                     id="q9"
                     name="q9"
@@ -758,12 +703,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q10" className="rf-field-label">
                     <span className="rf-question-title">
-                      10. If you learn something useful through ReadFirst, where could you try applying it in the next 30–60 days? How might you tell whether it made a difference? <span className="rf-required-star">*</span>
+                      10. As you explore ReadFirst, we'd love to hear about your plans to bring your learning into practice over the next 30–60 days, and the difference and impact you hope to make for your students and their learning environment. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    Consider a classroom, institution, teaching practice or learning environment.
-                  </p>
                   <textarea
                     id="q10"
                     name="q10"
@@ -781,12 +723,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q11" className="rf-field-label">
                     <span className="rf-question-title">
-                      11. The program involves work beyond the five online days. Please describe how you would make time for the online sessions, preparatory reading, reflective activities and the group research paper due within 30 days after the program. <span className="rf-required-star">*</span>
+                      11. We'd like to understand how you plan to make time for the sessions, preparatory reading, reflection, and collaborative research alongside teaching and your other commitments, including the research paper to be completed within 30 days after the program. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    Please consider your current responsibilities and availability.
-                  </p>
                   <textarea
                     id="q11"
                     name="q11"
@@ -804,12 +743,9 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q12" className="rf-field-label">
                     <span className="rf-question-title">
-                      12. Every participant brings something to a learning community. What experience, perspective or question would you like to share with other educators? <span className="rf-required-star">*</span>
+                      12. Every educator brings something special to the learning community. We'd love to hear about the experiences, insights, ideas, or life lessons you would enjoy sharing with fellow educators as you learn and grow together. <span className="rf-required-star">*</span>
                     </span>
                   </label>
-                  <p className="rf-question-hint">
-                    Think about what you could contribute to a group that learns together.
-                  </p>
                   <textarea
                     id="q12"
                     name="q12"
@@ -827,11 +763,14 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 <div className="rf-question-block">
                   <label htmlFor="q13" className="rf-field-label">
                     <span className="rf-question-title">
-                      13. Is there anything else you would like us to know about your interest in ReadFirst or your readiness to take part?
+                      13. Feel free to share anything more about your interest in ReadFirst, your expectations from the program, or how you hope to contribute to this learning journey.
                     </span>
                   </label>
+                  <p className="rf-question-hint" style={{ fontStyle: 'italic', marginBottom: '4px' }}>
+                    Question 13 is optional.
+                  </p>
                   <p className="rf-question-hint">
-                    Optional.
+                    This is completely optional. Feel free to share anything we haven't asked about but that you'd like us to know.
                   </p>
                   <textarea
                     id="q13"
@@ -846,7 +785,21 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 </div>
               </section>
 
-              {/* DECLARATION CHECKBOX (Page 5 of PDF) */}
+              {/* Thank You for Sharing Card */}
+              <div className="rf-sharing-card">
+                <h3 className="rf-sharing-title">Thank You for Sharing!</h3>
+                <p className="rf-sharing-text">
+                  Thank you for taking the time to tell us a little about yourself, your experiences, and the questions that matter to you.
+                </p>
+                <p className="rf-sharing-text">
+                  Every educator has a story, and every learning journey begins somewhere. We're glad you've taken this first step towards exploring yours with ReadFirst.
+                </p>
+                <p className="rf-sharing-closing">
+                  We look forward to learning more about you!
+                </p>
+              </div>
+
+              {/* DECLARATION CHECKBOX */}
               <div className="rf-declaration-card">
                 <label className="rf-checkbox-label">
                   <input
@@ -869,7 +822,7 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
                 </div>
               )}
 
-              {/* ACTION BUTTONS (Page 5 of PDF) */}
+              {/* ACTION BUTTONS */}
               <div className="rf-form-actions-bar">
                 <button
                   type="submit"
@@ -904,7 +857,7 @@ Declaration Confirmed: ${formData.confirmed ? 'Yes' : 'No'}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginTop: '16px' }}>
                 <p className="rf-preview-note">
-                  For details on how your application details are handled, please review our{' '}
+                  For details on how your application information is handled, please read our{' '}
                   <Link to="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--rf-navy)', textDecoration: 'underline' }}>
                     Privacy Notice & Consent
                   </Link>.

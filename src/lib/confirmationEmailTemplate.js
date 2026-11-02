@@ -135,7 +135,7 @@ export const generateConfirmationHtml = (formData = {}) => {
                       Website: <a href="https://readfirst.in" style="color: #FBCFBA; text-decoration: none; font-weight: 600;">readfirst.in</a>
                     </div>
                     <div style="font-size: 11px; color: #64748B; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 10px;">
-                      Please note: This is an automated confirmation sent from an unmonitored mailbox. If you have questions or need to make adjustments to your submission, please contact us at <a href="mailto:office@thelearningmarathon.com" style="color: #CBD5E1; text-decoration: underline;">office@thelearningmarathon.com</a>.
+                      Please note: This is an automated confirmation sent from an unmonitored mailbox. If you have questions or need to make adjustments to your submission, please contact us at <a href="mailto:pratyush@readfirst.in" style="color: #CBD5E1; text-decoration: underline;">pratyush@readfirst.in</a>.
                     </div>
                   </td>
                 </tr>
@@ -180,5 +180,5 @@ ReadFirst · Research-Based Teaching & Learning
 https://readfirst.in
 
 ---
-Note: This is an automated confirmation sent from an unmonitored mailbox. For inquiries, please reach out to office@thelearningmarathon.com.`;
+Note: This is an automated confirmation sent from an unmonitored mailbox. For inquiries, please reach out to pratyush@readfirst.in.`;
 };

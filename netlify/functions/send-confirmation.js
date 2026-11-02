@@ -79,7 +79,7 @@ export const handler = async (event) => {
       body: JSON.stringify({
         from: fromSender,
         to: [email],
-        reply_to: 'office@thelearningmarathon.com',
+        reply_to: 'pratyush@readfirst.in',
         subject: 'Thank You for Applying — ReadFirst Educator Transformation Program',
         html: html || '<p>Thank you for your application to ReadFirst. We will be in touch shortly.</p>',
         text: text || 'Thank you for your application to ReadFirst. We will be in touch shortly.',
